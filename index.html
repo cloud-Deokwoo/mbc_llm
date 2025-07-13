@@ -14,7 +14,7 @@
     <!-- Canvas에서 제공되는 전역 변수를 모듈에서 접근할 수 있도록 window 객체에 할당 -->
     <script>
         window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        window.__firebase_config = typeof firebaseConfig !== 'undefined' ? __firebase_config : firebaseConfig;
+        window.__firebase_config = typeof firebaseConfig !== 'undefined' ? __firebase_config : {};
         window.__initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
     </script>
 
