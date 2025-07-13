@@ -4,7 +4,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebas
 import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 import { firebase } from "./env.js"
-
+console.log(firebase);
 window.__firebase_config = firebase;
 
 let app;
