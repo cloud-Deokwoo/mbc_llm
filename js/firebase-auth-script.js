@@ -17,7 +17,7 @@ export function initFirebaseAndAuthenticate() {
     // Canvas 환경에서 제공되는 전역 변수에 접근
     const appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
     // const firebaseConfig = JSON.parse(typeof window.__firebase_config !== 'undefined' ? window.__firebase_config : '{}');
-    const firebaseConnfig = {
+    const firebaseConfig = {
       apiKey: "AIzaSyCzk1hqaEgC8j5JHBTdhlWfw9ToEOX9hrY",
       authDomain: "mbc-llm.firebaseapp.com",
       projectId: "mbc-llm",
