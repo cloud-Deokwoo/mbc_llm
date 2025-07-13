@@ -6,28 +6,8 @@
     <title>AI와 LLM의 세계로 초대합니다: 초보자를 위한 안내서</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<!--     <script src="./js/env.js"></script> -->
-    <script src="https://www.gstatic.com/firebasejs/ui/11.10.0/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/11.10.0/firebase-ui-auth.css" /> 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- Canvas에서 제공되는 전역 변수를 모듈에서 접근할 수 있도록 window 객체에 할당 -->
-<!--     <script>
-        window.__app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
-        window.__firebase_config = typeof firebaseConfig !== 'undefined' ? __firebase_config : {};
-        window.__initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-    </script> -->
-
-    <!-- Firebase 인증 모듈 임포트 -->
-    <script type="module">
-      // 'firebase-auth-script.js'는 위에 생성된 immersive의 ID를 파일명처럼 사용합니다.
-        // Canvas 환경에서는 별도 파일로 분리된 JS 모듈을 file_content 경로로 임포트해야 합니다.
-        import { initFirebaseAndAuthenticate } from './js/firebase-auth-script.js'; 
-
-        // 윈도우 로드 시 Firebase 초기화 및 인증 함수 호출
-        window.onload = initFirebaseAndAuthenticate;
-    </script>
-    
     <style>
         body {
             font-family: 'Inter', sans-serif;
