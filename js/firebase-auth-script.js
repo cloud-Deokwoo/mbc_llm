@@ -15,7 +15,7 @@ let currentUserId = null;
  */
 export function initFirebaseAndAuthenticate() {
     // Canvas 환경에서 제공되는 전역 변수에 접근
-    const appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
+    // const appId = typeof window.__app_id !== 'undefined' ? window.__app_id : 'default-app-id';
     // const firebaseConfig = JSON.parse(typeof window.__firebase_config !== 'undefined' ? window.__firebase_config : '{}');
     const firebaseConfig = {
       apiKey: "AIzaSyCzk1hqaEgC8j5JHBTdhlWfw9ToEOX9hrY",
@@ -26,7 +26,7 @@ export function initFirebaseAndAuthenticate() {
       appId: "1:622242010374:web:2e54040e8ec6bc0562fa87",
       measurementId: "G-SCBGWN2DMY"
     };
-    const initialAuthToken = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : null;
+    // const initialAuthToken = typeof window.__initial_auth_token !== 'undefined' ? window.__initial_auth_token : null;
 
     // Firebase 설정이 비어있으면 초기화하지 않고 경고 메시지를 출력합니다.
     if (Object.keys(firebaseConfig).length === 0) {
