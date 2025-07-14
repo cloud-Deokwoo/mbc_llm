@@ -713,13 +713,14 @@
                 document.querySelectorAll('#strategy-detail .toggle-answer-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const answerDiv = event.target.nextElementSibling;
-                        if (answerDiv.classList.contains('show')) {
-                            answerDiv.classList.remove('show');
-                            event.target.textContent = '모범 답안 보기';
-                        } else {
-                            answerDiv.classList.add('show');
-                            event.target.textContent = '모범 답안 숨기기';
-                        }
+                        // 각 카드 별 문제
+                        // if (answerDiv.classList.contains('show')) {
+                        //     answerDiv.classList.remove('show');
+                        //     event.target.textContent = '모범 답안 보기';
+                        // } else {
+                        //     answerDiv.classList.add('show');
+                        //     event.target.textContent = '모범 답안 숨기기';
+                        // }
                     });
                 });
             }
@@ -744,13 +745,14 @@
                 document.querySelectorAll('#comprehensive-problems-list .toggle-answer-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const answerDiv = event.target.nextElementSibling;
-                        if (answerDiv.classList.contains('show')) {
-                            answerDiv.classList.remove('show');
-                            event.target.textContent = '모범 답안 보기';
-                        } else {
-                            // answerDiv.classList.add('show');     // 버튼 기능 정지
-                            event.target.textContent = '모범 답안 숨기기';
-                        }
+                        // 복합 문제 버튼 기능 정지
+                        // if (answerDiv.classList.contains('show')) {
+                        //     answerDiv.classList.remove('show');
+                        //     event.target.textContent = '모범 답안 보기';
+                        // } else {
+                        //     answerDiv.classList.add('show');     
+                        //     event.target.textContent = '모범 답안 숨기기';
+                        // }
                     });
                 });
             }
