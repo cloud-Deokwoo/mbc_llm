@@ -713,7 +713,7 @@
                 document.querySelectorAll('#strategy-detail .toggle-answer-btn').forEach(button => {
                     button.addEventListener('click', (event) => {
                         const answerDiv = event.target.nextElementSibling;
-                        각 카드 별 문제
+                        // 각 카드 별 문제
                         if (answerDiv.classList.contains('show')) {
                             answerDiv.classList.remove('show');
                             event.target.textContent = '모범 답안 보기';
