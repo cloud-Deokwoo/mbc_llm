@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT를 활용한 블로그 작성 및 게시 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Slate -->
+    <!-- Application Structure Plan: A single-page application with a top navigation bar to switch between '소개 (Introduction)', '가이드 (Guide Steps)', and '결론 (Conclusion)' sections. This non-linear structure allows users to jump directly to content of interest. The core of the app is the '가이드 (Guide Steps)' section, which uses an interactive grid of cards, each representing a step. Clicking a card reveals its detailed content (goal, GPT usage, tips, checklists) in a dedicated panel. This design promotes exploration and focused learning on one concept at a time, enhancing usability and engagement compared to a static, linear presentation format. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Blog writing guide steps. Goal: Inform & Guide. Viz/Presentation: Interactive card grid for steps, detailed content panels for each step. Interaction: Clicks on step cards reveal details dynamically with smooth transitions. Textual content, prompts, and examples are clearly formatted within the panels. No charts are used as the content is procedural, not quantitative. Structured HTML and Unicode icons are used for visual appeal. Library/Method: Vanilla JS for all interactions, Tailwind CSS for styling.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        .step-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .step-card.selected {
+            transform: translateY(-5px);
+            box-shadow: 0 0 0 2px #3b82f6, 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .detail-panel {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .detail-panel.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="container mx-auto px-4 py-8 md:py-12">
+
+        <header class="text-center mb-10">
+            <h1 class="text-3xl md:text-4xl font-bold text-slate-900">GPT를 활용한 블로그 작성 및 게시 가이드</h1>
+            <p class="text-lg md:text-xl text-slate-600 mt-2">인공지능으로 효율적인 블로깅 시작하기</p>
+        </header>
+
+        <nav class="flex justify-center border-b border-slate-200 mb-10">
+            <button data-target="intro" class="nav-btn px-4 py-3 text-sm md:text-base font-semibold text-slate-500 border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600">소개</button>
+            <button data-target="guide" class="nav-btn px-4 py-3 text-sm md:text-base font-semibold text-slate-500 border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600">가이드</button>
+            <button data-target="conclusion" class="nav-btn px-4 py-3 text-sm md:text-base font-semibold text-slate-500 border-b-2 border-transparent hover:text-blue-600 hover:border-blue-600">결론</button>
+        </nav>
+
+        <main>
+            <section id="intro" class="content-section fade-in">
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-900">소개</h2>
+                    <p class="mb-4 text-slate-700">이 가이드는 인공지능(GPT)을 활용하여 블로그 콘텐츠를 효율적으로 생성하고 실제 블로그에 게시하는 전 과정을 학습하는 것을 목표로 합니다. 컴퓨터 강사 및 학생 여러분을 대상으로 하며, 단계별 설명과 구체적인 예시를 통해 쉽게 따라할 수 있도록 구성되었습니다.</p>
+                    <div class="bg-slate-100 p-6 rounded-lg">
+                        <h3 class="font-semibold text-lg mb-3 text-slate-800">가이드 목표</h3>
+                        <ul class="space-y-2 text-slate-600">
+                            <li class="flex items-start"><span class="mr-2 text-blue-500">✓</span> <span>GPT를 활용한 블로그 콘텐츠 생성 효율화</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-blue-500">✓</span> <span>블로그 게시의 전 과정 이해 및 실습</span></li>
+                            <li class="flex items-start"><span class="mr-2 text-blue-500">✓</span> <span>컴퓨터 강사 및 학생의 실용적인 AI 활용 능력 증진</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="guide" class="content-section fade-in">
+                <div class="text-center mb-8">
+                     <p class="text-slate-600">아래 각 단계를 클릭하여 GPT 활용 블로그 작성 및 게시 과정을 자세히 알아보세요.</p>
+                </div>
+                <div id="step-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                </div>
+
+                <div id="step-detail-container" class="mt-8 min-h-[20rem] transition-all duration-300">
+                    <div id="step-detail" class="bg-white p-8 rounded-xl shadow-sm hidden detail-panel">
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusion" class="content-section fade-in">
+                 <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-sm">
+                    <h2 class="text-2xl font-bold mb-4 text-slate-900">결론</h2>
+                    <p class="mb-6 text-slate-700">GPT는 블로그 콘텐츠 생성 과정을 혁신적으로 단축시키는 강력한 도구입니다. 하지만 최종 콘텐츠의 품질과 독창성은 전적으로 사용자의 비판적 사고와 창의적 편집 능력에 달려 있습니다.</p>
+                    <div class="bg-slate-100 p-6 rounded-lg text-center">
+                        <p class="font-semibold text-slate-800">꾸준한 연습과 노하우 축적을 통해 여러분도 훌륭한 블로거가 될 수 있습니다!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+    </div>
+
+    <script>
+        const guideStepsData = [
+            {
+                id: 1,
+                stepNum: "1단계",
+                title: "블로그 주제 선정 및 키워드 연구",
+                icon: "💡",
+                goal: "독자의 흥미를 끌고 검색 엔진에 잘 노출될 수 있는 주제와 핵심 키워드 찾기",
+                gptUsage: [
+                    {
+                        heading: "주제 아이디어 브레인스토밍",
+                        prompt: `"20대 여성을 위한 최신 패션 트렌드에 대한 블로그 게시물 아이디어를 5가지 제안해 줘."`,
+                        example: `예시: MZ세대를 위한 스트릿 패션, 퍼스널 컬러 코디법, 지속 가능한 패션 등`
+                    },
+                    {
+                        heading: "키워드 제안",
+                        prompt: `"블로그 게시물 '집에서 할 수 있는 효과적인 홈트레이닝 루틴'에 대한 관련 키워드를 10가지 제안해 줘."`,
+                        example: `예시: 홈트레이닝, 집콕 운동, 초보 홈트, 맨몸 운동 등`
+                    }
+                ],
+                tips: []
+            },
+            {
+                id: 2,
+                stepNum: "2단계",
+                title: "GPT를 활용한 블로그 내용 초안 작성",
+                icon: "✍️",
+                goal: "블로그 게시물의 서론, 본론, 결론을 포함한 전체적인 내용 빠르게 구성",
+                gptUsage: [
+                    {
+                        heading: "전체 게시물 초안 요청",
+                        prompt: `특정 내용을 포함하는 '초보자를 위한 스마트폰 사진 잘 찍는 팁' 게시물 작성 요청`,
+                        example: `결과: 서론, 구도, 빛, 카메라 설정, 결론 포함된 초안 생성`
+                    },
+                    {
+                        heading: "특정 섹션만 요청",
+                        prompt: `'건강한 식단을 위한 5가지 쉬운 레시피'의 서론 작성 요청`,
+                        example: `결과: 동기 부여를 유도하는 서론 생성`
+                    }
+                ],
+                tips: []
+            },
+            {
+                id: 3,
+                stepNum: "3단계",
+                title: "GPT가 작성한 내용 검토 및 편집",
+                icon: "🔍",
+                goal: "GPT 생성 내용의 정확성, 문맥, 어조 확인 및 개성 추가",
+                gptUsage: [],
+                tips: [
+                    { heading: "정확성", content: "사실 확인, 오타/문법 오류 수정" },
+                    { heading: "자연스러움", content: "어색하거나 반복되는 표현 다듬기" },
+                    { heading: "개성 추가", content: "자신의 경험, 생각, 의견 덧붙이기" },
+                    { heading: "가독성", content: "문단 나누기, 소제목, 목록 활용" },
+                    { heading: "중복 제거", content: "불필요한 내용 삭제" },
+                    { heading: "SEO 최적화", content: "핵심 키워드 자연스럽게 포함 확인" }
+                ]
+            },
+            {
+                id: 4,
+                stepNum: "4단계",
+                title: "이미지 및 멀티미디어 추가",
+                icon: "🖼️",
+                goal: "블로그 게시물의 내용을 보완하고 시각적인 매력 높이기",
+                gptUsage: [],
+                tips: [
+                    { heading: "저작권 확인", content: "무료 이미지 사이트 활용 또는 직접 촬영" },
+                    { heading: "관련성", content: "내용과 직접 관련된 이미지 선택" },
+                    { heading: "고품질", content: "선명하고 해상도 높은 이미지 사용" },
+                    { heading: "대체 텍스트(Alt Text) 추가", content: `이미지 설명 추가 (예: alt="스마트폰으로 찍은 아름다운 풍경 사진")` },
+                    { heading: "동영상 삽입", content: "관련 YouTube 동영상 활용" }
+                ]
+            },
+            {
+                id: 5,
+                stepNum: "5단계",
+                title: "SEO 최적화",
+                icon: "📈",
+                goal: "검색 엔진에서 블로그 게시물이 상위에 노출되도록 최적화",
+                gptUsage: [],
+                tips: [
+                    { heading: "제목 (Title Tag)", content: "핵심 키워드 포함, 클릭 유도" },
+                    { heading: "메타 설명 (Meta Description)", content: "150~160자 요약, 키워드 포함, 흥미 유발" },
+                    { heading: "헤딩 태그 (H1, H2, H3...)", content: "제목 계층화, 키워드 자연스럽게 포함" },
+                    { heading: "키워드 밀도", content: "본문 내 자연스러운 반복 (과도한 사용 금지)" },
+                    { heading: "내부/외부 링크", content: "관련 자료 연결로 신뢰도 및 체류 시간 증대" }
+                ]
+            },
+            {
+                id: 6,
+                stepNum: "6단계",
+                title: "블로그 플랫폼에 게시",
+                icon: "🚀",
+                goal: "작성된 블로그 게시물을 적절한 카테고리, 태그와 함께 업로드 및 게시",
+                gptUsage: [],
+                tips: [
+                    { heading: "일반적인 게시 과정", content: "로그인 및 새 글 작성 → 제목 입력 → 본문 내용 복사/붙여넣기 → 이미지 및 멀티미디어 업로드 → 카테고리 및 태그 설정 → 미리보기 확인 → 발행 또는 예약 발행 → 소셜 미디어 공유" }
+                ]
+            }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const navButtons = document.querySelectorAll('.nav-btn');
+            const contentSections = document.querySelectorAll('.content-section');
+            const stepGrid = document.getElementById('step-grid');
+            const stepDetail = document.getElementById('step-detail');
+            const stepDetailContainer = document.getElementById('step-detail-container');
+            let selectedStepCard = null;
+
+            function updateNav(targetId) {
+                navButtons.forEach(btn => {
+                    if (btn.dataset.target === targetId) {
+                        btn.classList.add('text-blue-600', 'border-blue-600');
+                        btn.classList.remove('text-slate-500', 'border-transparent');
+                    } else {
+                        btn.classList.remove('text-blue-600', 'border-blue-600');
+                        btn.classList.add('text-slate-500', 'border-transparent');
+                    }
+                });
+            }
+
+            function showSection(targetId) {
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                updateNav(targetId);
+            }
+
+            navButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    showSection(button.dataset.target);
+                    stepDetail.classList.remove('show');
+                    stepDetail.classList.add('hidden');
+                    if(selectedStepCard) {
+                        selectedStepCard.classList.remove('selected');
+                        selectedStepCard = null;
+                    }
+                });
+            });
+
+            guideStepsData.forEach(step => {
+                const card = document.createElement('div');
+                card.className = 'step-card bg-white p-6 rounded-xl shadow-sm cursor-pointer border border-slate-200';
+                card.dataset.id = step.id;
+                card.innerHTML = `
+                    <div class="flex items-center mb-3">
+                        <span class="text-3xl mr-4">${step.icon}</span>
+                        <div>
+                            <h3 class="font-bold text-lg text-slate-900">${step.stepNum}</h3>
+                            <p class="text-sm text-slate-500">${step.title}</p>
+                        </div>
+                    </div>
+                `;
+                card.addEventListener('click', () => {
+                    displayStepDetail(step.id);
+                    if(selectedStepCard) {
+                        selectedStepCard.classList.remove('selected');
+                    }
+                    card.classList.add('selected');
+                    selectedStepCard = card;
+                    stepDetailContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                });
+                stepGrid.appendChild(card);
+            });
+            
+            function displayStepDetail(id) {
+                const step = guideStepsData.find(s => s.id === id);
+                if (!step) return;
+                
+                let gptUsageHtml = '';
+                if (step.gptUsage.length > 0) {
+                    gptUsageHtml = `
+                        <h3 class="text-xl font-bold text-slate-900 mt-6 mb-4">GPT 활용</h3>
+                        ${step.gptUsage.map(usage => `
+                            <div class="mb-6">
+                                <h4 class="font-semibold text-lg text-slate-800 mb-2">${usage.heading}</h4>
+                                <div class="bg-blue-50 border border-blue-200 p-4 rounded-lg mb-2">
+                                    <p class="font-semibold text-blue-800 mb-1">프롬프트:</p>
+                                    <p class="text-blue-700 font-mono text-sm">${usage.prompt}</p>
+                                </div>
+                                <div class="bg-green-50 border border-green-200 p-4 rounded-lg">
+                                    <p class="font-semibold text-green-800 mb-1">예시:</p>
+                                    <p class="text-green-700 font-mono text-sm">${usage.example}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    `;
+                }
+
+                let tipsHtml = '';
+                if (step.tips.length > 0) {
+                    tipsHtml = `
+                        <h3 class="text-xl font-bold text-slate-900 mt-6 mb-4">팁 및 체크리스트</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${step.tips.map(tip => `
+                                <div class="bg-slate-100 p-4 rounded-lg">
+                                    <h4 class="font-semibold text-slate-800 mb-1">${tip.heading}</h4>
+                                    <p class="text-slate-600 text-sm">${tip.content}</p>
+                                </div>
+                            `).join('')}
+                        </div>
+                    `;
+                }
+
+                stepDetail.innerHTML = `
+                    <div class="fade-in">
+                        <div class="flex items-start mb-4">
+                            <span class="text-4xl mr-4">${step.icon}</span>
+                            <div>
+                                <h2 class="text-2xl font-bold text-slate-900">${step.stepNum}. ${step.title}</h2>
+                                <p class="text-md text-slate-600 mt-1"><strong>목표:</strong> ${step.goal}</p>
+                            </div>
+                        </div>
+                        ${gptUsageHtml}
+                        ${tipsHtml}
+                    </div>
+                `;
+                stepDetail.classList.remove('hidden');
+                stepDetail.classList.add('show');
+            }
+
+            showSection('intro');
+        });
+    </script>
+</body>
+</html>
