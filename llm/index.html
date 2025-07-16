@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM & 트랜스포머 인터랙티브 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Soothing Neutrals (e.g., bg-stone-100, text-stone-800, accent-teal-600) -->
+    <!-- Application Structure Plan: A single-page application with a fixed sidebar for navigation. The content is structured thematically, following a logical learning path from high-level concepts (Chapter 1) to technical details (Chapter 2). Key interactions include an interactive timeline, a comparative chart for model growth, and an interactive diagram of the Transformer architecture with hover-to-explain functionality. This structure was chosen to transform the dense text into an engaging, explorable guide suitable for lecture preparation, prioritizing user flow over the original chapter layout. -->
+    <!-- Visualization & Content Choices: 
+    - LLM History: Goal=Change, Method=HTML/CSS Timeline, Interaction=Click for details, Justification=Shows evolution clearly.
+    - GPT Growth: Goal=Compare/Scale, Method=Chart.js Bar Chart, Interaction=Hover for tooltips, Justification=Visualizes exponential growth effectively.
+    - Transformer Arch: Goal=Explain System, Method=HTML/Tailwind Diagram, Interaction=Hover on components, Justification=Breaks down a complex diagram interactively.
+    - RNN vs Transformer: Goal=Compare, Method=Side-by-side HTML layout, Justification=Highlights key differences.
+    - Model Types (BERT/GPT/T5): Goal=Organize, Method=Tabbed HTML content, Interaction=Click tabs, Justification=Easy comparison of different architectures.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .active-nav {
+            background-color: #0d9488;
+            color: white;
+            font-weight: 700;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .transformer-diagram .group:hover .diagram-text {
+            color: #0d9488;
+            font-weight: 700;
+        }
+        .transformer-diagram .group:hover .diagram-box {
+            border-color: #0d9488;
+            box-shadow: 0 4px 12px rgba(13, 148, 136, 0.2);
+            transform: scale(1.03);
+        }
+        .transformer-diagram .diagram-box {
+            transition: all 0.3s ease-in-out;
+        }
+        .tab-button.active {
+            border-color: #0d9488;
+            background-color: #ccfbf1;
+            color: #134e4a;
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 h-screen fixed top-0 left-0 bg-white border-r border-stone-200 p-6 shadow-sm overflow-y-auto">
+            <h1 class="text-2xl font-bold text-teal-700 mb-8">LLM 완전 정복</h1>
+            <nav id="sidebar-nav">
+                <ul>
+                    <li class="mb-2"><a href="#intro" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50 font-medium">소개</a></li>
+                    <li class="mb-4">
+                        <h2 class="text-lg font-semibold text-stone-800 mt-6 mb-3 border-b pb-2">1장: LLM 기초 뼈대</h2>
+                        <ul>
+                            <li class="mb-2"><a href="#history" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">LLM의 발전 과정</a></li>
+                            <li class="mb-2"><a href="#rnn-vs-transformer" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">RNN vs 트랜스포머</a></li>
+                            <li class="mb-2"><a href="#gpt-growth" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">GPT 스케일의 진화</a></li>
+                             <li class="mb-2"><a href="#applications" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">LLM 애플리케이션</a></li>
+                        </ul>
+                    </li>
+                    <li class="mb-4">
+                        <h2 class="text-lg font-semibold text-stone-800 mt-6 mb-3 border-b pb-2">2장: 트랜스포머 아키텍처</h2>
+                        <ul>
+                            <li class="mb-2"><a href="#transformer-architecture" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">트랜스포머 구조</a></li>
+                            <li class="mb-2"><a href="#embedding-process" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">임베딩 과정</a></li>
+                            <li class="mb-2"><a href="#attention-mechanism" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">어텐션 메커니즘</a></li>
+                            <li class="mb-2"><a href="#model-types" class="nav-link block p-3 rounded-lg text-stone-700 hover:bg-teal-50">주요 모델 아키텍처</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="ml-64 p-6 md:p-10 w-full">
+            <div id="content-container" class="max-w-4xl mx-auto">
+
+                <!-- Introduction Section -->
+                <section id="intro" class="content-section min-h-screen flex flex-col justify-center">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-teal-800">LLM & 트랜스포머 인터랙티브 가이드</h2>
+                    <p class="text-lg text-stone-600 mb-8">LLM(거대 언어 모델)의 핵심 개념부터 그 근간을 이루는 트랜스포머 아키텍처까지, 대화형 학습 자료를 통해 깊이 있게 탐구해 보세요. 이 가이드는 복잡한 AI 기술을 명확하고 직관적으로 이해할 수 있도록 설계되었습니다.</p>
+                     <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                        <h3 class="text-xl font-bold mb-3 text-teal-700">학습 목표</h3>
+                        <ul class="list-disc list-inside space-y-2 text-stone-700">
+                            <li>LLM의 발전사와 핵심 기술 변화를 이해합니다.</li>
+                            <li>RNN과 트랜스포머의 구조적 차이점과 장단점을 비교 분석합니다.</li>
+                            <li>트랜스포머 아키텍처의 핵심 요소인 인코더, 디코더, 어텐션 메커니즘을 시각적으로 학습합니다.</li>
+                            <li>BERT, GPT 등 주요 LLM의 아키텍처적 특징을 파악하고 용도를 구분합니다.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- History Section -->
+                <section id="history" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">1.1 LLM의 발전 과정: 혁신의 연대기</h2>
+                    <p class="text-md text-stone-600 mb-12">LLM은 어느 날 갑자기 나타난 것이 아닙니다. 수십 년간 이어진 언어 모델링 연구의 결정체이며, 특히 2010년대 중반 이후 핵심적인 기술적 돌파구들이 있었습니다. 아래 타임라인을 통해 LLM 기술의 주요 변곡점을 살펴보세요.</p>
+                    <div class="relative border-l-4 border-teal-200 ml-4 py-4">
+                        <div class="mb-12 ml-8 relative">
+                            <div class="absolute -left-11 -top-1.5 h-6 w-6 rounded-full bg-teal-500 border-4 border-white"></div>
+                            <h3 class="text-xl font-bold text-teal-700">2013: Word2Vec</h3>
+                            <p class="text-stone-600 mt-2">단어를 의미적 관계를 담은 벡터로 표현하는 '임베딩'의 시대를 열었습니다. "왕 - 남자 + 여자 = 여왕"과 같은 연산이 가능해지며, 컴퓨터가 단어의 '의미'를 이해하는 첫걸음을 뗐습니다.</p>
+                        </div>
+                        <div class="mb-12 ml-8 relative">
+                            <div class="absolute -left-11 -top-1.5 h-6 w-6 rounded-full bg-teal-500 border-4 border-white"></div>
+                            <h3 class="text-xl font-bold text-teal-700">2017: 트랜스포머 "Attention Is All You Need"</h3>
+                            <p class="text-stone-600 mt-2">RNN의 순차 처리 방식 한계를 극복한 '어텐션' 메커니즘을 제안하며 LLM 시대의 서막을 열었습니다. 병렬 처리의 효율성과 장기 의존성 문제 해결을 통해 모델의 대형화를 가능하게 했습니다.</p>
+                        </div>
+                        <div class="mb-12 ml-8 relative">
+                            <div class="absolute -left-11 -top-1.5 h-6 w-6 rounded-full bg-teal-500 border-4 border-white"></div>
+                            <h3 class="text-xl font-bold text-teal-700">2018: GPT-1 & BERT</h3>
+                            <p class="text-stone-600 mt-2">트랜스포머 아키텍처를 활용한 거대 언어 모델들이 등장했습니다. GPT는 '생성'에, BERT는 '이해'에 강점을 보이며, 대규모 데이터로 사전 학습 후 특정 과제에 미세 조정하는 패러다임을 정착시켰습니다.</p>
+                        </div>
+                         <div class="mb-12 ml-8 relative">
+                            <div class="absolute -left-11 -top-1.5 h-6 w-6 rounded-full bg-teal-500 border-4 border-white"></div>
+                            <h3 class="text-xl font-bold text-teal-700">2022: ChatGPT & 정렬 기술</h3>
+                            <p class="text-stone-600 mt-2">단순히 텍스트를 생성하는 것을 넘어, 인간의 지시와 의도를 파악하고 유용하며 안전한 답변을 생성하는 '정렬(Alignment)' 기술(RLHF)이 적용되었습니다. 이를 통해 LLM은 비로소 대중적인 AI 비서로 거듭났습니다.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- RNN vs Transformer Section -->
+                <section id="rnn-vs-transformer" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">1.2 아키텍처의 패러다임 전환: RNN vs 트랜스포머</h2>
+                    <p class="text-md text-stone-600 mb-12">텍스트와 같은 순차 데이터를 처리하기 위해 RNN이 오랫동안 사용되었지만, 트랜스포머의 등장은 모든 것을 바꾸었습니다. 두 아키텍처의 핵심적인 차이를 이해하는 것은 LLM의 작동 원리를 파악하는 데 매우 중요합니다.</p>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                            <h3 class="text-2xl font-bold mb-4 text-center">RNN (순환 신경망)</h3>
+                            <div class="w-full h-48 bg-stone-100 rounded-lg flex items-center justify-center mb-4">
+                                <p class="text-lg font-mono text-stone-500">A → B → C → D</p>
+                            </div>
+                            <h4 class="font-semibold text-lg mb-2">처리 방식: 순차적 (Sequential)</h4>
+                            <p class="text-stone-700 mb-4">단어를 하나씩 순서대로 처리하며, 이전 단계의 정보를 '압축'하여 다음 단계로 전달합니다.</p>
+                            <h4 class="font-semibold text-lg mb-2">장점</h4>
+                            <ul class="list-disc list-inside space-y-1 mb-4">
+                                <li>메모리 사용량이 적음</li>
+                                <li>다음 단어 생성 속도가 빠름</li>
+                            </ul>
+                            <h4 class="font-semibold text-lg mb-2">단점</h4>
+                            <ul class="list-disc list-inside space-y-1 text-red-600">
+                                <li><b>장기 의존성 문제:</b> 문장이 길어지면 앞부분의 정보가 소실됨 (Vanishing Gradient)</li>
+                                <li><b>병렬 처리 불가:</b> 순차적으로 처리해야 하므로 학습 속도가 느림</li>
+                            </ul>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-teal-200">
+                            <h3 class="text-2xl font-bold mb-4 text-center text-teal-700">트랜스포머 (Transformer)</h3>
+                             <div class="w-full h-48 bg-teal-50 rounded-lg flex items-center justify-center mb-4">
+                                <p class="text-lg font-mono text-teal-600">[A, B, C, D] → All at once</p>
+                            </div>
+                            <h4 class="font-semibold text-lg mb-2 text-teal-700">처리 방식: 병렬적 (Parallel)</h4>
+                            <p class="text-stone-700 mb-4">모든 단어를 동시에 처리하며, '어텐션'을 통해 단어 간의 관계를 직접 계산합니다.</p>
+                            <h4 class="font-semibold text-lg mb-2 text-teal-700">장점</h4>
+                            <ul class="list-disc list-inside space-y-1 text-green-700">
+                                <li><b>장기 의존성 문제 해결:</b> 모든 단어 쌍의 관계를 직접 보므로 정보 소실이 없음</li>
+                                <li><b>병렬 처리 가능:</b> 학습 속도가 매우 빠르고 모델 대형화에 유리</li>
+                            </ul>
+                            <h4 class="font-semibold text-lg mb-2 text-teal-700">단점</h4>
+                            <ul class="list-disc list-inside space-y-1">
+                                <li>입력이 길어질수록 연산량과 메모리 사용량이 크게 증가함</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- GPT Growth Section -->
+                <section id="gpt-growth" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">1.3 스케일의 법칙: GPT 파라미터 수의 진화</h2>
+                    <p class="text-md text-stone-600 mb-12">OpenAI는 GPT 시리즈를 통해 모델의 크기, 데이터의 크기가 커질수록 모델의 성능이 비약적으로 향상된다는 '스케일링 법칙(Scaling Laws)'을 증명했습니다. 파라미터 수의 폭발적인 증가는 LLM의 능력을 새로운 차원으로 끌어올렸습니다.</p>
+                    <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                        <div class="chart-container" style="position: relative; height: 60vh; width: 100%; max-width: 800px; margin: auto;">
+                            <canvas id="gptChart"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Applications Section -->
+                <section id="applications" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">1.4 LLM 애플리케이션의 시대와 미래</h2>
+                    <p class="text-md text-stone-600 mb-12">챗GPT의 성공 이후, LLM은 단순한 연구를 넘어 우리 생활과 산업 전반에 영향을 미치는 핵심 기술이 되었습니다. 현재 활발히 연구되고 있는 LLM 활용 기술과 미래 방향을 알아봅니다.</p>
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                            <h3 class="text-xl font-bold text-teal-700 mb-3">SLLM (소형 언어 모델)</h3>
+                            <p class="text-stone-700">거대 모델의 막대한 비용 대신, 특정 도메인에 특화된 작고 효율적인 모델을 개발하는 흐름입니다. 비용 효율적이면서도 특정 작업에서는 거대 모델을 능가하는 성능을 보입니다.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                            <h3 class="text-xl font-bold text-teal-700 mb-3">RAG (검색 증강 생성)</h3>
+                            <p class="text-stone-700">LLM의 '환각 현상'(잘못된 정보 생성)을 완화하는 핵심 기술입니다. 외부 데이터베이스나 문서를 실시간으로 검색하여, 그 정보를 바탕으로 정확하고 신뢰도 높은 답변을 생성합니다.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200">
+                            <h3 class="text-xl font-bold text-teal-700 mb-3">효율적인 학습/추론</h3>
+                            <p class="text-stone-700">양자화(Quantization), LoRA 등은 모델의 크기를 줄이거나 학습에 필요한 파라미터 수를 줄여 더 적은 자원으로도 LLM을 활용할 수 있게 하는 필수적인 연구 분야입니다.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 col-span-1 md:col-span-3 lg:col-span-1">
+                            <h3 class="text-xl font-bold text-teal-700 mb-3">멀티모달 LLM</h3>
+                            <p class="text-stone-700">텍스트를 넘어 이미지, 소리, 영상 등 다양한 종류의 데이터를 함께 이해하고 생성하는 모델입니다. GPT-4o가 대표적인 예시로, 인간과 더 유사한 방식으로 상호작용할 수 있습니다.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md border border-stone-200 col-span-1 md:col-span-3 lg:col-span-2">
+                             <h3 class="text-xl font-bold text-teal-700 mb-3">에이전트 (Agent)</h3>
+                             <p class="text-stone-700">LLM을 단순히 정보를 생성하는 도구가 아닌, 스스로 목표를 설정하고 계획을 세우며, 필요한 도구(웹 검색, 코드 실행 등)를 사용하여 과업을 수행하는 '자율적 주체'로 활용하려는 연구입니다. AI의 활용 범위를 극적으로 확장시킬 잠재력을 가집니다.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Transformer Architecture Section -->
+                <section id="transformer-architecture" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">2.1 트랜스포머 구조: 인코더와 디코더</h2>
+                    <p class="text-md text-stone-600 mb-12">트랜스포머 아키텍처는 두 개의 핵심 블록으로 구성됩니다. 언어를 이해하는 '인코더'와, 이해한 내용을 바탕으로 새로운 언어를 생성하는 '디코더'입니다. 각 블록에 마우스를 올려 어떤 역할을 하는지 확인해보세요.</p>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200 transformer-diagram">
+                        <div class="flex flex-col md:flex-row justify-around items-center gap-8">
+                            <!-- Encoder -->
+                            <div class="w-full md:w-2/5 group">
+                                <div class="relative p-4">
+                                    <div id="encoder-box" class="diagram-box border-4 border-stone-300 p-6 rounded-2xl bg-stone-50 text-center relative">
+                                        <h3 class="diagram-text text-2xl font-bold text-stone-700">인코더 (Encoder)</h3>
+                                        <div class="mt-4 space-y-3">
+                                            <div class="diagram-box border-2 border-stone-300 p-3 rounded-lg bg-white">Multi-Head Attention</div>
+                                            <div class="text-2xl font-bold">+</div>
+                                            <div class="diagram-box border-2 border-stone-300 p-3 rounded-lg bg-white">Feed Forward</div>
+                                        </div>
+                                    </div>
+                                    <div id="encoder-tooltip" class="absolute hidden w-64 bg-stone-800 text-white text-sm rounded-lg p-3 -top-24 left-1/2 -translate-x-1/2 shadow-xl z-10">
+                                        <h4 class="font-bold">입력 문장 이해</h4>
+                                        <p>입력된 문장의 각 단어가 다른 단어들과 어떤 관계를 맺고 있는지, 문맥적 의미가 무엇인지 파악합니다. (예: 번역할 문장 분석)</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Arrow -->
+                            <div class="text-4xl font-extrabold text-teal-500 hidden md:block">→</div>
+
+                            <!-- Decoder -->
+                             <div class="w-full md:w-2/5 group">
+                                <div class="relative p-4">
+                                     <div id="decoder-box" class="diagram-box border-4 border-stone-300 p-6 rounded-2xl bg-stone-50 text-center relative">
+                                        <h3 class="diagram-text text-2xl font-bold text-stone-700">디코더 (Decoder)</h3>
+                                        <div class="mt-4 space-y-3">
+                                            <div class="diagram-box border-2 border-stone-300 p-3 rounded-lg bg-white">Masked Multi-Head Attention</div>
+                                            <div class="text-2xl font-bold">+</div>
+                                            <div class="diagram-box border-2 border-stone-300 p-3 rounded-lg bg-white">Multi-Head Attention</div>
+                                             <div class="text-2xl font-bold">+</div>
+                                            <div class="diagram-box border-2 border-stone-300 p-3 rounded-lg bg-white">Feed Forward</div>
+                                        </div>
+                                    </div>
+                                    <div id="decoder-tooltip" class="absolute hidden w-64 bg-stone-800 text-white text-sm rounded-lg p-3 -top-32 left-1/2 -translate-x-1/2 shadow-xl z-10">
+                                        <h4 class="font-bold">출력 문장 생성</h4>
+                                        <p>인코더가 이해한 문맥과 이전에 생성한 단어들을 바탕으로 다음에 올 가장 적절한 단어를 예측하여 문장을 완성합니다. (예: 번역된 문장 생성)</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Embedding Process Section -->
+                <section id="embedding-process" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">2.2 텍스트를 숫자로: 임베딩 과정</h2>
+                    <p class="text-md text-stone-600 mb-12">컴퓨터는 텍스트를 직접 이해할 수 없습니다. 따라서 텍스트를 의미를 담은 숫자 벡터, 즉 '임베딩'으로 변환하는 과정이 필수적입니다. 이 과정은 크게 세 단계로 이루어집니다.</p>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200 space-y-8">
+                        <div class="flex items-center gap-6">
+                            <div class="flex-shrink-0 bg-teal-500 text-white h-12 w-12 rounded-full flex items-center justify-center font-bold text-xl">1</div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-teal-700">토큰화 (Tokenization)</h3>
+                                <p class="text-stone-700 mt-1">문장을 의미 있는 작은 단위(토큰)로 분리합니다. "LLM은 강력하다" → ["LLM", "은", "강력", "하다"]</p>
+                            </div>
+                        </div>
+                         <div class="flex items-center gap-6">
+                            <div class="flex-shrink-0 bg-teal-500 text-white h-12 w-12 rounded-full flex items-center justify-center font-bold text-xl">2</div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-teal-700">토큰 임베딩 (Token Embedding)</h3>
+                                <p class="text-stone-700 mt-1">각 토큰을 고유한 의미를 담은 다차원 숫자 벡터로 변환합니다. [2573, 10, 9821, 111] → [[0.1, 0.8...], [0.5, 0.2...], ...]</p>
+                            </div>
+                        </div>
+                         <div class="flex items-center gap-6">
+                            <div class="flex-shrink-0 bg-teal-500 text-white h-12 w-12 rounded-full flex items-center justify-center font-bold text-xl">3</div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-teal-700">위치 인코딩 (Positional Encoding)</h3>
+                                <p class="text-stone-700 mt-1">트랜스포머는 단어를 동시에 처리하므로 순서 정보가 없습니다. 각 토큰의 위치 정보를 담은 벡터를 토큰 임베딩에 더해줍니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Attention Mechanism Section -->
+                <section id="attention-mechanism" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">2.3 어텐션 메커니즘: 핵심 아이디어</h2>
+                    <p class="text-md text-stone-600 mb-12">어텐션은 문장 내에서 어떤 단어에 '주의(Attention)'를 기울여야 하는지 알려주는 메커니즘입니다. "그 파리는 에펠탑 근처에 있다" 라는 문장에서 '파리'의 의미를 명확히 하기 위해 '에펠탑'에 더 높은 가중치를 부여하는 것과 같습니다.</p>
+                    <div class="bg-white p-8 rounded-xl shadow-lg border border-stone-200 text-center">
+                        <p class="text-2xl font-medium mb-8">"어떤 단어의 의미를 파악하기 위해 문장 내 모든 단어와의 관련도를 계산한다."</p>
+                        <div class="grid md:grid-cols-3 gap-8">
+                            <div class="bg-teal-50 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold text-teal-800">Query (쿼리)</h3>
+                                <p class="mt-2 text-stone-700">현재 분석하려는 단어. "내가 누구랑 관련이 깊지?"라고 질문하는 주체입니다.</p>
+                            </div>
+                            <div class="bg-teal-50 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold text-teal-800">Key (키)</h3>
+                                <p class="mt-2 text-stone-700">쿼리와 비교될 모든 단어. 각 단어가 가진 '이름표' 또는 '특징'입니다.</p>
+                            </div>
+                            <div class="bg-teal-50 p-6 rounded-lg">
+                                <h3 class="text-2xl font-bold text-teal-800">Value (값)</h3>
+                                <p class="mt-2 text-stone-700">각 단어가 가진 실제 '의미' 벡터. 쿼리와 키의 관련도(가중치)에 따라 이 값들이 조합됩니다.</p>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <p class="text-lg font-semibold">어텐션 스코어 = <span class="text-teal-600">softmax</span>( ( <span class="text-blue-600">Query</span> ∙ <span class="text-red-600">Key</span><sup>T</sup> ) / √d<sub>k</sub> )</p>
+                            <p class="text-lg font-semibold mt-2">최종 출력 = 어텐션 스코어 ∙ <span class="text-green-600">Value</span></p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Model Types Section -->
+                <section id="model-types" class="content-section min-h-screen">
+                    <h2 class="text-3xl font-bold mb-2">2.4 주요 모델 아키텍처: 목적에 따른 설계</h2>
+                    <p class="text-md text-stone-600 mb-12">트랜스포머의 인코더와 디코더를 어떻게 조합하느냐에 따라 모델의 특징과 주된 용도가 달라집니다. 대표적인 세 가지 아키텍처 그룹을 비교해 봅시다.</p>
+                    <div>
+                        <div class="flex border-b border-stone-300 mb-6">
+                            <button class="tab-button flex-1 py-3 px-4 text-lg font-semibold text-stone-600 border-b-4 border-transparent hover:bg-stone-100" data-tab="encoder-only">인코더-Only</button>
+                            <button class="tab-button flex-1 py-3 px-4 text-lg font-semibold text-stone-600 border-b-4 border-transparent hover:bg-stone-100" data-tab="decoder-only">디코더-Only</button>
+                            <button class="tab-button flex-1 py-3 px-4 text-lg font-semibold text-stone-600 border-b-4 border-transparent hover:bg-stone-100" data-tab="encoder-decoder">인코더-디코더</button>
+                        </div>
+                        <div id="tab-content" class="bg-white p-8 rounded-xl shadow-md border border-stone-200">
+                            <!-- Encoder-Only Content -->
+                            <div id="encoder-only" class="tab-panel">
+                                <h3 class="text-2xl font-bold text-teal-700 mb-4">인코더-Only: 자연어 이해 (NLU) 전문가</h3>
+                                <p class="mb-4">문장의 전체 문맥(양방향)을 한번에 파악하여 깊이 있게 이해하는 데 특화되어 있습니다.</p>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><b>대표 모델:</b> BERT, RoBERTa</li>
+                                    <li><b>학습 방식:</b> 마스크 언어 모델링 (MLM) - 문장 속 빈칸(MASK) 단어 맞추기</li>
+                                    <li><b>주요 용도:</b> 문장 분류, 개체명 인식, 감성 분석, 질문 답변</li>
+                                    <li><b>특징:</b> 문맥 이해 능력은 뛰어나지만, 새로운 문장을 생성하는 데는 적합하지 않습니다.</li>
+                                </ul>
+                            </div>
+                            <!-- Decoder-Only Content -->
+                            <div id="decoder-only" class="tab-panel hidden">
+                                <h3 class="text-2xl font-bold text-teal-700 mb-4">디코더-Only: 자연어 생성 (NLG)의 대가</h3>
+                                <p class="mb-4">이전 단어들을 바탕으로 다음에 올 단어를 순차적으로 예측하며 문장을 생성합니다.</p>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><b>대표 모델:</b> GPT 시리즈, LLaMA, Claude</li>
+                                    <li><b>학습 방식:</b> 인과적 언어 모델링 (CLM) - 다음 단어 예측하기</li>
+                                    <li><b>주요 용도:</b> 대화형 챗봇, 글쓰기, 코드 생성, 요약</li>
+                                    <li><b>특징:</b> 현재 대부분의 LLM이 이 구조를 따르며, 유창한 텍스트 생성 능력을 자랑합니다.</li>
+                                </ul>
+                            </div>
+                            <!-- Encoder-Decoder Content -->
+                            <div id="encoder-decoder" class="tab-panel hidden">
+                                <h3 class="text-2xl font-bold text-teal-700 mb-4">인코더-디코더: 번역과 변환의 달인</h3>
+                                <p class="mb-4">하나의 문장을 이해(인코더)하고, 이를 바탕으로 다른 형태의 문장을 생성(디코더)하는 작업에 최적화되어 있습니다.</p>
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li><b>대표 모델:</b> T5, BART, (초기) Transformer</li>
+                                    <li><b>학습 방식:</b> 주로 Denoising (손상된 입력 복원) 등</li>
+                                    <li><b>주요 용도:</b> 기계 번역, 요약, 텍스트 스타일 변환</li>
+                                    <li><b>특징:</b> 입력과 출력이 명확히 구분되는 Sequence-to-Sequence 작업에서 강력한 성능을 보입니다.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+            const sidebarNav = document.getElementById('sidebar-nav');
+            
+            function showSection(hash) {
+                contentSections.forEach(section => {
+                    if ('#' + section.id === hash) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+                 navLinks.forEach(link => {
+                    if (link.getAttribute('href') === hash) {
+                        link.classList.add('active-nav');
+                    } else {
+                        link.classList.remove('active-nav');
+                    }
+                });
+            }
+
+            sidebarNav.addEventListener('click', function(e) {
+                if(e.target.tagName === 'A'){
+                    const hash = e.target.getAttribute('href');
+                    history.pushState(null, null, hash);
+                    showSection(hash);
+                }
+            });
+
+            window.addEventListener('popstate', () => {
+                showSection(window.location.hash || '#intro');
+            });
+            
+            // Initial load
+            showSection(window.location.hash || '#intro');
+
+            // GPT Chart
+            const ctx = document.getElementById('gptChart');
+            if(ctx) {
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['GPT-1 (2018)', 'GPT-2 (2019)', 'GPT-3 (2020)', 'GPT-4 (2023)'],
+                        datasets: [{
+                            label: '파라미터 수 (로그 스케일)',
+                            data: [1.17, 15, 1750, 17500], // GPT-4 is an estimate > 1T, using 17.5T for visualization
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.6)',
+                                'rgba(16, 185, 129, 0.6)',
+                                'rgba(239, 68, 68, 0.6)',
+                                'rgba(139, 92, 246, 0.6)',
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(16, 185, 129, 1)',
+                                'rgba(239, 68, 68, 1)',
+                                'rgba(139, 92, 246, 1)',
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'GPT 모델 파라미터 수 변화 (단위: 억)',
+                                font: { size: 18 }
+                            },
+                             tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            let value = context.parsed.y;
+                                            if (value >= 10000) {
+                                                label += (value / 10000).toLocaleString() + '조';
+                                            } else {
+                                                label += value.toLocaleString() + '억';
+                                            }
+                                        }
+                                        return label;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            y: {
+                                type: 'logarithmic',
+                                title: {
+                                    display: true,
+                                    text: '파라미터 (억 개, 로그 스케일)'
+                                },
+                                ticks: {
+                                   callback: function(value, index, values) {
+                                        if (value === 1 || value === 10 || value === 100 || value === 1000 || value === 10000 || value === 100000) {
+                                            if (value >= 10000) {
+                                                return (value / 10000).toLocaleString() + '조';
+                                            }
+                                            return value.toLocaleString() + '억';
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Transformer diagram tooltip
+            const encoderBox = document.getElementById('encoder-box');
+            const encoderTooltip = document.getElementById('encoder-tooltip');
+            const decoderBox = document.getElementById('decoder-box');
+            const decoderTooltip = document.getElementById('decoder-tooltip');
+
+            encoderBox.addEventListener('mouseenter', () => encoderTooltip.classList.remove('hidden'));
+            encoderBox.addEventListener('mouseleave', () => encoderTooltip.classList.add('hidden'));
+            decoderBox.addEventListener('mouseenter', () => decoderTooltip.classList.remove('hidden'));
+            decoderBox.addEventListener('mouseleave', () => decoderTooltip.classList.add('hidden'));
+            
+            // Model Types Tabs
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabPanels = document.querySelectorAll('.tab-panel');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+
+                    tabPanels.forEach(panel => {
+                        if(panel.id === tabId) {
+                            panel.classList.remove('hidden');
+                        } else {
+                            panel.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+            // Set initial active tab
+            if(tabButtons.length > 0) {
+                 tabButtons[0].classList.add('active');
+                 tabPanels[0].classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+</html>
