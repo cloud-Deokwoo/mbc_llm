@@ -23,6 +23,15 @@
             background-clip: text;
             color: transparent;
         }
+        /* 아코디언 콘텐츠를 위한 스타일 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
     </style>
 </head>
 <body class="bg-gray-900 text-gray-200">
@@ -35,10 +44,10 @@
                     <span class="gradient-text">Sora</span> 학습 가이드
                 </h1>
                 <nav class="hidden md:flex space-x-6">
-                    <a href="#phase1" class="text-gray-300 hover:text-white transition-colors duration-300">Phase 1: 기초</a>
-                    <a href="#phase2" class="text-gray-300 hover:text-white transition-colors duration-300">Phase 2: 프롬프트</a>
-                    <a href="#phase3" class="text-gray-300 hover:text-white transition-colors duration-300">Phase 3: 고급 기능</a>
-                    <a href="#phase4" class="text-gray-300 hover:text-white transition-colors duration-300">Phase 4: 실전</a>
+                    <a href="#phase1" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Phase 1: 기초</a>
+                    <a href="#phase2" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Phase 2: 프롬프트</a>
+                    <a href="#phase3" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Phase 3: 고급 기능</a>
+                    <a href="#phase4" class="nav-link text-gray-300 hover:text-white transition-colors duration-300">Phase 4: 실전</a>
                 </nav>
             </div>
         </div>
@@ -54,106 +63,127 @@
         </div>
 
         <!-- Phase 1 -->
-        <section id="phase1" class="mb-20">
-            <h2 class="text-3xl font-bold border-l-4 border-indigo-500 pl-4 mb-8 gradient-text">Phase 1: 기초 다지기 - Sora와 친해지기</h2>
-            <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-bold text-white mb-4">🚀 미션: '비 오는 날의 서울 풍경' 영상 만들기</h3>
-                <p class="text-gray-400 mb-6">Sora의 기본 기능과 인터페이스에 익숙해지는 것을 목표로 합니다.</p>
-                <div class="space-y-6">
-                    <div>
-                        <h4 class="text-lg font-semibold text-indigo-400 mb-2">1단계: Explore 탭에서 영감 얻기</h4>
-                        <p>다른 사용자들이 만든 `Rainy City` 영상을 참고하여 좋은 프롬프트를 찾아보세요. 마음에 드는 영상의 프롬프트를 복사하는 것부터 시작합니다.</p>
-                        <blockquote class="mt-2 p-4 bg-gray-700 rounded-lg border-l-4 border-gray-600 text-gray-300">
-                            "cinematic shot of a woman holding a red umbrella in Seoul, neon lights reflecting on wet streets"
-                        </blockquote>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold text-indigo-400 mb-2">2단계: 프롬프트 수정 및 입력</h4>
-                        <p>복사한 프롬프트를 자신만의 스타일로 살짝 비틀어 보세요. 예를 들어, 'woman'을 'people'로, 'red umbrella'를 'colorful umbrellas'로 바꿔봅니다.</p>
-                         <blockquote class="mt-2 p-4 bg-gray-700 rounded-lg border-l-4 border-gray-600 text-gray-300">
-                           "cinematic shot of people holding colorful umbrellas in Seoul, neon lights reflecting on wet streets"
-                        </blockquote>
-                    </div>
-                    <div>
-                        <h4 class="text-lg font-semibold text-indigo-400 mb-2">3단계: 설정 및 생성</h4>
-                        <p>화면 비율(16:9), 길이(10초) 등 기본 설정을 조절하며 `Generate` 버튼을 눌러 첫 영상을 만들어봅니다. 결과물을 비교하며 감을 익히는 것이 중요합니다.</p>
+        <section id="phase1" class="mb-8">
+            <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                    <h2 class="text-2xl md:text-3xl font-bold gradient-text">Phase 1: 기초 다지기 - Sora와 친해지기</h2>
+                    <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="p-8 pt-2">
+                        <h3 class="text-2xl font-bold text-white mb-4">� 미션: '비 오는 날의 서울 풍경' 영상 만들기</h3>
+                        <p class="text-gray-400 mb-6">Sora의 기본 기능과 인터페이스에 익숙해지는 것을 목표로 합니다.</p>
+                        <div class="space-y-6">
+                            <!-- Content from original document -->
+                            <div>
+                                <h4 class="text-lg font-semibold text-indigo-400 mb-2">1단계: Explore 탭에서 영감 얻기</h4>
+                                <p>다른 사용자들이 만든 `Rainy City` 영상을 참고하여 좋은 프롬프트를 찾아보세요. 마음에 드는 영상의 프롬프트를 복사하는 것부터 시작합니다.</p>
+                                <blockquote class="mt-2 p-4 bg-gray-700 rounded-lg border-l-4 border-gray-600 text-gray-300">
+                                    "cinematic shot of a woman holding a red umbrella in Seoul, neon lights reflecting on wet streets"
+                                </blockquote>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-indigo-400 mb-2">2단계: 프롬프트 수정 및 입력</h4>
+                                <p>복사한 프롬프트를 자신만의 스타일로 살짝 비틀어 보세요. 예를 들어, 'woman'을 'people'로, 'red umbrella'를 'colorful umbrellas'로 바꿔봅니다.</p>
+                                 <blockquote class="mt-2 p-4 bg-gray-700 rounded-lg border-l-4 border-gray-600 text-gray-300">
+                                   "cinematic shot of people holding colorful umbrellas in Seoul, neon lights reflecting on wet streets"
+                                </blockquote>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-indigo-400 mb-2">3단계: 설정 및 생성</h4>
+                                <p>화면 비율(16:9), 길이(10초) 등 기본 설정을 조절하며 `Generate` 버튼을 눌러 첫 영상을 만들어봅니다. 결과물을 비교하며 감을 익히는 것이 중요합니다.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Phase 2 -->
-        <section id="phase2" class="mb-20">
-            <h2 class="text-3xl font-bold border-l-4 border-purple-500 pl-4 mb-8 gradient-text">Phase 2: 프롬프트 마스터하기</h2>
-            <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-bold text-white mb-4">🎨 미션: '평범한 고양이'를 '영화 주인공'으로 만들기</h3>
-                <p class="text-gray-400 mb-6">프롬프트를 단계별로 개선하며 영상의 퀄리티를 극적으로 높이는 방법을 학습합니다.</p>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="bg-gray-700">
-                                <th class="p-4 border border-gray-600 font-semibold">단계</th>
-                                <th class="p-4 border border-gray-600 font-semibold">프롬프트 예시</th>
-                                <th class="p-4 border border-gray-600 font-semibold">개선 포인트</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="hover:bg-gray-700/50 transition-colors">
-                                <td class="p-4 border border-gray-600 font-bold">1. 기본</td>
-                                <td class="p-4 border border-gray-600">`A cat is on a sofa.`</td>
-                                <td class="p-4 border border-gray-600">상황 부재, 밋밋함</td>
-                            </tr>
-                            <tr class="hover:bg-gray-700/50 transition-colors">
-                                <td class="p-4 border border-gray-600 font-bold">2. 행동/환경 추가</td>
-                                <td class="p-4 border border-gray-600">`A ginger cat is napping peacefully on a sunlit leather sofa.`</td>
-                                <td class="p-4 border border-gray-600">구체적인 장면 연출</td>
-                            </tr>
-                            <tr class="hover:bg-gray-700/50 transition-colors">
-                                <td class="p-4 border border-gray-600 font-bold">3. 스타일/분위기 추가</td>
-                                <td class="p-4 border border-gray-600">`Cozy and warm cinematic shot, a ginger cat is napping peacefully on a sunlit leather sofa, dust motes dancing in the sunbeam.`</td>
-                                <td class="p-4 border border-gray-600">감성적인 분위기 연출</td>
-                            </tr>
-                            <tr class="hover:bg-gray-700/50 transition-colors">
-                                <td class="p-4 border border-gray-600 font-bold">4. 카메라 워크 추가</td>
-                                <td class="p-4 border border-gray-600">`Cozy and warm cinematic shot, extreme close-up on a ginger cat's face... The camera slowly zooms out...`</td>
-                                <td class="p-4 border border-gray-600">전문적인 영상미 추가</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <section id="phase2" class="mb-8">
+            <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                    <h2 class="text-2xl md:text-3xl font-bold gradient-text">Phase 2: 프롬프트 마스터하기</h2>
+                    <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="p-8 pt-2">
+                        <h3 class="text-2xl font-bold text-white mb-4">🎨 미션: '평범한 고양이'를 '영화 주인공'으로 만들기</h3>
+                        <p class="text-gray-400 mb-6">프롬프트를 단계별로 개선하며 영상의 퀄리티를 극적으로 높이는 방법을 학습합니다.</p>
+                        <div class="overflow-x-auto">
+                            <!-- Content from original document -->
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-gray-700">
+                                        <th class="p-4 border border-gray-600 font-semibold">단계</th>
+                                        <th class="p-4 border border-gray-600 font-semibold">프롬프트 예시</th>
+                                        <th class="p-4 border border-gray-600 font-semibold">개선 포인트</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="hover:bg-gray-700/50 transition-colors">
+                                        <td class="p-4 border border-gray-600 font-bold">1. 기본</td>
+                                        <td class="p-4 border border-gray-600">`A cat is on a sofa.`</td>
+                                        <td class="p-4 border border-gray-600">상황 부재, 밋밋함</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-700/50 transition-colors">
+                                        <td class="p-4 border border-gray-600 font-bold">2. 행동/환경 추가</td>
+                                        <td class="p-4 border border-gray-600">`A ginger cat is napping peacefully on a sunlit leather sofa.`</td>
+                                        <td class="p-4 border border-gray-600">구체적인 장면 연출</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-700/50 transition-colors">
+                                        <td class="p-4 border border-gray-600 font-bold">3. 스타일/분위기 추가</td>
+                                        <td class="p-4 border border-gray-600">`Cozy and warm cinematic shot, a ginger cat is napping peacefully on a sunlit leather sofa, dust motes dancing in the sunbeam.`</td>
+                                        <td class="p-4 border border-gray-600">감성적인 분위기 연출</td>
+                                    </tr>
+                                    <tr class="hover:bg-gray-700/50 transition-colors">
+                                        <td class="p-4 border border-gray-600 font-bold">4. 카메라 워크 추가</td>
+                                        <td class="p-4 border border-gray-600">`Cozy and warm cinematic shot, extreme close-up on a ginger cat's face... The camera slowly zooms out...`</td>
+                                        <td class="p-4 border border-gray-600">전문적인 영상미 추가</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Phase 3 -->
-        <section id="phase3" class="mb-20">
-            <h2 class="text-3xl font-bold border-l-4 border-pink-500 pl-4 mb-8 gradient-text">Phase 3: 고급 기능 탐색</h2>
-            <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-bold text-white mb-4">✨ 미션: 3가지 고급 기능으로 나만의 콘텐츠 만들기</h3>
-                <p class="text-gray-400 mb-6">Sora의 강력한 고급 기능들을 활용하여 창의력의 한계를 넘어봅니다.</p>
-                <div class="space-y-8">
-                    <!-- Image-to-Video -->
-                    <div class="border border-gray-700 p-6 rounded-lg">
-                        <h4 class="text-xl font-semibold text-pink-400 mb-3">1. Image-to-Video: 내 그림에 생명 불어넣기</h4>
-                        <p class="mb-3">정적인 이미지를 업로드하고, 움직임을 지시하여 생동감 있는 영상을 만듭니다.</p>
-                        <blockquote class="p-4 bg-gray-700 rounded-lg border-l-4 border-gray-600 text-gray-300">
-                            "**Animate this image.** The campfire flames should flicker gently... The stars in the night sky should twinkle subtly..."
-                        </blockquote>
-                    </div>
-                    <!-- Storyboard -->
-                    <div class="border border-gray-700 p-6 rounded-lg">
-                        <h4 class="text-xl font-semibold text-pink-400 mb-3">2. Storyboard: 3컷짜리 미니 드라마 만들기</h4>
-                        <p class="mb-3">여러 컷(Scene)을 구성하여 하나의 완성된 이야기를 가진 영상을 제작합니다.</p>
-                        <ul class="list-disc list-inside space-y-2 text-gray-300">
-                            <li><b>Scene 1:</b> `A small girl discovers a dusty, old robot in her grandfather's attic...`</li>
-                            <li><b>Scene 2:</b> `Side-view shot of the girl and the robot sitting together...`</li>
-                            <li><b>Scene 3:</b> `At sunset, the girl and the now clean, friendly-looking robot are sitting on a hill...`</li>
-                        </ul>
-                    </div>
-                    <!-- Presets -->
-                    <div class="border border-gray-700 p-6 rounded-lg">
-                        <h4 class="text-xl font-semibold text-pink-400 mb-3">3. Presets: 영상 분위기 반전시키기</h4>
-                        <p class="mb-3">미리 설정된 스타일 프리셋을 적용하여 영상의 분위기를 손쉽게 바꿉니다.</p>
-                        <p>평범한 서울 풍경 영상에 `Cyberpunk` 프리셋을 적용하여 미래 도시의 모습으로 탈바꿈시킬 수 있습니다.</p>
+        <section id="phase3" class="mb-8">
+            <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                    <h2 class="text-2xl md:text-3xl font-bold gradient-text">Phase 3: 고급 기능 탐색</h2>
+                    <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="p-8 pt-2">
+                        <h3 class="text-2xl font-bold text-white mb-4">✨ 미션: 3가지 고급 기능으로 나만의 콘텐츠 만들기</h3>
+                        <p class="text-gray-400 mb-6">Sora의 강력한 고급 기능들을 활용하여 창의력의 한계를 넘어봅니다.</p>
+                        <div class="space-y-8">
+                            <!-- Content from original document -->
+                            <div class="border border-gray-700 p-6 rounded-lg">
+                                <h4 class="text-xl font-semibold text-pink-400 mb-3">1. Image-to-Video: 내 그림에 생명 불어넣기</h4>
+                                <p class="mb-3">정적인 이미지를 업로드하고, 움직임을 지시하여 생동감 있는 영상을 만듭니다.</p>
+                                <blockquote class="p-4 bg-gray-700 rounded-lg border-l-4 border-gray-600 text-gray-300">
+                                    "**Animate this image.** The campfire flames should flicker gently... The stars in the night sky should twinkle subtly..."
+                                </blockquote>
+                            </div>
+                            <div class="border border-gray-700 p-6 rounded-lg">
+                                <h4 class="text-xl font-semibold text-pink-400 mb-3">2. Storyboard: 3컷짜리 미니 드라마 만들기</h4>
+                                <p class="mb-3">여러 컷(Scene)을 구성하여 하나의 완성된 이야기를 가진 영상을 제작합니다.</p>
+                                <ul class="list-disc list-inside space-y-2 text-gray-300">
+                                    <li><b>Scene 1:</b> `A small girl discovers a dusty, old robot in her grandfather's attic...`</li>
+                                    <li><b>Scene 2:</b> `Side-view shot of the girl and the robot sitting together...`</li>
+                                    <li><b>Scene 3:</b> `At sunset, the girl and the now clean, friendly-looking robot are sitting on a hill...`</li>
+                                </ul>
+                            </div>
+                            <div class="border border-gray-700 p-6 rounded-lg">
+                                <h4 class="text-xl font-semibold text-pink-400 mb-3">3. Presets: 영상 분위기 반전시키기</h4>
+                                <p class="mb-3">미리 설정된 스타일 프리셋을 적용하여 영상의 분위기를 손쉽게 바꿉니다.</p>
+                                <p>평범한 서울 풍경 영상에 `Cyberpunk` 프리셋을 적용하여 미래 도시의 모습으로 탈바꿈시킬 수 있습니다.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -161,33 +191,41 @@
 
         <!-- Phase 4 -->
         <section id="phase4" class="mb-12">
-            <h2 class="text-3xl font-bold border-l-4 border-teal-500 pl-4 mb-8 gradient-text">Phase 4: 실전 프로젝트</h2>
-             <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
-                <h3 class="text-2xl font-bold text-white mb-4">🎬 미션: '나만의 카페' SNS 홍보 영상 제작하기</h3>
-                <p class="text-gray-400 mb-6">'숲속 오두막 카페'라는 가상의 공간을 위한 20초짜리 홍보 영상을 기획부터 제작까지 완성합니다.</p>
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h4 class="text-lg font-semibold text-teal-400 mb-2">1. 기획 (컨셉 및 장면 구성)</h4>
-                        <ul class="list-decimal list-inside space-y-1 text-gray-300">
-                            <li>(Exterior) 숲속 오두막 카페의 전경</li>
-                            <li>(Interior) 김이 나는 커피와 책이 놓인 테이블</li>
-                            <li>(Action) 바리스타의 핸드드립 커피 추출</li>
-                            <li>(Ending) 창가 손님의 평화로운 미소</li>
-                        </ul>
+            <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                    <h2 class="text-2xl md:text-3xl font-bold gradient-text">Phase 4: 실전 프로젝트</h2>
+                    <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div class="accordion-content">
+                    <div class="p-8 pt-2">
+                        <h3 class="text-2xl font-bold text-white mb-4">🎬 미션: '나만의 카페' SNS 홍보 영상 제작하기</h3>
+                        <p class="text-gray-400 mb-6">'숲속 오두막 카페'라는 가상의 공간을 위한 20초짜리 홍보 영상을 기획부터 제작까지 완성합니다.</p>
+                        <div class="grid md:grid-cols-2 gap-8">
+                            <!-- Content from original document -->
+                            <div>
+                                <h4 class="text-lg font-semibold text-teal-400 mb-2">1. 기획 (컨셉 및 장면 구성)</h4>
+                                <ul class="list-decimal list-inside space-y-1 text-gray-300">
+                                    <li>(Exterior) 숲속 오두막 카페의 전경</li>
+                                    <li>(Interior) 김이 나는 커피와 책이 놓인 테이블</li>
+                                    <li>(Action) 바리스타의 핸드드립 커피 추출</li>
+                                    <li>(Ending) 창가 손님의 평화로운 미소</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-semibold text-teal-400 mb-2">2. 생성 (프롬프트 리스트)</h4>
+                                <ul class="list-disc list-inside space-y-1 text-gray-300">
+                                   <li><b>컷 1:</b> `Wide shot of a cozy wooden cabin cafe...`</li>
+                                   <li><b>컷 2:</b> `Close-up shot on a wooden table...`</li>
+                                   <li><b>컷 3:</b> `Over-the-shoulder shot of a barista's hands...`</li>
+                                   <li><b>컷 4:</b> `A customer smiling peacefully...`</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="mt-8">
+                            <h4 class="text-lg font-semibold text-teal-400 mb-2">3. 편집 및 완성</h4>
+                            <p>스토리보드 기능으로 생성된 컷들을 합치고, 'Blend' 기능으로 전환을 부드럽게 만듭니다. 마지막으로 배경음악을 추가하여 최종 영상을 완성합니다.</p>
+                        </div>
                     </div>
-                    <div>
-                        <h4 class="text-lg font-semibold text-teal-400 mb-2">2. 생성 (프롬프트 리스트)</h4>
-                        <ul class="list-disc list-inside space-y-1 text-gray-300">
-                           <li><b>컷 1:</b> `Wide shot of a cozy wooden cabin cafe...`</li>
-                           <li><b>컷 2:</b> `Close-up shot on a wooden table...`</li>
-                           <li><b>컷 3:</b> `Over-the-shoulder shot of a barista's hands...`</li>
-                           <li><b>컷 4:</b> `A customer smiling peacefully...`</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="mt-8">
-                    <h4 class="text-lg font-semibold text-teal-400 mb-2">3. 편집 및 완성</h4>
-                    <p>스토리보드 기능으로 생성된 컷들을 합치고, 'Blend' 기능으로 전환을 부드럽게 만듭니다. 마지막으로 배경음악을 추가하여 최종 영상을 완성합니다.</p>
                 </div>
             </div>
         </section>
@@ -201,5 +239,47 @@
         </div>
     </footer>
 
+    <script>
+        // JavaScript for Accordion functionality
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionContent = header.nextElementSibling;
+                const accordionIcon = header.querySelector('.accordion-icon');
+
+                // Toggle content visibility with max-height for smooth transition
+                if (accordionContent.style.maxHeight) {
+                    accordionContent.style.maxHeight = null;
+                    accordionIcon.style.transform = 'rotate(0deg)';
+                } else {
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                    accordionIcon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // JavaScript for Navigation link clicks
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Find the target section
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+
+                if (targetSection) {
+                    const accordionHeader = targetSection.querySelector('.accordion-header');
+                    const accordionContent = accordionHeader.nextElementSibling;
+                    
+                    // Open the accordion if it's closed
+                    if (!accordionContent.style.maxHeight) {
+                        accordionHeader.click();
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
+�
