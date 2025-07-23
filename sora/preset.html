@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sora 프리셋으로 영상 분위기 반전시키기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #f59e0b, #ef4444, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .special-gradient-text {
+            background: linear-gradient(to right, #22d3ee, #3b82f6, #a78bfa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* 아코디언 콘텐츠를 위한 스타일 */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto px-6 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-black mb-4 text-white">Sora 프리셋으로 영상 분위기 180도 반전시키기</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">단 한 번의 클릭으로 평범한 영상을 전문가의 작품처럼 바꾸는 방법을 배워보세요. Sora의 강력한 프리셋 기능이 당신의 창의력에 날개를 달아줍니다.</p>
+        </header>
+
+        <!-- Main Guide -->
+        <main class="space-y-12">
+
+            <!-- Step 1 to 3 Sections (Accordion structure needed) -->
+            <!-- For brevity, assuming Step 1-3 are already converted to accordions -->
+            <!-- The following sections will be converted to accordions -->
+
+            <!-- Step 1: Prepare Base Video -->
+            <section>
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                        <h2 class="text-2xl md:text-3xl font-bold gradient-text">STEP 1: 기준 영상 준비하기 (Before)</h2>
+                        <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2">
+                             <p class="text-lg mb-4">먼저, 분위기를 반전시킬 원본 영상을 만듭니다. 여기서는 평범하고 사실적인 도시 거리 영상을 예시로 사용하겠습니다.</p>
+                            <div class="bg-gray-700 p-6 rounded-lg">
+                                <h4 class="text-lg font-semibold text-amber-300 mb-2">기준 영상 프롬프트:</h4>
+                                <blockquote class="p-3 bg-gray-600 rounded-md text-gray-300">
+                                    "A realistic video of a bustling city street in Seoul during the daytime, many cars and people are moving."
+                                </blockquote>
+                            </div>
+                            <div class="mt-6 text-center">
+                                <p class="text-gray-300">[결과 영상 (Before): 활기찬 낮의 서울 거리 풍경]</p>
+                                <img src="../images/seoul-daytime.mp4" alt="활기찬 도시 거리 영상" class="mt-4 rounded-lg mx-auto opacity-80 shadow-md">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Find and Select Preset -->
+            <section>
+                 <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                        <h2 class="text-2xl md:text-3xl font-bold gradient-text">STEP 2: 프리셋 메뉴 찾고 선택하기</h2>
+                        <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2">
+                            <p class="text-lg mb-4">프롬프트 입력창 주변에 있는 `Presets` 버튼을 클릭하여 적용할 수 있는 다양한 스타일 목록을 엽니다.</p>
+                            <div class="mt-4 bg-gray-700 p-6 rounded-lg text-center">
+                                <img src="https://placehold.co/600x150/374151/e5e7eb?text=Preset+Menu+UI" alt="프리셋 메뉴 UI" class="mt-4 rounded-lg mx-auto opacity-80 shadow-md">
+                                <p class="mt-4 text-gray-300">여기서 `Film Noir`, `Balloon World`, `Stop Motion` 등 다양한 프리셋을 선택할 수 있습니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Apply Preset and See the Reversal -->
+            <section>
+                 <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                        <h2 class="text-2xl md:text-3xl font-bold gradient-text">STEP 3: 프리셋 적용하여 영상 반전시키기 (After)</h2>
+                        <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2">
+                            <p class="text-lg mb-4">이제 마법을 부릴 시간입니다. 1단계에서 만든 영상에 `Film Noir` 프리셋을 적용하여 분위기를 완전히 반전시켜 보겠습니다.</p>
+                            <div class="bg-gray-700 p-6 rounded-lg">
+                                <h4 class="text-lg font-semibold text-pink-300 mb-2">프리셋 적용 방법:</h4>
+                                <p class="text-gray-300">원본 프롬프트는 그대로 둔 채, `Presets` 메뉴에서 **'Film Noir'**를 선택하기만 하면 됩니다. Sora가 알아서 스타일을 적용하여 영상을 재생성합니다.</p>
+                            </div>
+                            <div class="mt-6 text-center">
+                                <p class="text-gray-300">[결과 영상 (After): 어둡고 극적인 필름 누아르 스타일의 거리]</p>
+                                <img src="../images/after-preset.mp4" alt="필름 누아르 스타일 영상" class="mt-4 rounded-lg mx-auto opacity-80 shadow-md">
+                            </div>
+                            <div class="mt-8 p-6 bg-indigo-900/30 rounded-lg">
+                                <h4 class="text-xl font-bold text-white mb-2">✨ 분위기 반전 결과</h4>
+                                <p class="text-gray-300">활기차고 평범했던 낮의 거리가, 강한 흑백 대비와 극적인 그림자가 드리워진 1940년대 고전 탐정 영화의 한 장면처럼 완전히 새로운 분위기로 재탄생했습니다. 이것이 바로 프리셋의 힘입니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pro-Tips -->
+            <section>
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                        <h2 class="text-2xl md:text-3xl font-bold gradient-text">PRO-TIPS: 더 다양한 반전 시도하기</h2>
+                        <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2">
+                             <p class="text-lg mb-4">`Film Noir` 외에도 다양한 프리셋으로 극적인 분위기 반전을 시도해 보세요.</p>
+                             <ul class="list-disc list-inside space-y-4 text-lg">
+                                <li><strong class="text-yellow-400">Balloon World:</strong> 사실적인 풍경을 모든 것이 풍선으로 만들어진 동화 같은 세상으로 바꿔보세요.</li>
+                                <li><strong class="text-yellow-400">Cardboard & Papercraft:</strong> 현실의 모습을 종이 공예로 만든 아기자기한 디오라마처럼 연출해 보세요.</li>
+                                <li><strong class="text-yellow-400">나만의 프리셋 만들기:</strong> 원하는 스타일을 상세히 묘사하여 자신만의 프리셋을 저장하고, 필요할 때마다 일관된 스타일의 영상을 만들 수 있습니다. (아래 예제 참고)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPECIAL-TIP: Create Your Own Preset -->
+            <section>
+                <div class="bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full flex justify-between items-center p-6 text-left hover:bg-gray-700/50 transition-colors duration-300 focus:outline-none">
+                        <h2 class="text-2xl md:text-3xl font-bold special-gradient-text">SPECIAL-TIP: 나만의 프리셋 만들기 (실전 예제)</h2>
+                        <svg class="accordion-icon w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2">
+                            <p class="text-lg mb-6">자신만의 독창적인 스타일을 프리셋으로 만들어 언제든 재사용하는 방법을 배워봅니다. 여기서는 '몽환적인 수채화' 스타일을 만들어 보겠습니다.</p>
+                            <div class="space-y-8">
+                                <!-- 1. Define Style -->
+                                <div class="border border-gray-700 p-6 rounded-lg">
+                                    <h4 class="text-xl font-semibold text-cyan-300 mb-3">1단계: 나만의 스타일 정의하기</h4>
+                                    <p>먼저, 만들고 싶은 영상의 스타일을 구체적으로 정의합니다.</p>
+                                    <ul class="list-disc list-inside space-y-2 text-gray-300 mt-3 pl-2">
+                                        <li><b>색감:</b> 파스텔 톤의 부드러운 색상</li>
+                                        <li><b>질감:</b> 물감이 번지는 듯한 수채화 질감</li>
+                                        <li><b>윤곽선:</b> 부드럽고 약간 흐릿한 윤곽선</li>
+                                        <li><b>분위기:</b> 꿈속같이 평화롭고 몽환적인 느낌</li>
+                                    </ul>
+                                </div>
+                                <!-- 2. Create Preset -->
+                                <div class="border border-gray-700 p-6 rounded-lg">
+                                    <h4 class="text-xl font-semibold text-cyan-300 mb-3">2단계: 스타일 프롬프트 작성 및 저장</h4>
+                                    <p class="mb-3">정의한 스타일을 Sora가 이해할 수 있도록 `Presets` 메뉴의 'Create New Preset'에서 상세한 프롬프트로 작성하고 저장합니다.</p>
+                                     <blockquote class="p-4 bg-gray-700 rounded-md text-gray-300">
+                                        <p class="font-bold mb-2">프리셋 이름: Dreamy Watercolor</p>
+                                        <p>"A dreamy and ethereal watercolor painting style. The colors are soft pastels that bleed into each other. Outlines are soft and slightly blurred. The entire scene has a painterly texture, like a wet-on-wet watercolor technique. The mood is peaceful and dreamlike."</p>
+                                    </blockquote>
+                                </div>
+                                <!-- 3. Apply Custom Preset -->
+                                 <div class="border border-gray-700 p-6 rounded-lg">
+                                    <h4 class="text-xl font-semibold text-cyan-300 mb-3">3단계: 나만의 프리셋 적용하기</h4>
+                                    <p class="mb-3">이제 1단계의 [활기찬 낮의 서울 거리 풍경] 영상에 방금 만든 'Dreamy Watercolor' 프리셋을 적용해 보세요.</p>
+                                    <div class="mt-6 text-center">
+                                        <p class="text-gray-300">[결과 영상: 몽환적인 수채화 스타일로 재탄생한 서울 거리]</p>
+                                        <img src="../images/manage_preset.mp4" alt="수채화 스타일 영상" class="mt-4 rounded-lg mx-auto opacity-80 shadow-md">
+                                        <p class="mt-4 text-gray-300">현실의 거리가 한 폭의 몽환적인 수채화 작품으로 재탄생합니다. 이처럼 자신만의 스타일을 무한히 만들고 적용할 수 있습니다.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-800 mt-16">
+            <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+                <p>&copy; 2024 Sora Learning Guide. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+    
+    <script>
+        // JavaScript for Accordion functionality
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const accordionContent = header.nextElementSibling;
+                const accordionIcon = header.querySelector('.accordion-icon');
+
+                // Toggle content visibility with max-height for smooth transition
+                if (accordionContent.style.maxHeight) {
+                    accordionContent.style.maxHeight = null;
+                    if(accordionIcon) accordionIcon.style.transform = 'rotate(0deg)';
+                } else {
+                    accordionContent.style.maxHeight = accordionContent.scrollHeight + "px";
+                    if(accordionIcon) accordionIcon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
