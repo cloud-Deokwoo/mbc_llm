@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sora Remix 기능 마스터하기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #818cf8, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto px-6 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-black mb-4 text-white">Sora Remix 기능 마스터하기</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">Sora의 '리믹스(Remix)'는 이미 생성된 영상의 특정 부분을 텍스트 명령만으로 마법처럼 수정하는 강력한 기능입니다. 이 가이드를 통해 Remix 기능을 마스터해 보세요.</p>
+        </header>
+
+        <!-- Main Guide -->
+        <main class="space-y-16">
+
+            <!-- What is Remix? -->
+            <section>
+                <h2 class="text-3xl font-bold border-l-4 border-indigo-500 pl-4 mb-6 gradient-text">🚀 Remix 기능이란?</h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                    <p class="text-lg mb-4">Remix는 기존 영상(Before)을 바탕으로, 사용자가 제시하는 텍스트 프롬프트(수정 지시)를 반영하여 새로운 영상(After)을 만들어내는 기능입니다.</p>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-300">
+                        <li><strong class="text-indigo-400">핵심:</strong> 영상의 특정 요소를 **변경, 추가, 제거**</li>
+                        <li><strong class="text-indigo-400">장점:</strong> 복잡한 편집 프로그램 없이, 자연어(일상적인 대화체)로 영상 편집 가능</li>
+                        <li><strong class="text-indigo-400">원리:</strong> 원본 영상의 맥락(카메라 구도, 움직임, 조명 등)은 유지하고, 지시한 부분만 자연스럽게 수정</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Practice Examples -->
+            <section>
+                <h2 class="text-3xl font-bold border-l-4 border-purple-500 pl-4 mb-6 gradient-text">🎨 Remix 기능 연습 예제</h2>
+                
+                <!-- Example 1 -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg mb-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">[1단계] 간단한 요소 변경하기: 자동차 색깔 바꾸기</h3>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h4 class="text-lg font-semibold text-purple-300 mb-2">Before: 기준 영상</h4>
+                            <p class="text-sm text-gray-400 mb-2">프롬프트: `A red sports car driving on a coastal road, sunny day, cinematic shot.`</p>
+                            <img src="../images/remix1_base.png" alt="빨간 스포츠카" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-purple-300 mb-2">After: Remix 적용 후</h4>
+                            <p class="text-sm text-gray-400 mb-2">Remix 프롬프트: `Change the car's color to a sleek black.`</p>
+                            <img src="../images/remix1_to_black.png" alt="검은 스포츠카" class="rounded-lg shadow-md">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example 2 -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg mb-8">
+                    <h3 class="text-2xl font-bold text-white mb-4">[2단계] 배경 완전히 바꾸기: 숲속에서 우주정거장으로</h3>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h4 class="text-lg font-semibold text-purple-300 mb-2">Before: 기준 영상</h4>
+                            <p class="text-sm text-gray-400 mb-2">프롬프트: `A person walking through a dense green forest, sunlight filtering through the trees.`</p>
+                            <img src="../images/remix2_base.png" alt="숲속을 걷는 사람" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-purple-300 mb-2">After: Remix 적용 후</h4>
+                            <p class="text-sm text-gray-400 mb-2">Remix 프롬프트: `Change the background to a futuristic space station interior...`</p>
+                            <img src="../images/remix2_to_changebackground.png" alt="우주정거장 내부를 걷는 사람" class="rounded-lg shadow-md">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example 3 -->
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-white mb-4">[3단계] 요소 제거 및 추가하기: 강아지를 로봇으로</h3>
+                    <div class="grid md:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h4 class="text-lg font-semibold text-purple-300 mb-2">Before: 기준 영상</h4>
+                            <p class="text-sm text-gray-400 mb-2">프롬프트: `A golden retriever happily running across a green lawn.`</p>
+                            <img src="../images/remix3_to_base.png" alt="잔디밭의 강아지" class="rounded-lg shadow-md">
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-semibold text-purple-300 mb-2">After: Remix 적용 후</h4>
+                            <p class="text-sm text-gray-400 mb-2">Remix 프롬프트: `Remove the dog and add a small, friendly robot rolling across the lawn...`</p>
+                            <img src="../images/remix3_to_change.png" alt="잔디밭의 로봇" class="rounded-lg shadow-md">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pro-Tips -->
+            <section>
+                <h2 class="text-3xl font-bold border-l-4 border-pink-500 pl-4 mb-6 gradient-text">✨ PRO-TIP</h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                     <ul class="list-disc list-inside space-y-4 text-lg">
+                        <li><strong class="text-pink-400">한 번에 하나씩:</strong> 처음에는 한 번에 하나의 요소만 변경하는 연습을 하는 것이 좋습니다.</li>
+                        <li><strong class="text-pink-400">구체적으로:</strong> '바꿔줘' 보다는 'A를 B로 바꿔줘' 처럼 명확하고 구체적으로 지시할수록 좋은 결과를 얻을 수 있습니다.</li>
+                        <li><strong class="text-pink-400">반복과 실험:</strong> 다양한 프롬프트를 시도하며 Remix 기능이 어디까지 가능한지 실험해 보세요. 여러분의 창의력이 곧 Sora의 한계입니다!</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-800 mt-16">
+            <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+                <p>&copy; 2024 Sora Learning Guide. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
