@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sora Re-cut 기능 마스터하기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #f97316, #ef4444, #db2777);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto px-6 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-black mb-4 text-white">Sora Re-cut 기능 마스터하기</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">긴 영상에서 가장 빛나는 순간만 잘라내어 새로운 하이라이트 클립으로 재구성하는 '리컷(Re-cut)' 기능을 배워보세요.</p>
+        </header>
+
+        <!-- Main Guide -->
+        <main class="space-y-16">
+
+            <!-- What is Re-cut? -->
+            <section>
+                <h2 class="text-3xl font-bold border-l-4 border-orange-500 pl-4 mb-6 gradient-text">✂️ Re-cut 기능이란?</h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                    <p class="text-lg mb-4">Re-cut은 **'선택과 집중'**을 위한 기능입니다. 이미 생성된 영상에서 사용자가 원하는 특정 '순간'을 포착하여, 그 순간을 중심으로 새로운 영상을 재구성합니다. 영상의 불필요한 부분을 제거하고 가장 중요한 하이라이트 장면을 강조할 수 있습니다.</p>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-300">
+                        <li><strong class="text-orange-400">핵심:</strong> 영상의 특정 구간을 **잘라내고(Cut), 앞뒤로 확장하여 재구성(Re-create)**</li>
+                        <li><strong class="text-orange-400">장점:</strong> 영상의 불필요한 부분을 제거하고, 가장 중요한 하이라이트 장면을 강조하거나 길게 늘릴 수 있음</li>
+                        <li><strong class="text-orange-400">원리:</strong> 사용자가 선택한 구간의 시각적 스타일과 맥락을 분석하여, 그 앞과 뒤에 이어질 장면을 AI가 새롭게 생성</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Practice Example -->
+            <section>
+                <h2 class="text-3xl font-bold border-l-4 border-red-500 pl-4 mb-6 gradient-text">🎞️ Re-cut 기능 연습 예제</h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                    <h3 class="text-2xl font-bold text-white mb-4">미션: 여러 마리의 새 영상에서 독수리만 클로즈업하기</h3>
+                    <p class="text-gray-400 mb-8">긴 영상에서 원하는 부분만 정확히 잘라내어 새로운 영상을 만드는 과정을 확인해 보세요.</p>
+                    
+                    <div class="space-y-8">
+                        <!-- Step 1 -->
+                        <div class="bg-gray-700 p-6 rounded-lg">
+                            <h4 class="text-xl font-semibold text-red-300 mb-3">[1단계] 기준 영상 생성하기</h4>
+                            <p class="mb-3">먼저, 여러 피사체가 포함된 긴 영상을 생성합니다.</p>
+                            <blockquote class="p-3 bg-gray-600 rounded-md text-gray-300 text-sm">`Many different birds, including eagles, sparrows, and pigeons, flying together in a clear blue sky.`</blockquote>
+                            <img src="../images/re-cut_base.png" alt="여러 마리 새가 나는 영상" class="mt-4 rounded-lg w-full">
+                        </div>
+
+                        <!-- Step 2 & 3 -->
+                        <div class="bg-gray-700 p-6 rounded-lg">
+                            <h4 class="text-xl font-semibold text-red-300 mb-3">[2단계 & 3단계] Re-cut 적용 및 최종 결과</h4>
+                            <p class="mb-3">생성된 영상에서 `Re-cut` 버튼을 클릭하고, 타임라인에서 **독수리가 가장 멋지게 날갯짓하는 2초 구간만 정확히 선택**합니다. 선택한 구간을 앞뒤로 확장하도록 설정하면, Sora가 해당 장면을 중심으로 새로운 영상을 만들어냅니다.</p>
+                            <div class="mt-4 text-center">
+                                <p class="text-gray-300">[결과 영상 예상: 독수리 한 마리만 클로즈업되어 나는 하이라이트 영상]</p>
+                                <video controls loop autoplay muted class="mt-2 rounded-lg mx-auto w-full max-w-3xl" poster="https://placehold.co/800x450/1e293b/94a3b8?text=After:+Eagle+Solo+Flight+(10s+Clip)">
+                                    <source src="../images/re-cut_result.mp4" />
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Cautions & Pro-Tips -->
+            <section>
+                <h2 class="text-3xl font-bold border-l-4 border-rose-500 pl-4 mb-6 gradient-text">⚠️ 주의 사항 및 PRO-TIP</h2>
+                <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                     <ul class="list-disc list-inside space-y-4 text-lg">
+                        <li><strong class="text-rose-400">핵심 순간을 정확히 선택:</strong> 결과물의 품질은 어떤 순간을 선택하느냐에 따라 크게 달라집니다. 가장 품질이 좋고, 강조하고 싶은 장면을 프레임 단위로 정확하게 선택하는 것이 중요합니다.</li>
+                        <li><strong class="text-rose-400">확장 방향을 명확히:</strong> 선택한 구간을 기준으로 앞부분만 확장할지, 뒷부분만 확장할지, 아니면 양쪽 모두 확장할지 의도를 명확히 설정해야 합니다.</li>
+                        <li><strong class="text-rose-400">스타일 일관성 유지:</strong> Re-cut은 선택된 구간의 시각적 스타일(색감, 조명 등)을 그대로 유지하며 확장합니다. 따라서 원본 영상에서 스타일이 일관된 부분을 선택하는 것이 좋습니다.</li>
+                        <li><strong class="text-rose-400">Loop 기능과 연계:</strong> Re-cut으로 하이라이트 장면을 만들어낸 후, 그 영상을 다시 `Loop` 기능으로 처리하면 끊김 없이 반복되는 멋진 '움짤'을 만들 수 있습니다.</li>
+                    </ul>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-gray-900 border-t border-gray-800 mt-16">
+            <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+                <p>&copy; 2024 Sora Learning Guide. All Rights Reserved.</p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
