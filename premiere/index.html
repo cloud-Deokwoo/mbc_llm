@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adobe Premiere Pro 비주얼 인터페이스 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #10b981, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="container mx-auto px-4 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-black mb-4 text-white">Adobe Premiere Pro 인터페이스 가이드</h1>
+            <p class="text-lg text-gray-400 max-w-3xl mx-auto">프리미어 프로의 복잡한 인터페이스를 실제 화면 이미지와 함께 이해하고, 원하는 기능을 빠르게 찾을 수 있도록 돕는 시각적 종합 가이드입니다.</p>
+        </header>
+        
+        <!-- Workspace Section -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold border-l-4 border-gray-500 pl-4 mb-6 gradient-text">1. 작업 영역 (Workspace) 이해하기</h2>
+            <div class="bg-gray-800 p-8 rounded-xl shadow-lg">
+                <p class="text-lg text-gray-300 mb-4">프리미어 프로는 편집, 색 보정, 오디오 등 특정 작업에 맞춰 패널들의 배치를 최적화한 <strong>'작업 영역(Workspace)'</strong> 개념을 사용합니다. 상단 메뉴 바에서 언제든지 원하는 작업 영역을 선택하여 작업 환경을 즉시 변경할 수 있습니다.</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center mt-6">
+                    <span class="bg-gray-700 p-2 rounded">Assembly</span>
+                    <span class="bg-gray-700 p-2 rounded">Editing</span>
+                    <span class="bg-gray-700 p-2 rounded">Color</span>
+                    <span class="bg-gray-700 p-2 rounded">Effects</span>
+                    <span class="bg-gray-700 p-2 rounded">Audio</span>
+                    <span class="bg-gray-700 p-2 rounded">Graphics</span>
+                    <span class="bg-gray-700 p-2 rounded">Captions</span>
+                </div>
+                <div class="text-right mt-4">
+                     <a href="https://helpx.adobe.com/kr/premiere-pro/using/workspaces.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: Premiere Pro의 작업 영역 →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Main Accordion for Panels -->
+        <section class="mb-12">
+             <h2 class="text-3xl font-bold border-l-4 border-gray-500 pl-4 mb-6 gradient-text">2. 주요 패널 상세 설명</h2>
+            <main class="space-y-4">
+                <!-- Project Panel -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-emerald-400">① 프로젝트 패널 (Project Panel)</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">영상 편집에 필요한 모든 재료(영상, 이미지, 오디오 파일 등)를 불러와 보관하고 관리하는 <strong>'총괄 창고'</strong>입니다.</p>
+                            <img src="../images/project_pannel.png" alt="프로젝트 패널" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-emerald-300">설정 예제: "유럽 여행 브이로그" 프로젝트 정리하기</h4>
+                            <p class="text-gray-300">프로젝트 패널 하단의 폴더 아이콘(New Bin)으로 `Day 1 - 파리`, `Day 2 - 로마`, `BGM` 이름의 Bin을 만들고, 각 폴더에 맞는 소스 파일들을 드래그하여 정리합니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/importing-media.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 미디어 가져오기 및 관리 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Source Monitor -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-sky-400">② 소스 모니터 (Source Monitor)</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">타임라인에 올리기 전, 원본 클립을 미리 보고 사용할 구간을 정밀하게 잘라내는 <strong>'재료 손질대'</strong>입니다.</p>
+                             <img src="../images/source_pannel.png" alt="소스 모니터" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-sky-300">설정 예제: "에펠탑 야경" 하이라이트 구간 선택하기</h4>
+                            <p class="text-gray-300">에펠탑 영상 클립을 소스 모니터에서 열고, 조명이 가장 화려하게 반짝이는 부분의 시작 지점에서 `I` 키, 끝나는 지점에서 `O` 키를 눌러 하이라이트 구간만 선택합니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/source-monitor-source-clips.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 소스 모니터에서 클립 준비 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Program Monitor -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-fuchsia-400">③ 프로그램 모니터 (Program Monitor)</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">타임라인에서 편집 중인 최종 결과물을 실시간으로 보여주는 <strong>'메인 스크린'</strong>입니다.</p>
+                             <img src="../images/program_pannel.png" alt="프로그램 모니터" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-fuchsia-300">설정 예제: 자막 위치 안전하게 조정하기</h4>
+                            <p class="text-gray-300">프로그램 모니터의 렌치 아이콘을 클릭하여 '안전 여백'을 활성화하고, 화면의 사각형 테두리 안쪽으로 자막이나 로고를 배치하여 TV 등에서 잘리지 않도록 합니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/program-monitor.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 프로그램 모니터에서 시퀀스 보기 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Timeline Panel -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-red-400">④ 타임라인 패널 (Timeline Panel)</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">영상 클립, 오디오, 자막 등을 시간 순서대로 조립하고 편집하는 <strong>'메인 작업대'</strong>입니다. 이곳에서 모든 편집 작업이 이루어집니다.</p>
+                             <img src="../images/timeline_pannel.png" alt="타임라인 패널" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-red-300">설정 예제: 컷 편집으로 영화 예고편 리듬감 만들기</h4>
+                            <p class="text-gray-300">액션 장면들을 1~2초 내외의 매우 짧은 길이로 잘라 타임라인에 빠르게 연속으로 배치하여 숨 쉴 틈 없는 긴박감과 속도감을 연출합니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/overview-timeline.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 타임라인 패널 개요 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Toolbar -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-orange-400">⑤ 도구 모음 (Toolbar)</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">선택, 자르기, 텍스트 입력 등 타임라인에서 사용할 각종 편집 도구들이 모여있는 <strong>'연장통'</strong>입니다.</p>
+                             <img src="../images/toolbar_pannel.png" alt="도구 모음" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-orange-300">설정 예제: '자르기 도구'와 '선택 도구'로 컷 편집하기</h4>
+                            <p class="text-gray-300">'자르기 도구(단축키 C)'로 클립의 불필요한 부분을 자른 뒤, '선택 도구(단축키 V)'로 잘려나간 빈 공간을 클릭하고 `Delete` 키를 눌러 간격을 없애는 '잔물결 삭제'를 실행합니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/tools.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: Premiere Pro의 도구 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audio Meters -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-amber-400">⑥ 오디오 미터 (Audio Meters)</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">영상의 오디오 볼륨 크기를 실시간으로 보여주는 <strong>'레벨 게이지'</strong>입니다. 소리가 너무 크거나 작지 않은지 확인할 수 있습니다.</p>
+                             <img src="../images/audio_meter.png" alt="오디오 미터" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-amber-300">설정 예제: 오디오 피크(Peak) 방지하기</h4>
+                            <p class="text-gray-300">영상을 재생하며 오디오 미터의 막대가 빨간색으로 표시되는 0dB을 넘지 않도록 오디오 클립의 볼륨을 조절합니다. 일반적으로 -6dB ~ -12dB 사이를 유지하는 것이 좋습니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/editing-monitoring-mixing-audio.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 오디오 편집 및 믹싱 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Effects / Effect Controls / Essential Panels -->
+                <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-lime-400">⑦ 효과 / ⑧ 효과 컨트롤 패널</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300"><strong>효과 패널</strong>은 비디오 전환(디졸브, 밀어내기 등)이나 각종 시각/청각 효과들이 모여있는 <strong>'효과 보관함'</strong>이며, <strong>효과 컨트롤 패널</strong>은 클립에 적용된 효과의 세부 속성을 조절하는 <strong>'조정실'</strong>입니다.</p>
+                             <img src="../images/effect_effect_control_pannel.png" alt="효과 및 효과 컨트롤 패널" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-lime-300">설정 예제: 화면 확대/축소(Scale) 애니메이션 만들기</h4>
+                            <p class="text-gray-300">타임라인의 클립을 선택하고 '효과 컨트롤' 패널로 이동합니다. '동작(Motion)' > '비율(Scale)' 항목 옆의 스톱워치 아이콘을 클릭하여 키프레임 애니메이션을 활성화하고, 시간의 흐름에 따라 비율 값을 변경하여 화면이 점점 확대되는 효과를 만듭니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/applying-effects-clips.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 클립에 효과 적용하기 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                 <div class="accordion-item bg-gray-800 rounded-xl shadow-lg overflow-hidden">
+                    <button class="accordion-header w-full text-left p-6 flex justify-between items-center focus:outline-none">
+                        <h3 class="text-2xl font-bold text-teal-400">⑨ 기본 사운드 / 기본 그래픽 패널</h3>
+                        <svg class="w-6 h-6 transform transition-transform text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="p-8 pt-2 border-t border-gray-700">
+                             <p class="mb-4 text-gray-300">복잡한 오디오/그래픽 효과를 초보자도 쉽게 다룰 수 있도록 만든 <strong>'간편 조정 패널'</strong>입니다. 클릭 몇 번으로 전문적인 효과를 적용할 수 있습니다.</p>
+                             <img src="../images/essential_sound_graphic_pannel.png" alt="기본 사운드 및 그래픽 패널" class="rounded-lg mx-auto opacity-90 mb-4">
+                            <h4 class="font-bold text-lg mb-2 text-teal-300">설정 예제: '기본 사운드'로 인터뷰 목소리 선명하게 만들기</h4>
+                            <p class="text-gray-300">인터뷰 오디오 클립을 선택하고 '기본 사운드' 패널에서 '대화(Dialogue)'를 클릭합니다. '선명도(Clarity)' > '선명도' 체크박스를 활성화하고 '자동 일치'를 눌러 목소리를 또렷하고 듣기 좋게 만듭니다.</p>
+                             <div class="text-right mt-4">
+                                <a href="https://helpx.adobe.com/kr/premiere-pro/using/essential-sound-panel.html" target="_blank" class="text-blue-400 hover:underline text-sm">더 알아보기: 기본 사운드 패널 →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </section>
+
+
+        <!-- Footer -->
+        <footer class="border-t border-gray-800 mt-16">
+            <div class="container mx-auto px-6 py-6 text-center text-gray-500">
+                <p>&copy; 2024 Premiere Pro Visual Guide. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const accordionItems = document.querySelectorAll('.accordion-item');
+        accordionItems.forEach(item => {
+            const header = item.querySelector('.accordion-header');
+            const content = item.querySelector('.accordion-content');
+            const icon = header.querySelector('svg');
+
+            header.addEventListener('click', () => {
+                const isOpened = content.style.maxHeight && content.style.maxHeight !== '0px';
+                if (isOpened) {
+                    content.style.maxHeight = '0px';
+                    if(icon) icon.classList.remove('rotate-180');
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    if(icon) icon.classList.add('rotate-180');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
