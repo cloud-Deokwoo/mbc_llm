@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After Effects 대화형 기능 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Dark Neutral -->
+    <!-- Application Structure Plan: A dashboard layout with a fixed sidebar for primary navigation and a main content area. The sidebar allows users to select a core After Effects function (e.g., Motion Graphics, VFX, 3D). The main area displays the selected function's details, with specific examples presented as interactive, expandable cards. This structure was chosen to break down complex information into manageable, user-selectable topics, promoting focused learning and preventing the overwhelming experience of a long, linear document. The card-based system for examples creates a clear hierarchy and encourages exploration. -->
+    <!-- Visualization & Content Choices: Report Info: After Effects features & examples. Goal: Organize/Inform. Viz/Presentation: A vertical sidebar navigation and expandable content cards. Interaction: Clicking a nav item updates the main content; clicking a card expands to show details. Justification: This component-based approach is highly intuitive for exploring structured educational content. Key terms are highlighted using HTML tags for emphasis. Library/Method: Vanilla JS for state management and DOM manipulation. Tailwind CSS for layout. No SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .sidebar {
+            background-color: #1F2937; /* bg-gray-800 */
+            border-right: 1px solid #374151; /* border-gray-700 */
+        }
+        .nav-item.active {
+            background-color: #374151; /* bg-gray-700 */
+            color: #F9FAFB; /* text-gray-50 */
+        }
+        .nav-item {
+            color: #9CA3AF; /* text-gray-400 */
+        }
+        .card {
+            background-color: #1F2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+        }
+        .card-header {
+            background-color: #374151; /* bg-gray-700 */
+            border-bottom: 1px solid #4B5563; /* border-gray-600 */
+        }
+        .card-expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .card.active .card-expand-content {
+            max-height: 1500px; /* Set a large enough value */
+        }
+        .card.active .card-chevron {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+    <div id="app" class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar w-64 flex-shrink-0 p-4 space-y-2 hidden md:flex md:flex-col">
+            <h1 class="text-xl font-bold text-white px-3 pb-4">After Effects 가이드</h1>
+            <nav id="main-nav" class="flex-1">
+                <!-- Navigation items will be injected here -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <button id="menu-button" class="md:hidden mb-4 p-2 rounded-md bg-gray-700 text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div id="content-area">
+                <!-- Content will be injected here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const appData = {
+            motionGraphics: {
+                id: 'motionGraphics',
+                title: '✨ 모션 그래픽 및 애니메이션',
+                icon: '✨',
+                description: '애프터 이펙트의 가장 대표적인 기능으로, 정적인 디자인 요소에 생명을 불어넣습니다.',
+                examples: [
+                    {
+                        title: "실전 예제 1: 텍스트가 나타나는 '타이핑 효과' 애니메이션 만들기",
+                        goal: "마치 사람이 직접 타자를 치는 것처럼 글자들이 한 글자씩 나타나는 애니메이션을 제작합니다.",
+                        steps: [
+                            "<strong>[새 컴포지션 만들기]</strong> 애프터 이펙트를 열고 `새 컴포지션(New Composition)`을 만듭니다. (해상도: 1920x1080, 길이: 10초)",
+                            "<strong>[텍스트 레이어 생성]</strong> 상단 메뉴에서 `레이어(Layer) > 새로 만들기(New) > 텍스트(Text)`를 선택하거나, 문자 도구(T)를 사용하여 화면에 원하는 문구(예: 'Hello, After Effects!')를 입력합니다.",
+                            "<strong>[애니메이션 효과 적용]</strong> 타임라인에서 텍스트 레이어의 `텍스트(Text)` 속성 옆 `애니메이트(Animate)` 버튼을 클릭하고, 메뉴에서 <strong>`불투명도(Opacity)`</strong>를 선택합니다. 새로 생긴 `애니메이터 1`에서 `불투명도` 값을 <strong>0%</strong>로 설정하여 글자를 모두 사라지게 합니다.",
+                            "<strong>[애니메이션 범위 설정]</strong> `애니메이터 1` 아래의 `범위 선택기(Range Selector)` 속성을 펼칩니다. 타임라인 0초에 `끝(End)` 속성의 키프레임을 <strong>0%</strong>로 생성하고, 3초로 이동하여 값을 <strong>100%</strong>로 변경합니다.",
+                            "<strong>[결과 확인]</strong> 스페이스바를 눌러 재생하면, 3초에 걸쳐 글자들이 한 글자씩 서서히 나타나는 타이핑 효과 애니메이션이 완성됩니다."
+                        ]
+                    }
+                ]
+            },
+            vfx: {
+                id: 'vfx',
+                title: '👨‍🏫 시각 효과(VFX) 및 합성',
+                icon: '👨‍🏫',
+                description: '현실에 없는 것을 만들어내거나, 여러 개의 영상 소스를 하나의 화면처럼 자연스럽게 합치는 기능입니다.',
+                examples: [
+                    {
+                        title: "실전 예제 2: 영상 속 움직이는 물체에 텍스트 따라붙게 만들기 (모션 트래킹)",
+                        goal: "걸어가는 사람의 머리 위를 텍스트가 계속해서 따라다니는 효과를 제작합니다.",
+                        steps: [
+                            "<strong>[소스 준비]</strong> 사람이 걸어가는 영상 클립을 불러와 새 컴포지션에 배치합니다.",
+                            "<strong>[모션 추적 실행]</strong> 영상 클립을 선택하고 `창(Window) > 추적기(Tracker)` 패널에서 <strong>`동작 추적(Track Motion)`</strong> 버튼을 클릭합니다. 화면에 나타난 '트랙 포인트' 상자를 추적할 대상(사람의 머리)으로 옮기고 크기를 조절합니다.",
+                            "<strong>[추적 분석]</strong> `추적기` 패널의 `분석` 섹션에 있는 재생 버튼을 클릭하여 영상의 움직임을 프레임 단위로 분석합니다.",
+                            "<strong>[Null 개체 생성 및 데이터 적용]</strong> 분석이 끝나면 `레이어 > 새로 만들기 > Null 개체(Null Object)`를 생성합니다. `추적기` 패널에서 `대상 편집` 버튼을 눌러 이 Null 개체를 대상으로 지정한 후, `적용` 버튼을 클릭합니다. 이제 Null 개체가 사람 머리의 움직임을 그대로 따라 움직입니다.",
+                            "<strong>[텍스트 연결]</strong> 새로운 텍스트 레이어를 만들고, 텍스트 레이어의 '돼지꼬리' 모양 아이콘(Parent Pick Whip)을 Null 레이어로 드래그하여 연결(Parenting)합니다.",
+                            "<strong>[결과 확인]</strong> 재생하면, 텍스트가 Null 레이어의 움직임을 따라가며 사람의 머리 위를 자연스럽게 따라다니는 것을 확인할 수 있습니다."
+                        ]
+                    }
+                ]
+            },
+            threeD: {
+                id: 'threeD',
+                title: '🧊 3D 기능',
+                icon: '🧊',
+                description: '2D 그래픽을 3차원 공간에 배치하여 깊이감과 입체감을 만들어냅니다.',
+                examples: [
+                    {
+                        title: "실전 예제 3: 간단한 3D 로고 장면 만들기",
+                        goal: "2D 로고 이미지를 3D 공간에 배치하고, 가상의 카메라와 조명을 사용하여 입체적인 장면을 연출합니다.",
+                        steps: [
+                            "<strong>[소스 준비]</strong> 배경이 투명한 로고 이미지(.png) 파일을 불러와 컴포지션에 배치합니다.",
+                            "<strong>[3D 레이어로 전환]</strong> 타임라인에서 로고 레이어의 옵션 중 <strong>정육면체 모양의 아이콘(3D Layer)</strong> 스위치를 클릭하여 활성화합니다. 이제 `변형(Transform)` 속성에 X, Y, Z축 값이 추가됩니다.",
+                            "<strong>[가상 카메라 추가]</strong> `레이어 > 새로 만들기 > 카메라(Camera)`를 선택하여 새 카메라 레이어를 추가합니다. 도구 모음에서 `통합 카메라 도구(C)`를 선택하고, 화면을 드래그하여 로고를 다양한 각도에서 비추는 것처럼 카메라 뷰를 조작합니다.",
+                            "<strong>[가상 조명 추가]</strong> `레이어 > 새로 만들기 > 조명(Light)`을 선택하고 유형을 <strong>`점 조명(Point Light)`</strong>으로 설정합니다. 새로 생긴 조명 레이어의 위치(Position) 값을 조절하여 로고 표면에 그림자가 생기며 입체감이 살아나는 것을 확인합니다.",
+                            "<strong>[애니메이션]</strong> 카메라 레이어의 `변형` 속성에서 `위치`와 `회전` 값에 키프레임을 추가하여, 로고 주변을 맴돌거나 서서히 다가가는 듯한 역동적인 카메라 워크 애니메이션을 만듭니다."
+                        ]
+                    }
+                ]
+            }
+        };
+
+        let currentState = {
+            activeTopic: 'motionGraphics'
+        };
+
+        const nav = document.getElementById('main-nav');
+        const contentArea = document.getElementById('content-area');
+        const sidebar = document.getElementById('sidebar');
+        const menuButton = document.getElementById('menu-button');
+
+        function renderNav() {
+            nav.innerHTML = '';
+            Object.values(appData).forEach(topic => {
+                const isActive = topic.id === currentState.activeTopic;
+                const item = document.createElement('a');
+                item.href = '#';
+                item.className = `nav-item flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 ${isActive ? 'active' : ''}`;
+                item.dataset.topic = topic.id;
+                item.innerHTML = `
+                    <span class="text-2xl mr-3">${topic.icon}</span>
+                    <span class="font-semibold">${topic.title.split(' ')[0]} ${topic.title.split(' ')[1]}</span>
+                `;
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentState.activeTopic = topic.id;
+                    render();
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+                nav.appendChild(item);
+            });
+        }
+
+        function renderContent() {
+            const topic = appData[currentState.activeTopic];
+            if (!topic) return;
+
+            let examplesHtml = topic.examples.map(example => {
+                let stepsHtml = example.steps.map(step => `<li class="mb-3">${step}</li>`).join('');
+                return `
+                <div class="card rounded-lg shadow-lg overflow-hidden mb-6">
+                    <button class="card-header w-full text-left p-5 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">${example.title}</h3>
+                            <p class="text-sm text-gray-400 mt-1">🎯 목표: ${example.goal}</p>
+                        </div>
+                        <svg class="card-chevron w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="card-expand-content">
+                        <div class="p-5 bg-gray-800">
+                            <h4 class="font-semibold text-gray-200 mb-3">단계별 상세 가이드</h4>
+                            <ol class="list-decimal list-inside space-y-2 text-sm text-gray-400">
+                                ${stepsHtml}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            contentArea.innerHTML = `
+                <header class="mb-8 pb-4 border-b border-gray-700">
+                    <h2 class="text-3xl font-bold text-white">${topic.title}</h2>
+                    <p class="mt-2 text-gray-400">${topic.description}</p>
+                </header>
+                <div>
+                    ${examplesHtml}
+                </div>
+            `;
+
+            document.querySelectorAll('.card-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const card = header.closest('.card');
+                    card.classList.toggle('active');
+                });
+            });
+        }
+
+        function render() {
+            renderNav();
+            renderContent();
+        }
+        
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
+        
+        if (window.innerWidth < 768) {
+            sidebar.classList.add('hidden');
+        }
+
+        render();
+    </script>
+</body>
+</html>
+?
