@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>After Effects 대화형 기능 가이드</title>
+    <title>After Effects 4대 핵심 기능 대화형 가이드</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
     <!-- Chosen Palette: Dark Neutral -->
-    <!-- Application Structure Plan: A dashboard layout with a fixed sidebar for primary navigation and a main content area. The sidebar allows users to select a core After Effects function (e.g., Motion Graphics, VFX, 3D). The main area displays the selected function's details, with specific examples presented as interactive, expandable cards. This structure was chosen to break down complex information into manageable, user-selectable topics, promoting focused learning and preventing the overwhelming experience of a long, linear document. The card-based system for examples creates a clear hierarchy and encourages exploration. -->
+    <!-- Application Structure Plan: A dashboard layout with a fixed sidebar for primary navigation and a main content area. The sidebar allows users to select a core After Effects function (e.g., Motion Graphics, VFX, 3D, AI). The main area displays the selected function's details, with specific examples presented as interactive, expandable cards. This structure was chosen to break down complex information into manageable, user-selectable topics, promoting focused learning and preventing the overwhelming experience of a long, linear document. The card-based system for examples creates a clear hierarchy and encourages exploration. -->
     <!-- Visualization & Content Choices: Report Info: After Effects features & examples. Goal: Organize/Inform. Viz/Presentation: A vertical sidebar navigation and expandable content cards. Interaction: Clicking a nav item updates the main content; clicking a card expands to show details. Justification: This component-based approach is highly intuitive for exploring structured educational content. Key terms are highlighted using HTML tags for emphasis. Library/Method: Vanilla JS for state management and DOM manipulation. Tailwind CSS for layout. No SVG/Mermaid used. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
@@ -81,14 +81,25 @@
                 description: '애프터 이펙트의 가장 대표적인 기능으로, 정적인 디자인 요소에 생명을 불어넣습니다.',
                 examples: [
                     {
-                        title: "실전 예제 1: 텍스트가 나타나는 '타이핑 효과' 애니메이션 만들기",
-                        goal: "마치 사람이 직접 타자를 치는 것처럼 글자들이 한 글자씩 나타나는 애니메이션을 제작합니다.",
+                        title: "실전 예제 1: 마스크를 이용한 텍스트 리빌(Reveal) 애니메이션",
+                        goal: "텍스트가 마치 선 뒤에서 스르륵 나타나는 것처럼 보이는 세련되고 전문적인 타이틀 애니메이션을 제작합니다. 이 예제를 통해 셰이프 레이어, 키프레임 애니메이션, 트랙 매트(Track Matte)의 기본 원리를 익힐 수 있습니다.",
                         steps: [
-                            "<strong>[새 컴포지션 만들기]</strong> 애프터 이펙트를 열고 `새 컴포지션(New Composition)`을 만듭니다. (해상도: 1920x1080, 길이: 10초)",
-                            "<strong>[텍스트 레이어 생성]</strong> 상단 메뉴에서 `레이어(Layer) > 새로 만들기(New) > 텍스트(Text)`를 선택하거나, 문자 도구(T)를 사용하여 화면에 원하는 문구(예: 'Hello, After Effects!')를 입력합니다.",
-                            "<strong>[애니메이션 효과 적용]</strong> 타임라인에서 텍스트 레이어의 `텍스트(Text)` 속성 옆 `애니메이트(Animate)` 버튼을 클릭하고, 메뉴에서 <strong>`불투명도(Opacity)`</strong>를 선택합니다. 새로 생긴 `애니메이터 1`에서 `불투명도` 값을 <strong>0%</strong>로 설정하여 글자를 모두 사라지게 합니다.",
-                            "<strong>[애니메이션 범위 설정]</strong> `애니메이터 1` 아래의 `범위 선택기(Range Selector)` 속성을 펼칩니다. 타임라인 0초에 `Start(시작)` 속성의 키프레임을 <strong>0%</strong>로 생성하고, 3초로 이동하여 값을 <strong>100%</strong>로 변경합니다.",
-                            "<strong>[결과 확인]</strong> 스페이스바를 눌러 재생하면, 3초에 걸쳐 글자들이 한 글자씩 서서히 나타나는 타이핑 효과 애니메이션이 완성됩니다."
+                            "<strong>[텍스트 생성]</strong> 새 컴포지션을 만들고, 문자 도구(T)를 사용하여 원하는 제목(예: 'MOTION GRAPHICS')을 입력합니다.",
+                            "<strong>[리빌 라인 생성]</strong> `레이어 > 새로 만들기 > 셰이프 레이어`를 선택합니다. 펜 도구(G)를 사용하여 텍스트 중앙을 가로지르는 직선을 하나 그립니다. 선의 색상과 두께를 조절합니다.",
+                            "<strong>[매트(Matte) 설정]</strong> 타임라인 패널 하단의 `전송 제어 확장 또는 축소` 버튼을 눌러 `트랙 매트(TrkMat)` 옵션을 표시합니다. 텍스트 레이어의 `트랙 매트` 드롭다운 메뉴를 클릭하고 <strong>`알파 매트 '셰이프 레이어 1'`</strong>을 선택합니다. (이제 텍스트가 선이 있는 부분에만 보이게 됩니다.)",
+                            "<strong>[애니메이션 적용]</strong> <strong>텍스트 레이어</strong>를 선택하고 `P` 키를 눌러 `위치(Position)` 속성을 엽니다. 0초에 위치 값의 키프레임을 생성하고, 2초로 이동한 후 텍스트가 선 아래에서 위로 완전히 드러나도록 Y축 위치 값을 조절합니다.",
+                            "<strong>[결과 확인]</strong> 재생해 보면 텍스트가 선 뒤에서 부드럽게 나타나는 세련된 리빌 애니메이션이 완성됩니다."
+                        ]
+                    },
+                    {
+                        title: "실전 예제 2: 셰이프 레이어로 로딩 아이콘 애니메이션 만들기",
+                        goal: "원형 셰이프와 `선 다듬기(Trim Paths)` 기능을 이용해 동적인 로딩 애니메이션을 제작합니다.",
+                        steps: [
+                            "<strong>[셰이프 레이어 생성]</strong> `레이어 > 새로 만들기 > 셰이프 레이어`를 선택합니다.",
+                            "<strong>[원 그리기]</strong> 도구 모음에서 `타원 도구(Ellipse Tool)`를 선택하고, Shift 키를 누른 채 드래그하여 정원을 그립니다. `칠(Fill)`은 없음으로, `선(Stroke)`은 원하는 색상과 두께로 설정합니다.",
+                            "<strong>[선 다듬기 추가]</strong> 타임라인의 셰이프 레이어 속성에서 `콘텐츠` 옆의 `추가(Add)` 버튼을 클릭하고 <strong>`선 다듬기(Trim Paths)`</strong>를 선택합니다.",
+                            "<strong>[애니메이션 적용]</strong> `선 다듬기 1` 속성을 펼칩니다. 0초에 `끝(End)` 값의 키프레임을 0%로, 1초에 100%로 설정합니다. 다시 1초에 `시작(Start)` 값의 키프레임을 0%로, 2초에 100%로 설정하면 선이 그려졌다가 지워지는 애니메이션이 완성됩니다.",
+                            "<strong>[무한 반복 설정]</strong> `시작`과 `끝` 속성의 마지막 키프레임에 `Alt` 키를 누른 채 스톱워치를 클릭하고, 표현식(Expression) 입력창에 `loopOut()`을 입력하면 애니메이션이 끊김 없이 반복됩니다."
                         ]
                     }
                 ]
@@ -100,15 +111,26 @@
                 description: '현실에 없는 것을 만들어내거나, 여러 개의 영상 소스를 하나의 화면처럼 자연스럽게 합치는 기능입니다.',
                 examples: [
                     {
-                        title: "실전 예제 2: 영상 속 움직이는 물체에 텍스트 따라붙게 만들기 (모션 트래킹)",
-                        goal: "걸어가는 사람의 머리 위를 텍스트가 계속해서 따라다니는 효과를 제작합니다.",
+                        title: "실전 예제 3: 영상 속 화면에 다른 영상 합성하기 (코너 핀 트래킹)",
+                        goal: "영상 속 스마트폰이나 TV 화면에 내가 원하는 다른 영상을 감쪽같이 합성합니다. 이 예제를 통해 코너 핀(Corner Pin) 모션 트래킹 기술을 마스터할 수 있습니다.",
                         steps: [
-                            "<strong>[소스 준비]</strong> 사람이 걸어가는 영상 클립을 불러와 새 컴포지션에 배치합니다.",
-                            "<strong>[모션 추적 실행]</strong> 영상 클립을 선택하고 `창(Window) > 추적기(Tracker)` 패널에서 <strong>`동작 추적(Track Motion)`</strong> 버튼을 클릭합니다. 화면에 나타난 '트랙 포인트' 상자를 추적할 대상(사람의 머리)으로 옮기고 크기를 조절합니다.",
-                            "<strong>[추적 분석]</strong> `추적기` 패널의 `분석` 섹션에 있는 재생 버튼을 클릭하여 영상의 움직임을 프레임 단위로 분석합니다.",
-                            "<strong>[Null 개체 생성 및 데이터 적용]</strong> 분석이 끝나면 `레이어 > 새로 만들기 > Null 개체(Null Object)`를 생성합니다. `추적기` 패널에서 `대상 편집` 버튼을 눌러 이 Null 개체를 대상으로 지정한 후, `적용` 버튼을 클릭합니다. 이제 Null 개체가 사람 머리의 움직임을 그대로 따라 움직입니다.",
-                            "<strong>[텍스트 연결]</strong> 새로운 텍스트 레이어를 만들고, 텍스트 레이어의 '돼지꼬리' 모양 아이콘(Parent Pick Whip)을 Null 레이어로 드래그하여 연결(Parenting)합니다.",
-                            "<strong>[결과 확인]</strong> 재생하면, 텍스트가 Null 레이어의 움직임을 따라가며 사람의 머리 위를 자연스럽게 따라다니는 것을 확인할 수 있습니다."
+                            "<strong>[소스 준비]</strong> 배경 영상(스마트폰 화면이 포함된)과 합성용 영상을 준비하여 타임라인에 배치합니다.",
+                            "<strong>[모션 추적 실행]</strong> 배경 영상을 선택하고 `창(Window) > 추적기(Tracker)` 패널에서 `동작 추적(Track Motion)`을 클릭한 후, `추적 유형`을 <strong>`원근 코너 고정(Perspective Corner Pin)`</strong>으로 변경합니다.",
+                            "<strong>[추적점 설정]</strong> 화면에 나타난 4개의 추적점을 스마트폰 화면의 네 모서리에 정확히 위치시킵니다.",
+                            "<strong>[추적 분석]</strong> `추적기` 패널의 `앞으로 분석(Analyze forward)` 버튼을 눌러 영상의 움직임을 분석합니다.",
+                            "<strong>[데이터 적용]</strong> 분석이 끝나면, `추적기` 패널에서 `대상 편집(Edit Target)`을 눌러 <strong>합성용 영상</strong>을 선택하고, `적용(Apply)` 버튼을 클릭합니다.",
+                            "<strong>[결과 확인]</strong> 재생해 보면, 합성용 영상이 스마트폰 화면의 움직임과 원근을 완벽하게 따라가며 자연스럽게 합성된 것을 확인할 수 있습니다."
+                        ]
+                    },
+                    {
+                        title: "실전 예제 4: 그린 스크린 영상 합성하기 (크로마키)",
+                        goal: "그린 스크린 앞에서 촬영한 인물 영상의 배경을 제거하고, 다른 풍경 영상과 자연스럽게 합성합니다.",
+                        steps: [
+                            "<strong>[소스 배치]</strong> 타임라인의 아래쪽 트랙에 배경 영상을, 위쪽 트랙에 그린 스크린 인물 영상을 배치합니다.",
+                            "<strong>[Keylight 효과 적용]</strong> `효과 및 사전 설정` 패널에서 <strong>`Keylight (1.2)`</strong> 효과를 검색하여 그린 스크린 영상 클립에 적용합니다.",
+                            "<strong>[녹색 배경 제거]</strong> `효과 컨트롤` 패널의 Keylight 설정에서 `Screen Colour` 옆의 스포이드 아이콘을 클릭하고, 영상의 녹색 배경 부분을 클릭합니다.",
+                            "<strong>[가장자리 다듬기]</strong> 배경이 투명해지면, `Screen Matte` 속성을 펼칩니다. `Clip Black` 값을 살짝 올려 남아있는 녹색 픽셀을 제거하고, `Clip White` 값을 살짝 내려 인물의 가장자리를 선명하게 만듭니다.",
+                            "<strong>[결과 확인]</strong> 이제 인물이 새로운 배경 위에 자연스럽게 합성된 것을 확인할 수 있습니다."
                         ]
                     }
                 ]
@@ -120,14 +142,53 @@
                 description: '2D 그래픽을 3차원 공간에 배치하여 깊이감과 입체감을 만들어냅니다.',
                 examples: [
                     {
-                        title: "실전 예제 3: 간단한 3D 로고 장면 만들기",
-                        goal: "2D 로고 이미지를 3D 공간에 배치하고, 가상의 카메라와 조명을 사용하여 입체적인 장면을 연출합니다.",
+                        title: "실전 예제 5: 3D 공간에서 카드 플립 애니메이션 만들기",
+                        goal: "여러 장의 이미지가 3D 공간에서 카드가 뒤집히듯 전환되는 입체적인 애니메이션을 제작합니다. 3D 레이어, 카메라, 조명의 기본 개념을 익힐 수 있습니다.",
                         steps: [
-                            "<strong>[소스 준비]</strong> 배경이 투명한 로고 이미지(.png) 파일을 불러와 컴포지션에 배치합니다.",
-                            "<strong>[3D 레이어로 전환]</strong> 타임라인에서 로고 레이어의 옵션 중 <strong>정육면체 모양의 아이콘(3D Layer)</strong> 스위치를 클릭하여 활성화합니다. 이제 `변형(Transform)` 속성에 X, Y, Z축 값이 추가됩니다.",
-                            "<strong>[가상 카메라 추가]</strong> `레이어 > 새로 만들기 > 카메라(Camera)`를 선택하여 새 카메라 레이어를 추가합니다. 도구 모음에서 `통합 카메라 도구(C)`를 선택하고, 화면을 드래그하여 로고를 다양한 각도에서 비추는 것처럼 카메라 뷰를 조작합니다.",
-                            "<strong>[가상 조명 추가]</strong> `레이어 > 새로 만들기 > 조명(Light)`을 선택하고 유형을 <strong>`점 조명(Point Light)`</strong>으로 설정합니다. 새로 생긴 조명 레이어의 위치(Position) 값을 조절하여 로고 표면에 그림자가 생기며 입체감이 살아나는 것을 확인합니다.",
-                            "<strong>[애니메이션]</strong> 카메라 레이어의 `변형` 속성에서 `위치`와 `회전` 값에 키프레임을 추가하여, 로고 주변을 맴돌거나 서서히 다가가는 듯한 역동적인 카메라 워크 애니메이션을 만듭니다."
+                            "<strong>[3D 레이어로 전환]</strong> 준비한 이미지들을 타임라인에 배치하고, 모든 레이어의 <strong>정육면체 모양 아이콘(3D Layer)</strong> 스위치를 켜서 3D 레이어로 만듭니다.",
+                            "<strong>[카드 배치]</strong> 첫 번째 이미지를 제외한 나머지 이미지들의 `위치(Position)` Z축 값을 조절하여(예: 50, 100) 공간상에서 약간 뒤에 배치합니다.",
+                            "<strong>[플립 애니메이션]</strong> 모든 이미지 레이어를 선택하고 `R` 키를 눌러 `회전(Rotation)` 속성을 엽니다. 0초에 `Y 회전` 값의 키프레임을 생성하고, 1초 뒤 첫 번째 이미지의 `Y 회전` 값을 -180도로, 2초 뒤 두 번째 이미지의 `Y 회전` 값을 -180도로 변경하는 식으로 순차적으로 적용합니다.",
+                            "<strong>[카메라 추가]</strong> `레이어 > 새로 만들기 > 카메라(Camera)`를 추가합니다. `통합 카메라 도구(C)`를 사용하여 뷰를 조작하며 카드가 뒤집히는 모습을 더 역동적으로 연출합니다.",
+                            "<strong>[조명 추가]</strong> `레이어 > 새로 만들기 > 조명(Light)`을 추가하여 그림자를 만들고 입체감을 더해 완성도를 높입니다."
+                        ]
+                    },
+                    {
+                        title: "실전 예제 6: 3D 텍스트 만들고 카메라로 연출하기",
+                        goal: "텍스트를 3D로 만들고, 카메라를 이용해 텍스트 주위를 도는 듯한 역동적인 카메라 워크를 연출합니다.",
+                        steps: [
+                            "<strong>[렌더러 변경]</strong> `컴포지션 설정`에서 `3D 렌더러` 탭을 클릭하고, 렌더러를 <strong>`CINEMA 4D`</strong>로 변경합니다. 이 렌더러는 텍스트에 두께를 줄 수 있게 해줍니다.",
+                            "<strong>[텍스트 생성 및 3D 전환]</strong> 텍스트 레이어를 만들고 3D 레이어로 전환합니다.",
+                            "<strong>[두께(Extrusion) 추가]</strong> 텍스트 레이어의 속성에서 `도형 옵션(Geometry Options)`을 펼치고, <strong>`돌출 깊이(Extrusion Depth)`</strong> 값을 높여 텍스트에 두께를 부여합니다.",
+                            "<strong>[카메라 궤도(Orbit) 설정]</strong> `레이어 > 새로 만들기 > Null 개체`를 생성하고 3D 레이어로 전환합니다. `레이어 > 새로 만들기 > 카메라`를 생성합니다. 카메라 레이어의 '돼지꼬리' 아이콘을 Null 개체에 연결(Parenting)합니다.",
+                            "<strong>[애니메이션]</strong> Null 개체의 `Y 회전` 속성에 키프레임을 추가하여 0초에 0도, 5초에 360도로 설정하면, 카메라가 텍스트 주위를 한 바퀴 도는 애니메이션이 완성됩니다."
+                        ]
+                    }
+                ]
+            },
+            ai: {
+                id: 'ai',
+                title: '🤖 AI 기능',
+                icon: '🤖',
+                description: 'Adobe Sensei AI 기술을 사용하여 복잡하고 시간이 많이 걸리는 영상 정리 및 분리 작업을 자동화합니다.',
+                examples: [
+                    {
+                        title: "실전 예제 7: 영상 속 방해물 지우기 (내용 인식 채우기)",
+                        goal: "풍경 영상에 우연히 찍힌 방해물(지나가는 사람, 자동차 등)을 AI를 이용해 감쪽같이 제거합니다.",
+                        steps: [
+                            "<strong>[마스크 그리기]</strong> 영상에서 지우고 싶은 사물 주변으로 펜 도구(G)를 사용하여 마스크를 그립니다. 마스크가 사물의 전체 움직임을 따라가도록 `마스크 패스`에 키프레임을 추가하여 애니메이션을 줍니다.",
+                            "<strong>[마스크 설정]</strong> 마스크 속성을 <strong>`빼기(Subtract)`</strong>로 설정하여 해당 영역을 투명하게 만듭니다.",
+                            "<strong>[AI 채우기 실행]</strong> `창(Window) > 내용 인식 채우기(Content-Aware Fill)` 패널을 엽니다. `채우기 방법`을 '개체'로 두고 <strong>`채우기 레이어 생성(Generate Fill Layer)`</strong> 버튼을 클릭합니다.",
+                            "<strong>[결과 확인]</strong> AI가 분석을 마치면, 마스크로 가려진 영역이 주변 배경으로 감쪽같이 채워진 새로운 레이어가 생성됩니다."
+                        ]
+                    },
+                    {
+                        title: "실전 예제 8: 움직이는 인물 분리하기 (로토 브러시 2)",
+                        goal: "춤추는 사람 영상에서 인물만 정확하게 분리하여 배경을 다른 영상으로 합성합니다.",
+                        steps: [
+                            "<strong>[로토 브러시 실행]</strong> 분리하고 싶은 영상 클립을 타임라인에서 더블 클릭하여 `레이어` 패널에서 엽니다. 도구 모음에서 <strong>`로토 브러시 도구(Roto Brush Tool)`</strong>를 선택합니다.",
+                            "<strong>[영역 지정]</strong> 첫 프레임에서 분리하고 싶은 인물의 안쪽을 녹색 브러시로 대충 칠합니다. AI가 자동으로 인물의 외곽선을 인식합니다. (배경이 포함되었다면 Alt 키를 누른 채 드래그하여 빨간색으로 제외합니다.)",
+                            "<strong>[AI 전파]</strong> 스페이스바를 누르면, AI가 다음 프레임으로 이동하며 인물의 움직임을 따라 자동으로 외곽선을 잡아줍니다.",
+                            "<strong>[결과 확인]</strong> 작업이 끝나면 다시 `컴포지션` 패널로 돌아옵니다. 이제 인물만 남고 배경은 투명하게 분리된 것을 확인할 수 있습니다. 그 아래 새로운 배경 영상을 배치하여 합성합니다."
                         ]
                     }
                 ]
@@ -230,4 +291,3 @@
     </script>
 </body>
 </html>
-?
