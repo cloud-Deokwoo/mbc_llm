@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대화형 AI 음악 생성 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Dark Neutral -->
+    <!-- Application Structure Plan: A dashboard layout with a fixed sidebar for primary navigation (Suno, Udio, Stable Audio) and a main content area. Clicking a sidebar item updates the main content to show that tool's overview and a series of interactive, expandable cards for each practical example. This structure was chosen to logically segment the three distinct tools, allowing users to focus on one at a time while easily comparing them. The expandable cards for examples prevent information overload and encourage hands-on exploration of each step-by-step guide. -->
+    <!-- Visualization & Content Choices: Report Info: Guides for Suno, Udio, Stable Audio. Goal: Organize/Inform. Viz/Presentation: Vertical sidebar navigation and expandable content cards. Interaction: Clicking a nav item updates the main content; clicking a card expands to show details. Justification: This component-based approach is highly intuitive for exploring structured educational content like step-by-step tutorials. Key terms are highlighted for emphasis. Library/Method: Vanilla JS for state management and DOM manipulation. Tailwind CSS for layout. No SVG/Mermaid used. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .sidebar {
+            background-color: #1F2937; /* bg-gray-800 */
+            border-right: 1px solid #374151; /* border-gray-700 */
+        }
+        .nav-item.active {
+            background-color: #374151; /* bg-gray-700 */
+            color: #F9FAFB; /* text-gray-50 */
+        }
+        .nav-item {
+            color: #9CA3AF; /* text-gray-400 */
+        }
+        .card {
+            background-color: #1F2937; /* bg-gray-800 */
+            border: 1px solid #374151; /* border-gray-700 */
+        }
+        .card-header {
+            background-color: #374151; /* bg-gray-700 */
+            border-bottom: 1px solid #4B5563; /* border-gray-600 */
+        }
+        .card-expand-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out;
+        }
+        .card.active .card-expand-content {
+            max-height: 1500px;
+        }
+        .card.active .card-chevron {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="text-gray-300">
+    <div id="app" class="flex h-screen">
+        <!-- Sidebar -->
+        <aside id="sidebar" class="sidebar w-64 flex-shrink-0 p-4 space-y-2 hidden md:flex md:flex-col">
+            <h1 class="text-xl font-bold text-white px-3 pb-4">AI 음악 생성 가이드</h1>
+            <nav id="main-nav" class="flex-1">
+                <!-- Navigation items will be injected here -->
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
+            <button id="menu-button" class="md:hidden mb-4 p-2 rounded-md bg-gray-700 text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div id="content-area">
+                <!-- Content will be injected here -->
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const appData = {
+            suno: {
+                id: 'suno',
+                title: '🎤 Suno AI: 가장 쉽고 빠르게 완성곡 만들기',
+                icon: '🎤',
+                description: 'Suno AI는 텍스트 설명만으로 누구나 쉽게 자신만의 노래를 만들 수 있는 가장 대중적인 도구입니다. 보컬, 가사, 악기를 포함한 완전한 노래를 몇 분 만에 생성하는 데 강점을 보입니다.',
+                examples: [
+                    {
+                        title: "예제 1: 편안한 카페 배경음악 만들기 (악기 연주곡)",
+                        goal: "보컬 없이 잔잔한 피아노 연주곡을 만들어 카페나 공부할 때 듣기 좋은 배경음악으로 활용합니다.",
+                        steps: [
+                            "<strong>[모드 선택]</strong> Suno AI의 `Create` 화면에서 <strong>'Instrumental (악기 연주)'</strong> 옵션을 켭니다.",
+                            "<strong>[음악 스타일 입력]</strong> `Style of Music` 입력창에 `Calm and cozy cafe jazz piano` (차분하고 아늑한 카페 재즈 피아노) 라고 적습니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 2: 신나는 80년대 댄스곡 만들기 (AI 가사 활용)",
+                        goal: "특정 장르를 지정하고, AI가 자동으로 가사를 만들게 하여 완전한 노래 한 곡을 완성합니다.",
+                        steps: [
+                            "<strong>[모드 선택]</strong> `Create` 화면에서 <strong>'Custom Mode (커스텀 모드)'</strong> 스위치를 켭니다.",
+                            "<strong>[가사 주제 입력]</strong> `Lyrics` 입력창에 `A song about dancing all night in a retro city` (레트로 도시에서 밤새 춤추는 것에 대한 노래) 라고 주제를 입력합니다.",
+                            "<strong>[음악 스타일 입력]</strong> `Style of Music` 입력창에 `80s synthpop, upbeat, female vocal` (80년대 신스팝, 신나는 분위기, 여성 보컬) 이라고 적습니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 3: 비 오는 날의 감성 발라드 만들기 (직접 가사 입력)",
+                        goal: "내가 직접 쓴 가사를 AI에게 주어, 세상에 하나뿐인 나만의 노래를 만듭니다.",
+                        steps: [
+                            "<strong>[모드 선택]</strong> 'Custom Mode (커스텀 모드)' 스위치를 켭니다.",
+                            "<strong>[가사 직접 입력]</strong> `Lyrics` 입력창에 직접 쓴 가사를 붙여넣습니다. (예: `[Verse 1] 창밖에는 비가 내려... [Chorus] 빗소리가 노래가 되어...`)",
+                            "<strong>[음악 스타일 입력]</strong> `Korean sad ballad, emotional piano, male vocal` (한국적인 슬픈 발라드, 감성적인 피아노, 남성 보컬) 이라고 적습니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 4: 특정 아티스트 스타일의 노래 만들기",
+                        goal: "좋아하는 아티스트의 음악 스타일을 참고하여 비슷한 분위기의 노래를 만듭니다.",
+                        steps: [
+                            "<strong>[모드 선택]</strong> 'Custom Mode (커스텀 모드)' 스위치를 켭니다.",
+                            "<strong>[가사 주제 입력]</strong> `A song about a lonely journey on a train` (기차에서의 외로운 여정에 대한 노래) 이라고 주제를 입력합니다.",
+                            "<strong>[음악 스타일 입력]</strong> `A song in the style of IU, acoustic guitar, soft female vocal` (아이유 스타일의 노래, 어쿠스틱 기타, 부드러운 여성 보컬) 이라고 적습니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 5: 영화 OST 같은 웅장한 오케스트라 음악 만들기",
+                        goal: "여러 악기와 분위기를 조합한 상세한 프롬프트로, 특정 장면을 연상시키는 배경음악(BGM)을 만듭니다.",
+                        steps: [
+                            "<strong>[모드 선택]</strong> 'Instrumental (악기 연주)' 옵션을 켭니다.",
+                            "<strong>[음악 스타일 상세 입력]</strong> `Epic orchestral music, cinematic, adventurous, powerful strings and brass, for a fantasy movie battle scene` (웅장한 오케스트라 음악, 영화 같은, 모험적인, 강력한 현악기와 금관악기, 판타지 영화 전투 장면을 위한) 이라고 적습니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    }
+                ]
+            },
+            udio: {
+                id: 'udio',
+                title: '🎶 Udio: 고품질 보컬과 유연한 음악 확장',
+                icon: '🎶',
+                description: 'Udio는 특히 매우 사실적이고 뛰어난 품질의 보컬을 생성하는 데 강점을 보이는 음악 생성 AI입니다. 또한, 이미 만들어진 곡을 기반으로 앞뒤를 자연스럽게 확장하거나 다른 스타일로 리믹스하는 기능이 매우 강력합니다.',
+                examples: [
+                    {
+                        title: "예제 1: 감미로운 R&B 소울 노래 만들기 (고품질 보컬)",
+                        goal: "Udio의 강점인 고품질 보컬을 활용하여, 세련된 R&B 노래를 만듭니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `Prompt` 입력창에 `A soulful R&B song about walking in the city on a rainy night, male vocal` (비 오는 밤 도시를 걷는 것에 대한 감성적인 R&B 노래, 남성 보컬) 이라고 적습니다.",
+                            "<strong>[가사 모드 선택]</strong> `Lyrics` 옵션에서 <strong>`Auto-generated`</strong>를 선택하여 AI가 자동으로 가사를 만들게 합니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다. 보컬의 품질에 주목하며 들어보세요."
+                        ]
+                    },
+                    {
+                        title: "예제 2: 노래 길이 확장하기 (Extend 기능)",
+                        goal: "마음에 드는 30초짜리 클립의 앞이나 뒤에 이어질 부분을 AI가 만들게 하여 더 긴 노래로 완성합니다.",
+                        steps: [
+                            "<strong>[기준 클립 선택]</strong> 생성된 노래 중 마음에 드는 클립을 선택합니다.",
+                            "<strong>[Extend 기능 실행]</strong> 클립 오른쪽에 있는 <strong>`Extend`</strong> 버튼을 클릭합니다.",
+                            "<strong>[확장 방향 설정]</strong> `Extend Before`(앞부분 추가) 또는 `Extend After`(뒷부분 추가)를 선택하고, `Create`를 누릅니다.",
+                            "<strong>[결과 확인]</strong> AI가 기존 노래의 맥락을 이해하여, 그 앞이나 뒤에 자연스럽게 이어지는 새로운 30초 분량의 파트를 생성해 줍니다."
+                        ]
+                    },
+                    {
+                        title: "예제 3: 활기찬 K-Pop 댄스곡 만들기",
+                        goal: "여러 장르와 악기 태그를 조합하여 특정 스타일의 음악을 정교하게 만듭니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `A high-energy K-Pop dance track, bubblegum pop, synth-heavy, with a catchy chorus, female vocal group` (에너지 넘치는 K-Pop 댄스 트랙, 버블검 팝, 신스 사운드가 강한, 중독성 있는 후렴구, 여성 보컬 그룹) 이라고 적습니다.",
+                            "<strong>[가사 모드 선택]</strong> `Auto-generated`를 선택합니다.",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 4: 기존 곡을 다른 장르로 바꾸기 (Remix 기능)",
+                        goal: "이미 생성된 곡을 완전히 다른 스타일로 재해석하여 음악적 변주를 시도합니다.",
+                        steps: [
+                            "<strong>[기준 클립 선택]</strong> 예제 1에서 만든 R&B 노래를 선택합니다.",
+                            "<strong>[Remix 기능 실행]</strong> 클립 오른쪽에 있는 <strong>`Remix`</strong> 버튼을 클릭합니다.",
+                            "<strong>[새로운 스타일 입력]</strong> 프롬프트 입력창에 바꾸고 싶은 새로운 스타일을 입력합니다. `Acoustic folk version, gentle guitar and piano` (어쿠스틱 포크 버전, 부드러운 기타와 피아노)",
+                            "<strong>[결과 확인]</strong> 원곡의 멜로디와 가사를 기반으로, 완전히 새로운 어쿠스틱 포크 스타일의 노래가 생성됩니다."
+                        ]
+                    },
+                    {
+                        title: "예제 5: 게임 배경음악(BGM) 만들기",
+                        goal: "특정 게임 장르나 분위기에 맞는 악기 연주곡을 만듭니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `Instrumental` 태그를 사용하여 연주곡임을 명시하고, 게임의 분위기를 묘사합니다. `Instrumental, fantasy RPG village theme, peaceful, flute, harp, strings, medieval` (연주곡, 판타지 RPG 마을 테마, 평화로운, 플루트, 하프, 현악기, 중세풍)",
+                            "<strong>[생성하기]</strong> `Create` 버튼을 누릅니다."
+                        ]
+                    }
+                ]
+            },
+            stableAudio: {
+                id: 'stableAudio',
+                title: '🎧 Stable Audio: 전문가급 악기 연주와 사운드 디자인',
+                icon: '🎧',
+                description: 'Stable Audio는 보컬이 포함된 노래보다는, 영상 배경음악(BGM), 효과음(SFX), 악기 연주 트랙 등 사운드 자체의 품질에 집중하는 오디오 생성 AI입니다.',
+                examples: [
+                    {
+                        title: "예제 1: 유튜브 브이로그 배경음악 만들기 (Text-to-Audio)",
+                        goal: "특정 분위기의 영상에 어울리는 배경음악(BGM)을 만듭니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `Prompt` 입력창에 `Uplifting and cheerful acoustic folk, ukulele, light percussion, for a travel vlog` (여행 브이로그를 위한, 밝고 경쾌한 어쿠스틱 포크, 우쿨렐레, 가벼운 타악기) 이라고 적습니다.",
+                            "<strong>[길이 설정]</strong> `Duration` 슬라이더를 조절하여 원하는 길이를 설정합니다. (무료 버전은 최대 45초)",
+                            "<strong>[생성하기]</strong> `Generate` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 2: 영상 효과음(SFX) 만들기",
+                        goal: "영상에 사용할 특정 효과음을 텍스트로 묘사하여 생성합니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `Sound of a futuristic spaceship door opening with a hydraulic hiss and a beep` (유압식 '쉭' 소리와 '삑' 소리가 나며 열리는 미래 우주선 문소리) 이라고 적습니다.",
+                            "<strong>[길이 설정]</strong> 효과음에 맞게 길이를 짧게(예: 3~5초) 설정합니다.",
+                            "<strong>[생성하기]</strong> `Generate` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 3: 내 오디오로 새로운 음악 만들기 (Audio-to-Audio)",
+                        goal: "내가 가진 짧은 오디오 파일을 업로드하고, AI에게 이 소스를 변형하여 새로운 음악을 만들도록 지시합니다.",
+                        steps: [
+                            "<strong>[오디오 업로드]</strong> `Upload Audio` 버튼을 눌러 변형하고 싶은 짧은 오디오 파일(예: 직접 녹음한 간단한 드럼 비트)을 업로드합니다.",
+                            "<strong>[프롬프트 입력]</strong> `Turn this drum beat into an epic cinematic drum track with powerful reverb and additional percussion` (이 드럼 비트를 강력한 리버브와 추가적인 타악기가 더해진 웅장한 영화음악 드럼 트랙으로 바꿔줘) 라고 지시합니다.",
+                            "<strong>[생성하기]</strong> `Generate` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 4: Lo-fi 힙합 드럼 루프 만들기",
+                        goal: "영상 편집이나 다른 음악 작업에 샘플로 사용할 수 있는 특정 장르의 악기 루프를 만듭니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `Lo-fi hip hop drum loop, 90 bpm, vinyl crackle, chill, groovy` (로파이 힙합 드럼 루프, 90 bpm, 바이닐 노이즈, 차분한, 그루비한) 이라고 적습니다.",
+                            "<strong>[길이 설정]</strong> 루프로 사용하기 좋게 짧게(예: 8~15초) 설정합니다.",
+                            "<strong>[생성하기]</strong> `Generate` 버튼을 누릅니다."
+                        ]
+                    },
+                    {
+                        title: "예제 5: 자연의 소리(ASMR) 만들기",
+                        goal: "명상이나 휴식용 콘텐츠에 사용할 수 있는 자연의 소리를 생성합니다.",
+                        steps: [
+                            "<strong>[프롬프트 입력]</strong> `Calm rain falling on a tent, gentle thunder in the distance, soundscape, ASMR` (텐트 위로 내리는 차분한 빗소리, 멀리서 들리는 부드러운 천둥소리, 사운드스케이프, ASMR) 이라고 적습니다.",
+                            "<strong>[길이 설정]</strong> 원하는 만큼 길게(예: 45초) 설정합니다.",
+                            "<strong>[생성하기]</strong> `Generate` 버튼을 누릅니다."
+                        ]
+                    }
+                ]
+            }
+        };
+
+        let currentState = {
+            activeTopic: 'suno'
+        };
+
+        const nav = document.getElementById('main-nav');
+        const contentArea = document.getElementById('content-area');
+        const sidebar = document.getElementById('sidebar');
+        const menuButton = document.getElementById('menu-button');
+
+        function renderNav() {
+            nav.innerHTML = '';
+            Object.values(appData).forEach(topic => {
+                const isActive = topic.id === currentState.activeTopic;
+                const item = document.createElement('a');
+                item.href = '#';
+                item.className = `nav-item flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 ${isActive ? 'active' : ''}`;
+                item.dataset.topic = topic.id;
+                item.innerHTML = `
+                    <span class="text-2xl mr-3">${topic.icon}</span>
+                    <span class="font-semibold">${topic.title.split(':')[0]}</span>
+                `;
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    currentState.activeTopic = topic.id;
+                    render();
+                    if (window.innerWidth < 768) {
+                        sidebar.classList.add('hidden');
+                    }
+                });
+                nav.appendChild(item);
+            });
+        }
+
+        function renderContent() {
+            const topic = appData[currentState.activeTopic];
+            if (!topic) return;
+
+            let examplesHtml = topic.examples.map(example => {
+                let stepsHtml = example.steps.map(step => `<li class="mb-3">${step}</li>`).join('');
+                return `
+                <div class="card rounded-lg shadow-lg overflow-hidden mb-6">
+                    <button class="card-header w-full text-left p-5 flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold text-white">${example.title}</h3>
+                            <p class="text-sm text-gray-400 mt-1">🎯 목표: ${example.goal}</p>
+                        </div>
+                        <svg class="card-chevron w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="card-expand-content">
+                        <div class="p-5 bg-gray-800">
+                            <h4 class="font-semibold text-gray-200 mb-3">단계별 상세 가이드</h4>
+                            <ol class="list-decimal list-inside space-y-2 text-sm text-gray-400">
+                                ${stepsHtml}
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            `}).join('');
+
+            contentArea.innerHTML = `
+                <header class="mb-8 pb-4 border-b border-gray-700">
+                    <h2 class="text-3xl font-bold text-white">${topic.title}</h2>
+                    <p class="mt-2 text-gray-400">${topic.description}</p>
+                </header>
+                <div>
+                    ${examplesHtml}
+                </div>
+            `;
+
+            document.querySelectorAll('.card-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const card = header.closest('.card');
+                    card.classList.toggle('active');
+                });
+            });
+        }
+
+        function render() {
+            renderNav();
+            renderContent();
+        }
+        
+        menuButton.addEventListener('click', () => {
+            sidebar.classList.toggle('hidden');
+        });
+        
+        if (window.innerWidth < 768) {
+            sidebar.classList.add('hidden');
+        }
+
+        render();
+    </script>
+</body>
+</html>
