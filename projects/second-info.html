@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인터랙티브 HUD 제작 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Futuristic Tech (Dark Slate, Cyan, White) -->
+    <!-- Application Structure Plan: A stepper-based navigation (Overview, Step 1-4, Result) is used to guide the user through the linear VFX tutorial. This breaks the process into focused, manageable stages, improving on a simple text scroll. Each step is presented in a card, and clicking the stepper updates the visible card. This is more interactive and user-friendly for a learning process. -->
+    <!-- Visualization & Content Choices: Report Info: 4-step VFX process. Goal: Organize & Inform. Viz/Presentation: A primary stepper UI to navigate between steps presented in styled cards. A secondary HTML/CSS process flow diagram in the overview provides a high-level visual map. Interaction: Clicking stepper buttons reveals corresponding content. Justification: This structure is ideal for tutorials, promoting a step-by-step learning experience. No quantitative data exists, so charts are not used. The process flow diagram is a better fit for this content. Library/Method: Vanilla JS for stepper logic, Tailwind CSS for styling and layout. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #0f172a; /* slate-900 */
+            color: #e2e8f0; /* slate-200 */
+        }
+        .step-btn {
+            transition: all 0.3s ease;
+            border-color: #22d3ee; /* cyan-400 */
+        }
+        .step-btn.active {
+            background-color: #22d3ee;
+            color: #0f172a;
+            box-shadow: 0 0 15px rgba(34, 211, 238, 0.5);
+        }
+        .step-content {
+            display: none;
+        }
+        .step-content.active {
+            display: block;
+        }
+        .flow-diagram-item {
+            background-color: #1e293b; /* slate-800 */
+            border: 1px solid #334155; /* slate-700 */
+        }
+        .flow-diagram-arrow {
+            color: #22d3ee;
+        }
+        code {
+            background-color: #334155;
+            color: #a5f3fc;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto px-4 py-8 md:py-12">
+        <header class="text-center mb-10 md:mb-16">
+            <h1 class="text-3xl md:text-5xl font-bold text-white mb-2">종합 실습 프로젝트</h1>
+            <h2 class="text-xl md:text-3xl font-bold text-[#22d3ee]">미래형 HUD 인터페이스 만들기</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-slate-300">
+                이 인터랙티브 가이드는 실제 영상 위에 미래적인 홀로그램 인터페이스(HUD)를 합성하는 VFX 제작 과정을 안내합니다. 각 단계를 클릭하여 상세 내용을 확인하고, 프로젝트를 완성해보세요.
+            </p>
+        </header>
+
+        <nav id="stepper-nav" class="flex flex-wrap justify-center items-center gap-2 md:gap-4 mb-10 md:mb-12">
+            <button data-step="0" class="step-btn active w-full sm:w-auto text-sm md:text-base font-bold py-2 px-4 rounded-full border-2">
+                🚀 개요 및 준비
+            </button>
+            <button data-step="1" class="step-btn w-full sm:w-auto text-sm md:text-base font-bold py-2 px-4 rounded-full border-2">
+                1단계: 움직임 추적
+            </button>
+            <button data-step="2" class="step-btn w-full sm:w-auto text-sm md:text-base font-bold py-2 px-4 rounded-full border-2">
+                2단계: 그래픽 제작
+            </button>
+            <button data-step="3" class="step-btn w-full sm:w-auto text-sm md:text-base font-bold py-2 px-4 rounded-full border-2">
+                3단계: 3D 합성
+            </button>
+            <button data-step="4" class="step-btn w-full sm:w-auto text-sm md:text-base font-bold py-2 px-4 rounded-full border-2">
+                4단계: AI 깊이 표현
+            </button>
+             <button data-step="5" class="step-btn w-full sm:w-auto text-sm md:text-base font-bold py-2 px-4 rounded-full border-2">
+                🎯 최종 목표
+            </button>
+        </nav>
+
+        <main id="stepper-content" class="max-w-4xl mx-auto">
+            <section class="step-content active" data-content="0">
+                <div class="bg-[#1e293b] p-6 md:p-8 rounded-2xl shadow-lg border border-slate-700">
+                    <h3 class="text-2xl font-bold text-white mb-4">프로젝트 개요</h3>
+                    <p class="text-slate-300 mb-6">
+                        실제 영상의 움직임을 분석하고, 그 위에 디자인된 그래픽을 3D 공간에 자연스럽게 합성하는 실무적인 VFX 제작 과정을 다룹니다. 모션 트래킹, 셰이프 애니메이션, 3D 레이어, 그리고 AI 로토 브러시 기능을 유기적으로 결합하는 능력을 기릅니다.
+                    </p>
+
+                    <h4 class="text-xl font-bold text-white mb-4">전체 작업 흐름</h4>
+                    <div class="flex flex-col md:flex-row items-center justify-between gap-2 text-center text-sm mb-6">
+                        <div class="flow-diagram-item p-3 rounded-lg w-full md:w-1/4">1. 영상 분석<br>&amp; 추적</div>
+                        <div class="flow-diagram-arrow text-2xl hidden md:block">&rarr;</div>
+                        <div class="flow-diagram-arrow text-2xl md:hidden">&darr;</div>
+                        <div class="flow-diagram-item p-3 rounded-lg w-full md:w-1/4">2. HUD 그래픽<br>제작</div>
+                        <div class="flow-diagram-arrow text-2xl hidden md:block">&rarr;</div>
+                         <div class="flow-diagram-arrow text-2xl md:hidden">&darr;</div>
+                        <div class="flow-diagram-item p-3 rounded-lg w-full md:w-1/4">3. 3D 공간<br>합성</div>
+                        <div class="flow-diagram-arrow text-2xl hidden md:block">&rarr;</div>
+                         <div class="flow-diagram-arrow text-2xl md:hidden">&darr;</div>
+                        <div class="flow-diagram-item p-3 rounded-lg w-full md:w-1/4">4. AI를 이용한<br>깊이감 표현</div>
+                    </div>
+
+                    <h4 class="text-xl font-bold text-white mb-3">준비물</h4>
+                    <ul class="list-none space-y-3 text-slate-300">
+                        <li><span class="text-[#22d3ee] font-bold">📹 배경 영상:</span> 추적할 움직임이 있는 인물 또는 도시 영상. (추천: Pexels, Pixabay)</li>
+                        <li><span class="text-[#22d3ee] font-bold">🔊 사운드 (선택):</span> HUD 작동 효과음. (추천: Mixkit)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section class="step-content" data-content="1">
+                <div class="bg-[#1e293b] p-6 md:p-8 rounded-2xl shadow-lg border border-slate-700">
+                    <h3 class="text-2xl font-bold text-white mb-4">1단계: 영상 분석 및 움직임 추적 (VFX)</h3>
+                    <p class="text-slate-300 mb-6">영상의 특정 지점의 움직임을 추적하여 데이터를 추출합니다. 이 데이터는 나중에 그래픽을 연동시키는 기준점이 됩니다.</p>
+                    <ol class="list-decimal list-inside space-y-4 text-slate-300">
+                        <li><b>컴포지션 생성:</b> 준비한 배경 영상을 <code>1920x1080</code>, 길이 15초의 새 컴포지션에 배치합니다.</li>
+                        <li><b>Null 개체 생성:</b> <code>레이어 > 새로 만들기 > Null 개체</code>를 생성합니다. 이 보이지 않는 레이어는 추적 데이터를 저장하는 '닻' 역할을 합니다.</li>
+                        <li><b>동작 추적 실행:</b>
+                            <ul class="list-disc list-inside ml-6 mt-2 space-y-1">
+                                <li>배경 영상 레이어를 선택하고 <code>창 > 추적기</code> 패널에서 <b>동작 추적</b>을 실행합니다.</li>
+                                <li>'트랙 포인트'를 추적할 지점(예: 손등, 건물 모서리)에 정확히 위치시킵니다.</li>
+                                <li><code>앞으로 분석</code> 버튼을 눌러 영상의 움직임을 분석합니다.</li>
+                            </ul>
+                        </li>
+                        <li><b>데이터 적용:</b> 분석 완료 후, <code>대상 편집</code>을 눌러 생성한 <b>Null 개체</b>를 선택하고 <code>적용</code> 버튼을 누릅니다. 이제 Null 개체가 영상의 움직임을 그대로 따라갑니다.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="step-content" data-content="2">
+                <div class="bg-[#1e293b] p-6 md:p-8 rounded-2xl shadow-lg border border-slate-700">
+                    <h3 class="text-2xl font-bold text-white mb-4">2단계: HUD 그래픽 요소 제작 (Motion Graphics)</h3>
+                    <p class="text-slate-300 mb-6">미래적인 느낌의 HUD 그래픽 요소들을 별도의 컴포지션에서 디자인하고 애니메이션을 적용합니다.</p>
+                    <ol class="list-decimal list-inside space-y-4 text-slate-300">
+                        <li><b>새 컴포지션:</b> <code>HUD_Elements_Comp</code> 라는 이름의 새 컴포지션을 만듭니다.</li>
+                        <li><b>그래픽 디자인:</b>
+                            <ul class="list-disc list-inside ml-6 mt-2 space-y-2">
+                                <li><b>셰이프 레이어:</b> 원, 사각형, 선 등을 디자인합니다. <code>칠(Fill)</code>은 '없음', <code>선(Stroke)</code>은 밝은 청록색이나 흰색으로 설정합니다.</li>
+                                <li><b>애니메이션:</b> <code>선 다듬기(Trim Paths)</code>를 추가하여 선이 그려지는 애니메이션을 만들고, 텍스트 레이어에 <code>타이핑 효과</code>를 적용합니다.</li>
+                            </ul>
+                        </li>
+                        <li><b>효과 추가:</b> 완성된 그래픽 레이어 전체에 <code>효과 및 사전 설정</code> 패널에서 <b>광선(Glow)</b> 효과를 적용하여 빛나는 느낌을 더합니다.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="step-content" data-content="3">
+                <div class="bg-[#1e293b] p-6 md:p-8 rounded-2xl shadow-lg border border-slate-700">
+                    <h3 class="text-2xl font-bold text-white mb-4">3단계: 3D 공간에 합성 및 연동 (3D & Compositing)</h3>
+                    <p class="text-slate-300 mb-6">제작한 HUD 그래픽을 메인 영상에 가져와 3D 공간에 배치하고, 추적된 움직임과 연동시킵니다.</p>
+                    <ol class="list-decimal list-inside space-y-4 text-slate-300">
+                        <li><b>컴포지션 통합:</b> 1단계에서 만든 메인 컴포지션으로 돌아와 <code>HUD_Elements_Comp</code>를 타임라인에 배치합니다.</li>
+                        <li><b>3D 레이어 전환:</b> <code>HUD_Elements_Comp</code> 레이어의 <b>3D 레이어 스위치</b>를 켭니다. 이제 2D 그래픽이 3D 공간에 배치됩니다.</li>
+                        <li><b>움직임 연동 (Parenting):</b> <code>HUD_Elements_Comp</code> 레이어의 '돼지꼬리' 아이콘(Parent Pick Whip)을 1단계에서 만든 <b>Null 개체</b>에 연결합니다. 이제 HUD가 Null 개체의 움직임을 완벽하게 따라다닙니다.</li>
+                        <li><b>공간 배치 및 애니메이션:</b>
+                             <ul class="list-disc list-inside ml-6 mt-2 space-y-1">
+                                <li><code>위치(Position)</code>, <code>회전(Rotation)</code>, <code>비율(Scale)</code> 값을 조절하여 영상 속 공간에 자연스럽게 배치합니다.</li>
+                                <li><code>불투명도(Opacity)</code>에 키프레임을 추가하여 HUD가 서서히 나타나는 애니메이션을 만듭니다.</li>
+                            </ul>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section class="step-content" data-content="4">
+                <div class="bg-[#1e293b] p-6 md:p-8 rounded-2xl shadow-lg border border-slate-700">
+                    <h3 class="text-2xl font-bold text-white mb-4">4단계: AI를 이용한 깊이감 표현 (AI - Roto Brush)</h3>
+                    <p class="text-slate-300 mb-6">AI 기반의 로토 브러시 도구를 사용하여 영상 속 인물이나 사물이 HUD 그래픽 앞을 가리도록 만들어, 합성에 깊이와 현실감을 더합니다.</p>
+                    <ol class="list-decimal list-inside space-y-4 text-slate-300">
+                        <li><b>영상 복제:</b> 메인 컴포지션에서 배경 영상 레이어를 복제(<code>Ctrl+D</code>)하여 <code>HUD_Elements_Comp</code> 레이어 위로 올립니다.</li>
+                        <li><b>인물 분리 (로토스코핑):</b>
+                            <ul class="list-disc list-inside ml-6 mt-2 space-y-1">
+                                <li>맨 위에 있는 배경 영상 클립을 더블 클릭하여 레이어 패널에서 엽니다.</li>
+                                <li><b>로토 브러시 도구</b>를 사용하여 HUD 그래픽을 가려야 할 부분(예: 인물의 손가락)만 선택하여 배경과 분리합니다.</li>
+                            </ul>
+                        </li>
+                        <li><b>결과 확인:</b> 다시 메인 컴포지션으로 돌아와 재생합니다. 이제 HUD 그래픽의 일부가 인물 뒤에 있는 것처럼 보여 훨씬 입체적인 합성이 완성됩니다.</li>
+                    </ol>
+                </div>
+            </section>
+            
+            <section class="step-content" data-content="5">
+                <div class="bg-[#1e293b] p-6 md:p-8 rounded-2xl shadow-lg border border-slate-700 text-center">
+                    <h3 class="text-2xl font-bold text-white mb-4">🎯 최종 목표 달성!</h3>
+                    <p class="text-slate-300 mb-6 max-w-2xl mx-auto">
+                        모든 단계를 성공적으로 마쳤습니다! 이제 여러분은 실제 영상 속 인물의 움직임을 따라다니는 미래적인 홀로그램 인터페이스가 포함된 10~15초 길이의 멋진 VFX 샷을 완성했습니다.
+                    </p>
+                    <div class="text-5xl md:text-7xl">🎉</div>
+                    <p class="mt-4 text-slate-400">
+                        이 프로젝트를 통해 애프터 이펙트의 핵심 기능들을 통합하는 실무 제작 과정을 경험하셨습니다.
+                    </p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const stepperNav = document.getElementById('stepper-nav');
+            const stepButtons = stepperNav.querySelectorAll('.step-btn');
+            const stepContents = document.getElementById('stepper-content').querySelectorAll('.step-content');
+
+            stepperNav.addEventListener('click', function (e) {
+                const targetButton = e.target.closest('.step-btn');
+                if (!targetButton) return;
+
+                const step = targetButton.dataset.step;
+
+                stepButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                targetButton.classList.add('active');
+
+                stepContents.forEach(content => {
+                    if (content.dataset.content === step) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
