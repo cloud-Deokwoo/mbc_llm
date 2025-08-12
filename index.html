@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 검색 엔진 크롤링 방지 태그 -->
+    <meta name="robots" content="noindex, nofollow">
+    <title>MBC 종로 - [미디어 프론티어] 생성형 AI 마스터 클래스 과정</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --sidebar-bg: #1e1e1e;
+            --main-bg: #121212;
+            --text-color: #e0e0e0;
+            --text-secondary: #b3b3b3;
+            --accent-color: #bb86fc;
+            --accent-hover: #a052f5;
+            --border-color: #2c2c2c;
+            --header-height: 120px; /* 헤더 높이 조정 */
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* --- 상단 헤더 스타일 수정 --- */
+        #page-header {
+            height: var(--header-height);
+            background: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1em 2em;
+            box-sizing: border-box;
+            border-bottom: 1px solid #333;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        #page-header .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        #page-header .logo-img {
+            height: 55px;
+            width: auto;
+            flex-shrink: 0;
+        }
+
+        #page-header .title-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        #page-header .main-title {
+            font-size: 1.6em;
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        #page-header .sub-title {
+            font-size: 1.1em;
+            font-weight: 300;
+            color: var(--text-secondary);
+        }
+        /* --- 여기까지 헤더 스타일 수정 --- */
+
+        .page-container {
+            display: flex;
+            height: calc(100vh - var(--header-height));
+        }
+
+        #sidebar {
+            width: 260px;
+            background-color: var(--sidebar-bg);
+            padding: 1.5em;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--border-color);
+        }
+        
+        #sidebar .sidebar-title {
+            color: var(--accent-color);
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 0 0 1.5em 0;
+            text-align: center;
+        }
+
+        #sidebar nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #sidebar nav li a {
+            display: block;
+            color: var(--text-color);
+            text-decoration: none;
+            padding: 0.8em 1em;
+            border-radius: 5px;
+            margin-bottom: 0.5em;
+            transition: background-color 0.2s, color 0.2s;
+            cursor: pointer;
+        }
+
+        #sidebar nav li a:hover {
+            background-color: var(--accent-hover);
+            color: #fff;
+        }
+        #sidebar nav li a.active {
+             background-color: var(--accent-color);
+             color: #000;
+        }
+
+        #main-content {
+            flex-grow: 1;
+            padding: 2.5em;
+            overflow-y: auto;
+            background-color: var(--main-bg);
+        }
+
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        
+        .content-section h2 {
+            color: var(--accent-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 0.5em;
+            margin-top: 0;
+        }
+
+        .content-section ul { list-style: none; padding: 0; }
+        .content-section li a {
+            display: block;
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.75em 1em;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            margin-bottom: 0.5em;
+            transition: background-color 0.2s, transform 0.2s;
+        }
+        .content-section li a:hover {
+            background-color: #383838;
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        footer {
+            margin-top: auto;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8em;
+            padding-top: 1em;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <header id="page-header">
+        <div class="header-container">
+            <img src="https://i.imgur.com/GZkpr2W.png" alt="MBC 아카데미 컴퓨터 교육 센터 로고" class="logo-img">
+            <div class="title-container">
+                <span class="main-title">[미디어 프론티어]</span>
+                <span class="sub-title">생성형 AI 마스터 클래스 과정</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="page-container">
+        <aside id="sidebar">
+            <div class="sidebar-title">과정 목차</div>
+            <nav>
+                <ul>
+                    <li><a href="#ai-llm" class="nav-link active">🤖 AI & LLM</a></li>
+                    <li><a href="#prompt" class="nav-link">💡 프롬프트 엔지니어링</a></li>
+                    <li><a href="#video" class="nav-link">🎬 영상 제작</a></li>
+                    <li><a href="#audio" class="nav-link">🔊 오디오</a></li>
+                    <li><a href="#sora" class="nav-link">✨ Sora AI</a></li>
+                    <li><a href="#projects" class="nav-link">🚀 연습 프로젝트</a></li>
+                </ul>
+            </nav>
+            <footer>
+                <p>&copy; 2024. Deokwoo</p>
+            </footer>
+        </aside>
+
+        <main id="main-content">
+            <section id="ai-llm" class="content-section active">
+                <h2>🤖 AI & LLM (대규모 언어 모델)</h2>
+                <ul>
+                    <li><a href="llm/index.html" target="_blank">LLM 소개 페이지</a></li>
+                    <li><a href="llm/part1/AI_what.html" target="_blank">Part 1: AI란 무엇인가?</a></li>
+                    <li><a href="llm/part1/AI_history.html" target="_blank">Part 1: AI의 역사</a></li>
+                    <li><a href="llm/part1/AI_ML_DL.html" target="_blank">Part 1: AI, 머신러닝, 딥러닝</a></li>
+                    <li><a href="llm/part2/LLM_what.html" target="_blank">Part 2: LLM이란 무엇인가?</a></li>
+                    <li><a href="llm/part2/LLM_how.html" target="_blank">Part 2: LLM은 어떻게 탄생했나?</a></li>
+                    <li><a href="llm/part2/LLM_limit.html" target="_blank">Part 2: LLM의 한계</a></li>
+                </ul>
+            </section>
+
+            <section id="prompt" class="content-section">
+                <h2>💡 프롬프트 엔지니어링 (Prompt)</h2>
+                <ul>
+                    <li><a href="prompt/index.html" target="_blank">프롬프트 메인</a></li>
+                    <li><a href="prompt/advanced.html" target="_blank">고급 프롬프트 기법</a></li>
+                    <li><a href="prompt/blog_generate.html" target="_blank">블로그 글 생성 프롬프트</a></li>
+                </ul>
+            </section>
+
+            <section id="video" class="content-section">
+                <h2>🎬 영상 제작 (After Effects & Premiere)</h2>
+                <ul>
+                    <li><a href="aftereffects/index.html" target="_blank">After Effects 프로젝트</a></li>
+                    <li><a href="premiere/index.html" target="_blank">Premiere Pro 메인</a></li>
+                    <li><a href="premiere/practics.html" target="_blank">Premiere Pro 실습</a></li>
+                </ul>
+            </section>
+
+            <section id="audio" class="content-section">
+                <h2>🔊 오디오 (Audio)</h2>
+                <ul>
+                    <li><a href="audio/index.html" target="_blank">오디오 프로젝트 메인</a></li>
+                    <li><a href="audio/compare.html" target="_blank">오디오 비교</a></li>
+                    <li><a href="audio/tts.html" target="_blank">TTS (Text-to-Speech)</a></li>
+                    <li><a href="audio/tts-projects.html" target="_blank">TTS 프로젝트</a></li>
+                </ul>
+            </section>
+            
+            <section id="sora" class="content-section">
+                <h2>✨ Sora AI</h2>
+                <ul>
+                    <li><a href="sora/index.html" target="_blank">Sora 소개</a></li>
+                    <li><a href="sora/blend.html" target="_blank">비디오 블렌딩</a></li>
+                    <li><a href="sora/image_to_video.html" target="_blank">이미지를 비디오로</a></li>
+                    <li><a href="sora/loop.html" target="_blank">루프 비디오</a></li>
+                    <li><a href="sora/preset.html" target="_blank">프리셋 적용</a></li>
+                    <li><a href="sora/re-cut.html" target="_blank">비디오 리컷</a></li>
+                    <li><a href="sora/remix.html" target="_blank">비디오 리믹스</a></li>
+                </ul>
+            </section>
+
+            <section id="projects" class="content-section">
+                <h2>🚀 연습 프로젝트 (Projects)</h2>
+                <ul>
+                    <li><a href="projects/first_intro_generate.html" target="_blank">첫 번째 인트로 생성</a></li>
+                    <li><a href="projects/second-info.html" target="_blank">두 번째 정보 페이지</a></li>
+                    <li><a href="projects/third-hud.html" target="_blank">세 번째 HUD 디자인</a></li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                    const targetId = this.getAttribute('href').substring(1);
+                    contentSections.forEach(section => section.classList.remove('active'));
+                    document.getElementById(targetId).classList.add('active');
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
