@@ -13,8 +13,10 @@
             --main-bg: #121212;
             --text-color: #e0e0e0;
             --text-secondary: #b3b3b3;
-            --accent-color: #bb86fc;
-            --accent-hover: #a052f5;
+            /* --- 색상 변경 --- */
+            --accent-color: #007acc;
+            --accent-hover: #0056b3;
+            /* --- 여기까지 변경 --- */
             --border-color: #2c2c2c;
             --header-height: 120px; /* 헤더 높이 조정 */
         }
@@ -26,7 +28,6 @@
             color: var(--text-color);
         }
 
-        /* --- 상단 헤더 스타일 수정 --- */
         #page-header {
             height: var(--header-height);
             background: #1a1a1a;
@@ -47,6 +48,15 @@
             width: 100%;
             max-width: 1200px;
         }
+
+        /* --- 로고 플레이스홀더 스타일 추가 --- */
+        #page-header .logo-placeholder {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #fff;
+            padding-right: 25px;
+        }
+        /* --- 여기까지 추가 --- */
 
         #page-header .logo-img {
             height: 55px;
@@ -73,7 +83,6 @@
             font-weight: 300;
             color: var(--text-secondary);
         }
-        /* --- 여기까지 헤더 스타일 수정 --- */
 
         .page-container {
             display: flex;
@@ -121,7 +130,7 @@
         }
         #sidebar nav li a.active {
              background-color: var(--accent-color);
-             color: #000;
+             color: #fff; /* 활성 텍스트 색상 변경 */
         }
 
         #main-content {
@@ -172,7 +181,10 @@
 
     <header id="page-header">
         <div class="header-container">
-            <img src="https://i.imgur.com/GZkpr2W.png" alt="MBC 아카데미 컴퓨터 교육 센터 로고" class="logo-img">
+            <!-- --- 로고 이미지 주석 처리 --- -->
+            <!-- <img src="https://i.imgur.com/GZkpr2W.png" alt="MBC 아카데미 컴퓨터 교육 센터 로고" class="logo-img"> -->
+            <div class="logo-placeholder">MBC 아카데미</div>
+            <!-- --- 여기까지 수정 --- -->
             <div class="title-container">
                 <span class="main-title">[미디어 프론티어]</span>
                 <span class="sub-title">생성형 AI 마스터 클래스 과정</span>
