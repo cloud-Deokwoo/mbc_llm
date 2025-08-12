@@ -197,7 +197,10 @@
             <div class="sidebar-title">과정 목차</div>
             <nav>
                 <ul>
-                    <li><a href="#ai-llm" class="nav-link active">🤖 AI & LLM</a></li>
+                    <!-- --- Intro 메뉴 추가 --- -->
+                    <li><a href="#intro" class="nav-link active">🌟 Intro</a></li>
+                    <!-- --- active 클래스 이동 --- -->
+                    <li><a href="#ai-llm" class="nav-link">🤖 AI & LLM</a></li>
                     <li><a href="#prompt" class="nav-link">💡 프롬프트 엔지니어링</a></li>
                     <li><a href="#video" class="nav-link">🎬 영상 제작</a></li>
                     <li><a href="#audio" class="nav-link">🔊 오디오</a></li>
@@ -211,16 +214,19 @@
         </aside>
 
         <main id="main-content">
-            <section id="ai-llm" class="content-section active">
+            <!-- --- Intro 섹션 추가 --- -->
+            <section id="intro" class="content-section active">
+                <h2>🌟 Intro</h2>
+                <ul>
+                    <li><a href="intro.html" target="_blank">과정 소개 페이지</a></li>
+                </ul>
+            </section>
+            
+            <!-- --- Part 1, 2 내용 삭제 및 active 클래스 제거 --- -->
+            <section id="ai-llm" class="content-section">
                 <h2>🤖 AI & LLM (대규모 언어 모델)</h2>
                 <ul>
                     <li><a href="llm/index.html" target="_blank">LLM 소개 페이지</a></li>
-                    <li><a href="llm/part1/AI_what.html" target="_blank">Part 1: AI란 무엇인가?</a></li>
-                    <li><a href="llm/part1/AI_history.html" target="_blank">Part 1: AI의 역사</a></li>
-                    <li><a href="llm/part1/AI_ML_DL.html" target="_blank">Part 1: AI, 머신러닝, 딥러닝</a></li>
-                    <li><a href="llm/part2/LLM_what.html" target="_blank">Part 2: LLM이란 무엇인가?</a></li>
-                    <li><a href="llm/part2/LLM_how.html" target="_blank">Part 2: LLM은 어떻게 탄생했나?</a></li>
-                    <li><a href="llm/part2/LLM_limit.html" target="_blank">Part 2: LLM의 한계</a></li>
                 </ul>
             </section>
 
