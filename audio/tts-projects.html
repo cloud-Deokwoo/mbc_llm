@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TTS 영상 콘텐츠 제작 실전 프로젝트</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #111827; /* Dark Background */
+            color: #d1d5db; /* Light Gray Text */
+        }
+        .project-card {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            display: none; /* Initially hide all projects */
+        }
+        .project-card.active {
+            display: block; /* Show active project */
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1, h2, h3, h4 {
+            color: #f9fafb;
+        }
+        strong {
+            color: #67e8f9; /* Cyan Accent */
+        }
+        .step-counter {
+            background-color: #0e7490;
+            color: #ffffff;
+            border-radius: 9999px;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+        .list-item {
+            background-color: rgba(55, 65, 81, 0.3);
+            border-left: 4px solid #0e7490;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease-in-out;
+        }
+        .sidebar-link.active {
+            background-color: #0e7490;
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="flex">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 h-screen bg-gray-900/70 backdrop-blur-sm p-4 fixed top-0 left-0 border-r border-slate-800 hidden md:block">
+            <h1 class="text-2xl font-bold text-cyan-400 mb-10 px-2">실전 프로젝트</h1>
+            <nav>
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" class="sidebar-link active block font-medium py-2 px-4 rounded-lg" data-target="project1">
+                            프로젝트 1: 감성 VLOG
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link block font-medium py-2 px-4 rounded-lg hover:bg-slate-700" data-target="project2">
+                            프로젝트 2: 지식 콘텐츠
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="sidebar-link block font-medium py-2 px-4 rounded-lg hover:bg-slate-700" data-target="project3">
+                            프로젝트 3: 캐릭터 애니메이션
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <div class="w-full md:ml-64">
+            <div class="container mx-auto px-4 py-8 md:py-16">
+
+                <header class="text-center mb-16">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">TTS 영상 콘텐츠 제작 실전 프로젝트</h1>
+                    <p class="text-lg text-slate-400 max-w-3xl mx-auto">AI 목소리(TTS)를 활용하면 내레이션 녹음의 부담 없이 누구나 쉽고 재미있게 영상 콘텐츠를 만들 수 있습니다. 이 가이드에서는 각기 다른 개성을 가진 <strong>네이버 클로바더빙</strong>과 <strong>ElevenLabs</strong>를 활용하여, 세 가지 종류의 영상 프로젝트를 기획부터 완성까지 따라 해보는 과정을 안내합니다.</p>
+                </header>
+
+                <main>
+                    <!-- 프로젝트 1: VLOG -->
+                    <section id="project1" class="project-card active">
+                        <h2 class="text-3xl font-bold mb-2">프로젝트 1: 나의 감성 VLOG 더빙하기</h2>
+                        <p class="text-slate-400 mb-6">[콘셉트] 주말에 다녀온 예쁜 카페에서의 하루를 친구에게 소개하듯 잔잔한 목소리로 담아내는 1분짜리 브이로그 영상.</p>
+                        <div class="mb-4 inline-block bg-cyan-900/50 text-cyan-300 text-sm font-medium px-3 py-1 rounded-full">[사용 서비스] 네이버 클로바더빙</div>
+
+                        <div class="mt-8 space-y-8">
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">1</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">기획 및 촬영 (가장 중요한 준비 과정!)</h3>
+                                    <ul class="space-y-2 list-disc list-inside text-slate-300">
+                                        <li><strong>목표 설정:</strong> 이 영상을 보는 친구들이 '아, 이 카페 정말 가보고 싶다!'라고 느끼게 만들자. 카페의 아늑하고 따뜻한 분위기를 전달하는 것이 핵심입니다.</li>
+                                        <li><strong>스토리보드 구상:</strong> 햇살 비치는 외관 → 문 열고 들어서는 발걸음 → 커피/디저트 클로즈업 → 창가 자리 풍경 → 아기자기한 소품들 → 나서는 장면 순으로 흐름을 구상합니다.</li>
+                                        <li><strong>촬영:</strong> 스마트폰으로 각 장면에 맞는 5~10초 내외의 짧은 영상 클립들을 촬영합니다.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">2</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">VLOG 스타일 대본 작성하기</h3>
+                                    <p class="mb-3">실제 친구에게 말하듯이, 편안하고 자연스러운 말투로 작성하는 것이 포인트입니다.</p>
+                                    <div class="list-item p-4 rounded-lg">
+                                        <p class="italic text-slate-400">"주말 오후, 우연히 보석 같은 카페를 발견했어요. 문을 여는 순간부터 따뜻한 커피 향이 가득 반겨주네요..."</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">3</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">클로바더빙으로 영상에 생명 불어넣기</h3>
+                                    <ol class="space-y-2 list-decimal list-inside">
+                                        <li><strong>프로젝트 생성 및 영상 불러오기:</strong> `새 프로젝트 시작` → `영상 파일` 선택 후 촬영한 클립들을 모두 불러옵니다.</li>
+                                        <li><strong>목소리 선택:</strong> VLOG에 어울리는 다정하고 친근한 목소리(예: 여성 '하윤')를 선택합니다.</li>
+                                        <li><strong>장면별 더빙 작업:</strong> 타임라인을 보며 각 영상 클립에 맞춰 작성한 대본을 `+ 더빙 추가`로 입력합니다.</li>
+                                        <li><strong>배경음악 추가:</strong> `배경음악` 탭에서 '카페', '어쿠스틱' 등으로 검색하여 BGM을 추가하고, <strong>BGM 볼륨은 20~30% 정도로 낮춰주는 것</strong>이 좋습니다.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">4</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">최종 확인 및 공유</h3>
+                                    <p>전체 영상을 재생하며 목소리, 배경음악, 타이밍이 잘 맞는지 최종 확인한 후, `추출하기`를 눌러 영상 파일로 저장하고 SNS에 공유합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 프로젝트 2: 지식 정보 콘텐츠 -->
+                    <section id="project2" class="project-card">
+                        <h2 class="text-3xl font-bold mb-2">프로젝트 2: 지식 정보 콘텐츠 만들기</h2>
+                        <p class="text-slate-400 mb-6">[콘셉트] '우주에 관한 놀라운 사실 3가지'를 주제로, 신뢰감 있는 목소리와 관련 이미지를 활용한 1분 30초짜리 정보성 쇼츠 영상.</p>
+                        <div class="mb-4 inline-block bg-cyan-900/50 text-cyan-300 text-sm font-medium px-3 py-1 rounded-full">[사용 서비스] ElevenLabs</div>
+
+                        <div class="mt-8 space-y-8">
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">1</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">기획 및 자료 조사</h3>
+                                    <ul class="space-y-2 list-disc list-inside">
+                                        <li><strong>목표:</strong> 시청자들이 우주에 대한 새로운 지식을 얻고 흥미를 느끼게 합니다.</li>
+                                        <li><strong>자료 준비:</strong> '블랙홀', '중성자별' 등 사실을 정하고, 무료 스톡 사이트(Pexels, Pixabay 등)에서 관련 이미지나 영상을 다운로드합니다.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">2</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">신뢰감을 주는 정보성 대본 작성</h3>
+                                    <p class="mb-3">정확한 정보를 명확하고 간결한 문장으로 전달하는 것이 중요합니다.</p>
+                                     <div class="list-item p-4 rounded-lg">
+                                        <p class="italic text-slate-400">"(인트로) 우리가 아는 우주는, 사실 거대한 미스터리로 가득 차 있습니다... (사실 1) 첫째, 설탕 한 스푼에 도시 전체 무게가 담긴 별이 있습니다. 바로 '중성자별'입니다..."</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">3</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">ElevenLabs로 전문 내레이션 제작하기</h3>
+                                    <ol class="space-y-2 list-decimal list-inside">
+                                        <li><strong>목소리 찾기:</strong> `Voice Library`에서 `Narration` 카테고리의 차분하고 신뢰감 있는 목소리(예: "George")를 찾아 추가합니다.</li>
+                                        <li><strong>음성 생성:</strong> `Speech Synthesis` 탭에서 `Stability`를 70~80%로 설정하여 안정적인 톤을 만들고, 대본을 입력해 음성 파일을 생성 후 다운로드합니다.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">4</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">영상 편집 프로그램으로 합치기</h3>
+                                    <p>CapCut, VLLO 등 무료 편집 툴을 사용합니다. 먼저 내레이션 오디오 파일을 타임라인에 올린 후, 음성에 맞춰 준비한 이미지/영상을 배치하고 자막을 추가하여 완성합니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 프로젝트 3: 캐릭터 애니메이션 -->
+                    <section id="project3" class="project-card">
+                        <h2 class="text-3xl font-bold mb-2">프로젝트 3: 캐릭터 대화형 애니메이션 만들기</h2>
+                        <p class="text-slate-400 mb-6">[콘셉트] 현명한 마법사와 호기심 많은 제자가 대화하는 1분짜리 짧은 판타지 애니메이션.</p>
+                        <div class="mb-4 inline-block bg-cyan-900/50 text-cyan-300 text-sm font-medium px-3 py-1 rounded-full">[사용 서비스] 네이버 클로바더빙 & ElevenLabs</div>
+
+                        <div class="mt-8 space-y-8">
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">1</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">간단한 스토리와 캐릭터 구상</h3>
+                                    <ul class="space-y-2 list-disc list-inside">
+                                        <li><strong>스토리:</strong> 제자가 전설의 물약을 만드는 법을 묻고, 마법사가 재료의 위험성을 경고하는 짧은 대화.</li>
+                                        <li><strong>준비물:</strong> 각 캐릭터의 이미지 파일(배경 투명 PNG 추천), 마법사의 서재 같은 배경 이미지.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                             <div class="flex items-start gap-4">
+                                <div class="step-counter">2</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">캐릭터별 대본 작성하기</h3>
+                                     <div class="list-item p-4 rounded-lg space-y-2">
+                                        <p class="italic text-slate-400"><strong>리나:</strong> "스승님! '별의 눈물' 물약을 만드는 법을 드디어 알아냈어요! 재료는 모두 준비됐습니다!"</p>
+                                        <p class="italic text-slate-400"><strong>엘더:</strong> (한숨 쉬며) "리나, 그 물약은 아주 위험하단다..."</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">3</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">각 서비스에서 캐릭터 목소리 제작하기</h3>
+                                    <ol class="space-y-2 list-decimal list-inside">
+                                        <li><strong>마법사 '엘더' (클로바더빙):</strong> 중후하고 나이 든 목소리(예: '민상')를 선택하고, 속도를 느리게, 톤을 낮게 설정하여 신중함을 더한 후 대사별로 다운로드합니다.</li>
+                                        <li><strong>제자 '리나' (ElevenLabs):</strong> `Voice Design`으로 젊고 밝은 여성 목소리를 만들고, `Stability`를 40~50%로 설정해 감정이 잘 드러나게 한 후 대사별로 다운로드합니다.</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="flex items-start gap-4">
+                                <div class="step-counter">4</div>
+                                <div>
+                                    <h3 class="text-2xl font-semibold mb-2">영상 편집 프로그램으로 애니메이션 완성하기</h3>
+                                    <p>배경 위에 캐릭터 이미지를 배치하고, 다운로드한 음성 파일들을 대본 순서에 맞게 배치합니다. 목소리가 나올 때 해당 캐릭터 이미지가 살짝 움직이는 효과를 주면 더욱 생동감 넘칩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.sidebar-link');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+
+                    // Handle active link state
+                    sidebarLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+
+                    // Handle content display
+                    const targetId = link.dataset.target;
+                    projectCards.forEach(card => {
+                        if (card.id === targetId) {
+                            card.classList.add('active');
+                        } else {
+                            card.classList.remove('active');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>
