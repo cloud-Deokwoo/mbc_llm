@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapCut 웹 편집기 기능 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Midnight Onyx -->
+    <!-- Application Structure Plan: A single-page application with a fixed left sidebar for navigation and a main content area. This structure provides a clear overview and allows for non-linear exploration of CapCut's features. Users can click on a feature category in the sidebar to smoothly scroll to the relevant section. An IntersectionObserver will highlight the currently viewed section in the navigation, enhancing user orientation. On mobile, the sidebar is hidden and can be toggled with a hamburger menu. This design was chosen for its intuitive, app-like feel which makes browsing documentation more engaging and efficient than a simple text page. -->
+    <!-- Visualization & Content Choices: The report content is textual and descriptive, not quantitative. Therefore, traditional charts are not suitable. Instead, the information is organized using semantic HTML sections and a grid of styled cards (using Tailwind CSS) for each feature. Goal: Inform/Organize -> Method: Interactive Sidebar Navigation + Content Cards -> Interaction: Click-to-scroll navigation, scroll-based active state highlighting -> Justification: This structure enhances readability and discoverability of information. It breaks down a long document into manageable, visually distinct chunks. Library/Method: Vanilla JavaScript for interactions, Tailwind CSS for styling. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .active-nav {
+            background-color: #4a5568; /* bg-gray-700 */
+            color: #ffffff;
+            font-weight: 700;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* bg-gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563; /* bg-gray-600 */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280; /* bg-gray-500 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-200">
+
+    <div class="flex">
+        <aside id="sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen bg-gray-800 border-r border-gray-700 transition-transform -translate-x-full md:translate-x-0">
+            <div class="h-full px-3 py-4 overflow-y-auto">
+                <h1 class="text-2xl font-bold text-white px-2 mb-6">CapCut 가이드</h1>
+                <ul class="space-y-2 font-medium" id="nav-menu">
+                    <li><a href="#media" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">🎬<span class="ml-3">미디어</span></a></li>
+                    <li><a href="#editing" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">✂️<span class="ml-3">편집</span></a></li>
+                    <li><a href="#audio" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">🎵<span class="ml-3">오디오</span></a></li>
+                    <li><a href="#text" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">✍️<span class="ml-3">텍스트</span></a></li>
+                    <li><a href="#effects" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">✨<span class="ml-3">효과/필터/전환</span></a></li>
+                    <li><a href="#adjust" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">🎨<span class="ml-3">조정</span></a></li>
+                    <li><a href="#export" class="nav-link flex items-center p-2 text-gray-200 rounded-lg hover:bg-gray-700">📤<span class="ml-3">내보내기</span></a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <button id="menu-toggle" class="md:hidden fixed top-4 left-4 z-50 p-2 text-gray-200 bg-gray-800 rounded-md shadow-lg border border-gray-700">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+        </button>
+        
+        <main class="w-full md:ml-64 p-6 md:p-10">
+            <header class="mb-12">
+                <h1 class="text-4xl md:text-5xl font-extrabold text-white">CapCut 웹 편집기 기능 상세 가이드</h1>
+                <p class="mt-4 text-lg text-gray-400">초보자부터 전문가까지, CapCut의 강력한 기능들을 쉽고 빠르게 배워보세요. 각 기능을 클릭하여 상세한 설명과 활용 예시를 확인할 수 있습니다.</p>
+            </header>
+
+            <section id="media" class="scroll-mt-20 mb-16">
+                <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">1. 미디어 (Media) - 영상 소스 관리</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">로컬 파일 업로드</h3>
+                        <p class="text-gray-400 mb-4">사용자의 컴퓨터, 드롭박스, 구글 드라이브에 저장된 동영상, 이미지, 오디오 파일을 직접 업로드하여 사용할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 친구 결혼식 영상을 만들기 위해 내 컴퓨터의 'D:\결혼식\영상원본' 폴더에 있는 파일들을 업로드하여 편집을 시작합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">스톡 영상/이미지 라이브러리</h3>
+                        <p class="text-gray-400 mb-4">CapCut이 자체적으로 제공하는 방대한 양의 스톡 영상과 이미지를 무료로 사용할 수 있습니다. 특정 키워드로 검색하여 영상 콘셉트에 맞는 소스를 쉽게 찾을 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 영상 인트로가 허전할 때 '커피'를 검색하여 김이 나는 커피잔 영상을 추가해 감성적인 분위기를 연출합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">프로젝트 공간 (Space)</h3>
+                        <p class="text-gray-400 mb-4">업로드한 파일들을 클라우드 공간에 저장하고 관리할 수 있어, 여러 장치에서 작업을 이어가거나 팀과 파일을 공유하기 편리합니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 집에서 작업하던 브이로그 영상을 'Space'에 저장한 뒤, 다음 날 카페에서 노트북으로 접속해 편집을 자연스럽게 이어갑니다.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="editing" class="scroll-mt-20 mb-16">
+                <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">2. 편집 (Editing) - 영상 구성 및 효과</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">자르기/분할</h3>
+                        <p class="text-gray-400 mb-4">영상 클립의 불필요한 부분을 잘라내거나, 하나의 클립을 여러 개로 나눌 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 인터뷰 영상에서 말이 헛나온 부분을 '분할' 기능으로 잘라내고 자연스럽게 이어 붙여 깔끔한 영상을 만듭니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">속도 조절</h3>
+                        <p class="text-gray-400 mb-4">'속도 곡선' 기능으로 다이내믹한 연출이 가능합니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 농구공이 골대로 들어가는 결정적인 순간을 '속도 곡선'을 이용해 순간적으로 느리게 만들어 극적인 효과를 줍니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">역재생</h3>
+                        <p class="text-gray-400 mb-4">영상 클립을 거꾸로 재생하여 독특한 효과를 줍니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 수영장에서 다이빙하는 영상을 '역재생'하여 물 밖으로 솟아오르는 신기한 장면을 연출합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">크롭/회전</h3>
+                        <p class="text-gray-400 mb-4">화면의 특정 부분만 잘라내거나, 영상을 회전시키고 좌우/상하 반전시킬 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 스마트폰으로 세로로 찍은 영상을 '회전'시켜 가로로 눕히고, '크롭' 기능으로 화면에 꽉 차게 조절합니다.</p>
+                    </div>
+                     <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">화면 비율</h3>
+                        <p class="text-gray-400 mb-4">유튜브(16:9), 숏폼(9:16) 등 원하는 플랫폼에 맞는 화면 비율로 손쉽게 변경할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 가로로 길게 촬영한 여행 영상을 인스타그램 릴스에 올리기 위해 '화면 비율'을 9:16으로 변경합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">키프레임(Keyframe)</h3>
+                        <p class="text-gray-400 mb-4">영상 클립의 위치, 크기, 투명도 등을 시간에 따라 변화시켜 움직이는 효과를 정교하게 만들 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 화면 왼쪽에서 나타난 자막이 5초 뒤에 오른쪽으로 이동하며 사라지도록 시작과 끝 위치에 '키프레임'을 추가합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">인/아웃 애니메이션</h3>
+                        <p class="text-gray-400 mb-4">클립이 시작되거나 끝날 때 나타나고 사라지는 효과를 간단하게 적용할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 영상 첫 부분에 회사 로고가 '페이드 인' 효과로 서서히 나타나도록 설정하여 전문적인 느낌을 줍니다.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="audio" class="scroll-mt-20 mb-16">
+                 <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">3. 오디오 (Audio) - 소리 편집</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">음악 라이브러리</h3>
+                        <p class="text-gray-400 mb-4">CapCut이 제공하는 저작권 걱정 없는 다양한 장르의 배경음악을 사용할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 신나는 브이로그를 위해 '여행' 카테고리에서 배경음악을 선택해 추가합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">효과음</h3>
+                        <p class="text-gray-400 mb-4">문 열리는 소리, 웃음소리 등 영상의 재미를 더하는 수많은 효과음을 제공합니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 개그 영상에서 재미있는 장면이 나올 때 '뿅!' 하는 '효과음'을 넣어 재미를 더합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">음량 조절 및 페이드</h3>
+                        <p class="text-gray-400 mb-4">오디오 클립의 볼륨을 조절하고, 소리가 서서히 나타나거나 사라지게 만들 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 영상이 끝날 때 배경음악 소리가 갑자기 끊기지 않도록 '페이드 아웃' 효과를 적용합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">음원 추출</h3>
+                        <p class="text-gray-400 mb-4">영상 클립에서 오디오만 분리하여 따로 편집할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 라이브 공연 영상에서 노래 오디오만 '음원 추출'하여 다른 영상의 배경음악으로 사용합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">음성 변조</h3>
+                        <p class="text-gray-400 mb-4">녹음된 목소리를 로봇, 괴물 등 재미있는 목소리로 바꿀 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 인터뷰 영상에서 익명성을 보장하기 위해 목소리를 '음성 변조' 기능으로 낮고 굵게 바꿉니다.</p>
+                    </div>
+                 </div>
+            </section>
+            
+            <section id="text" class="scroll-mt-20 mb-16">
+                 <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">4. 텍스트 (Text) - 자막 및 제목</h2>
+                 <div class="grid md:grid-cols-2 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">텍스트 추가 및 스타일링</h3>
+                        <p class="text-gray-400 mb-4">원하는 글자를 입력하고 폰트, 크기, 색상, 배경, 테두리 등을 자유롭게 꾸밀 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 영상 하단에 '제주도 푸른 바다'라는 자막을 넣고, 흰색 글자에 검은색 테두리를 추가하여 잘 보이게 만듭니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">텍스트 템플릿 및 효과</h3>
+                        <p class="text-gray-400 mb-4">디자이너가 미리 만들어 둔 스타일리시한 텍스트 템플릿과 애니메이션 효과를 클릭 한 번으로 적용할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 영상 제목을 화려하게 만들고 싶을 때, '텍스트 템플릿'에서 네온사인 효과가 적용된 디자인을 선택합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">자동 자막</h3>
+                        <p class="text-gray-400 mb-4">영상 속 음성을 AI가 자동으로 인식하여 자막을 만들어 줍니다. 오타만 수정하면 되므로 자막 작업 시간을 획기적으로 줄여줍니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 10분짜리 강의 영상의 자막을 '자동 자막' 기능으로 실행한 후 몇 개의 오타만 수정하여 빠르게 완성합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">텍스트를 음성으로 (TTS)</h3>
+                        <p class="text-gray-400 mb-4">입력한 텍스트를 AI 목소리로 읽어주는 기능으로, 내레이션이 필요할 때 유용합니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 요리 영상에서 레시피를 설명하는 내레이션이 필요할 때, 텍스트로 레시피를 입력하고 'TTS' 기능을 적용합니다.</p>
+                    </div>
+                 </div>
+            </section>
+            
+            <section id="effects" class="scroll-mt-20 mb-16">
+                 <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">5. 효과 (Effects) & 필터 (Filters) & 전환 (Transitions)</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">효과 (Effects)</h3>
+                        <p class="text-gray-400 mb-4">글리치, 노이즈, 파티클 등 영상 클립 전체에 적용하여 특별한 분위기를 연출하는 시각 효과입니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 옛날 느낌을 내고 싶을 때, 영상 전체에 '필름'이나 '노이즈' '효과'를 적용하여 빈티지한 분위기를 만듭니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">필터 (Filters)</h3>
+                        <p class="text-gray-400 mb-4">영상의 색감을 보정하여 따뜻하거나 차가운 느낌, 혹은 영화 같은 분위기를 만듭니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 음식 영상에 '미식' '필터'를 적용하여 음식이 더 맛있어 보이도록 색감을 따뜻하게 보정합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">전환 (Transitions)</h3>
+                        <p class="text-gray-400 mb-4">두 개의 영상 클립 사이를 부드럽게 연결하는 효과입니다. (예: 페이드, 화면 닦아내기 등)</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 장소 A에서 B로 장면이 바뀔 때, '디졸브' '전환' 효과를 넣어 자연스럽게 연결합니다.</p>
+                    </div>
+                 </div>
+            </section>
+            
+            <section id="adjust" class="scroll-mt-20 mb-16">
+                 <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">6. 조정 (Adjust) - 색상 보정</h2>
+                 <div class="grid md:grid-cols-2 gap-6">
+                     <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">기본 조정</h3>
+                        <p class="text-gray-400 mb-4">밝기, 대비, 채도, 선명도 등 기본적인 항목을 슬라이더로 쉽게 조절합니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 야외에서 너무 어둡게 찍힌 영상을 '밝기'와 '그림자' 슬라이더를 조절하여 화사하게 만듭니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">고급 조정 (HSL/곡선)</h3>
+                        <p class="text-gray-400 mb-4">특정 색상만 채도를 높이거나, 영상의 밝은 영역과 어두운 영역을 분리하여 정교하게 색을 보정할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 영상 속 인물의 옷 색깔인 파란색만 더 선명하게 만들고 싶을 때, 'HSL' 기능에서 파란색 계열의 채도만 높여줍니다.</p>
+                    </div>
+                 </div>
+            </section>
+            
+            <section id="export" class="scroll-mt-20 mb-16">
+                 <h2 class="text-3xl font-bold text-white border-l-4 border-amber-500 pl-4 mb-8">7. 내보내기 (Export) - 영상 완성 및 공유</h2>
+                 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                     <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">해상도 및 프레임</h3>
+                        <p class="text-gray-400 mb-4">720p, 1080p(FHD), 2K/4K(UHD) 등 원하는 화질을 선택하고, 초당 프레임 수(fps)를 설정할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 풍경 영상을 유튜브에 올리기 위해 '해상도'는 4K, '프레임'은 30fps로 설정하여 내보냅니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">포맷</h3>
+                        <p class="text-gray-400 mb-4">일반적으로 가장 많이 사용되는 MP4 포맷으로 저장됩니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 편집이 완료된 영상을 'MP4' '포맷'으로 저장하여 대부분의 기기에서 문제없이 재생되도록 합니다.</p>
+                    </div>
+                    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-amber-500 transition-colors">
+                        <h3 class="font-bold text-xl mb-2 text-white">빠른 공유</h3>
+                        <p class="text-gray-400 mb-4">완성된 영상을 컴퓨터에 저장하지 않고 바로 TikTok, YouTube 등에 업로드할 수 있습니다.</p>
+                        <p class="text-sm text-amber-300 bg-gray-700 p-3 rounded-md">✨ <strong>예시</strong>: 댄스 챌린지 영상을 만든 후, '빠른 공유' 기능을 이용해 곧바로 틱톡에 업로드합니다.</p>
+                    </div>
+                 </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuToggle = document.getElementById('menu-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            menuToggle.addEventListener('click', () => {
+                sidebar.classList.toggle('-translate-x-full');
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (window.innerWidth < 768) {
+                       sidebar.classList.add('-translate-x-full');
+                    }
+                });
+            });
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.4
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.parentElement.classList.remove('active-nav');
+                            if (link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.parentElement.classList.add('active-nav');
+                            }
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
+
