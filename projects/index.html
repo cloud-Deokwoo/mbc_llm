@@ -1,0 +1,235 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로젝트 허브 | MBC AI 마스터클래스</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <style>
+        body {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 122, 204, 0.22) 0%, rgba(138, 43, 226, 0.22) 100%);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: var(--spacing-2xl);
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 25%, rgba(0, 122, 204, 0.3), transparent 60%),
+                        radial-gradient(circle at 80% 0%, rgba(138, 43, 226, 0.25), transparent 65%);
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-title {
+            font-size: clamp(2.4rem, 4vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(1.05rem, 2vw, 1.35rem);
+            max-width: 720px;
+            margin-bottom: var(--spacing-xl);
+        }
+        .badge-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+        .badge-list li {
+            list-style: none;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 999px;
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+        }
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+        .project-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            box-shadow: var(--shadow-md);
+            transition: transform var(--transition-fast), border-color var(--transition-fast);
+        }
+        .project-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+        }
+        .project-card h3 {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+        }
+        .project-meta {
+            display: flex;
+            gap: var(--spacing-sm);
+            flex-wrap: wrap;
+        }
+        .project-meta span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: var(--spacing-2xs) var(--spacing-sm);
+            border-radius: 999px;
+            font-size: var(--font-size-sm);
+            background: rgba(0, 122, 204, 0.18);
+            border: 1px solid rgba(0, 122, 204, 0.35);
+            color: var(--text-primary);
+        }
+        .project-meta span:nth-child(2) {
+            background: rgba(40, 167, 69, 0.22);
+            border-color: rgba(40, 167, 69, 0.35);
+        }
+        .project-meta span:nth-child(3) {
+            background: rgba(255, 140, 0, 0.18);
+            border-color: rgba(255, 140, 0, 0.4);
+        }
+        .project-card p {
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .project-action {
+            margin-top: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .project-action svg {
+            width: 18px;
+            height: 18px;
+        }
+        .tips-card {
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+        .tips-card ul {
+            margin: 0;
+            padding-left: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .tips-card li { margin-bottom: var(--spacing-sm); }
+        .tips-card li strong { color: var(--text-primary); }
+    </style>
+</head>
+<body>
+    <header class="global-header">
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 MBC AI 마스터클래스</a>
+            <span class="breadcrumb-separator">›</span>
+            <span>🚀 Projects 허브</span>
+        </div>
+        <div class="header-tag">실전 과제</div>
+        <a href="../index.html" class="btn-home">코스 홈</a>
+    </header>
+
+    <main class="main-container">
+        <div class="content-wrapper">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">실전 프로젝트 허브</h1>
+                    <p class="hero-subtitle">이전 챕터에서 익힌 프롬프트, Sora, 편집 도구 활용 노하우를 바탕으로 세 가지 실습 프로젝트를 진행해 보세요. 기획부터 합성, 인터랙션까지 실제 제작 흐름을 경험하며 포트폴리오로 확장할 수 있습니다.</p>
+                    <ul class="badge-list">
+                        <li>실전 중심 워크플로우</li>
+                        <li>강사 피드백 제출 링크 포함</li>
+                        <li>AI · 영상 · 모션 그래픽 통합</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="section-heading">프로젝트 선택</h2>
+                <p class="body-text" style="margin-bottom: var(--spacing-xl);">난이도와 제작 방향을 참고해 현재 수준과 필요에 맞는 프로젝트부터 시작해 보세요. 순서대로 진행하면 점진적으로 스킬을 확장할 수 있습니다.</p>
+
+                <div class="project-grid">
+                    <a class="project-card" href="first_intro_generate.html">
+                        <h3>🎬 프로젝트 1. 10초 브랜드 인트로</h3>
+                        <div class="project-meta">
+                            <span>⏱ 약 60분</span>
+                            <span>도구: After Effects</span>
+                            <span>포커스: 모션&VFX</span>
+                        </div>
+                        <p>가상의 스마트폰 제품 런칭을 위한 10초 인트로 영상을 제작합니다. 모션 그래픽, 라이트, 3D 레이어를 활용해 브랜드 이미지를 임팩트 있게 표현해 보세요.</p>
+                        <span class="project-action">바로 시작하기
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a class="project-card" href="second-info.html">
+                        <h3>📊 프로젝트 2. 인터랙티브 인포그래픽</h3>
+                        <div class="project-meta">
+                            <span>⏱ 약 75분</span>
+                            <span>도구: After Effects · Chart.js</span>
+                            <span>포커스: 데이터 비주얼</span>
+                        </div>
+                        <p>제품 만족도 데이터를 기반으로 움직이는 인포그래픽 영상을 설계합니다. 키네틱 타이포, 데이터 차트, 카메라 워크를 결합해 정보 전달력을 극대화합니다.</p>
+                        <span class="project-action">워크플로우 보기
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </a>
+
+                    <a class="project-card" href="third-hud.html">
+                        <h3>🛡 프로젝트 3. 미래형 HUD 합성</h3>
+                        <div class="project-meta">
+                            <span>⏱ 약 90분</span>
+                            <span>도구: After Effects · AI 도구</span>
+                            <span>포커스: 3D & 인터랙션</span>
+                        </div>
+                        <p>실사 영상에 홀로그램 HUD를 합성해 몰입감 있는 인터페이스를 구현합니다. 움직임 추적, 3D 레이어, AI 로토 브러시를 활용한 고급 합성 스킬을 연습합니다.</p>
+                        <span class="project-action">가이드 확인
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5 12H19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 5L19 12L12 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="tips-card">
+                <h2 class="section-heading" style="margin-bottom: var(--spacing-md);">진행 팁</h2>
+                <ul>
+                    <li><strong>사전 준비:</strong> 프로젝트별 필요 리소스를 미리 확보하면 제작 흐름이 끊기지 않습니다. (예: 제품 이미지, 배경 음악, 데모 영상)</li>
+                    <li><strong>제출 & 피드백:</strong> 완성본은 안내된 드라이브 링크로 제출하고, 강사 피드백을 통해 개선 포인트를 체크하세요.</li>
+                    <li><strong>확장 연습:</strong> 동일 워크플로우를 다른 제품이나 테마로 변형해 반복 학습하면 실무 응용력이 빠르게 향상됩니다.</li>
+                </ul>
+            </section>
+
+            <div class="nav-controls">
+                <a href="../audio/index.html" class="nav-button" data-action="previous">← 이전: 🔊 Audio</a>
+                <a href="../capcut/index.html" class="nav-button" data-action="next">다음: ✂️ CapCut →</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,17 @@
+﻿날짜: 20250926
+프로젝트: mbc_llm_codex
+
+진행한 작업 요약:
+- 네비게이션 흐름을 Intro → LLM → Prompt → Sora → 영상 제작(Premiere) → After Effects → Audio → Projects 순으로 정비하고 하단 버튼을 수정했습니다.
+- sora/index.html을 common.css 기반 디자인으로 재작성하여 Intro와 톤을 통일하고 UTF-8로 재저장했습니다.
+- prompt/index.html을 동일한 디자인 체계로 재작성했습니다.
+- tailwind 기반으로 깨졌던 several pages(프롬프트, Sora, Premiere, After Effects, Audio 등)를 복원해 텍스트 깨짐을 해결했습니다.
+- common.js를 다시 작성하여 네비게이션 및 TOC, 진행률 기능을 복원했습니다.
+- 프로젝트 전체가 UTF-8 텍스트로 저장되도록 정리했습니다.
+
+다음 작업 시 참고: Intro/LLM/Prompt/Sora/Premiere/AfterEffects/Audio/Projects 순서를 기준으로 nav-button을 유지하세요.
+추가 작업:
+- audio/compare.html, audio/tts.html, audio/tts-projects.html 하단 네비게이션에 수동 플래그를 지정하고 common.js를 수정해 커스텀 링크 흐름(서비스 비교 → TTS 기능 → TTS 프로젝트)이 유지되도록 했습니다.
+- CapCut 가이드를 common.css 기반 다크 테마로 리디자인하고 Projects 허브에서 CapCut 페이지로 이어지도록 네비게이션을 연결했습니다.
+- COURSE_STRUCTURE에 CapCut 단계를 추가해 전체 이전/다음 흐름에 포함시켰습니다.
+- sora/loop.html → preset.html → re-cut.html → remix.html 페이지가 순차적으로 이동하도록 nav-button 수동 플래그를 반영했습니다.

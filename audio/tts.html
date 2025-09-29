@@ -1,389 +1,299 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 음성(TTS) 서비스 대화형 가이드</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>AI TTS 기능 가이드 | MBC AI 마스터클래스</title>
+    <link rel="stylesheet" href="../css/common.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Luxurious Dark (Charcoal, Slate, with a bright Cyan accent) -->
-    <!-- Application Structure Plan: A guided dashboard structure was chosen to transform the static reports into an interactive decision-making tool. The user flow starts with a high-level comparison, allows deep dives into specific tools, and offers a use-case-based recommendation system and a data visualization chart. This non-linear approach empowers users to find the information most relevant to their needs quickly, enhancing usability over a simple report layout. -->
-    <!-- Visualization & Content Choices: Report Info -> Goal -> Viz/Method -> Interaction. (1) Service Comparison -> Compare -> Interactive HTML Table -> Hover highlights. (2) Features -> Inform -> Clickable list -> JS toggle to show details. (3) Use Cases -> Recommend -> Interactive Buttons -> JS updates a result panel. (4) Overall Rating -> Compare -> Chart.js Bar Chart -> Hover for tooltips. This structure breaks down dense text into digestible, interactive chunks, using the best tool for each communication goal. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #111827; /* Dark Background */
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 122, 204, 0.22) 0%, rgba(34, 211, 238, 0.22) 100%);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 15% 25%, rgba(0, 122, 204, 0.28), transparent 60%),
+                        radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.25), transparent 65%);
+        }
+        .hero-content { position: relative; z-index: 1; }
+        .hero-title {
+            font-size: clamp(2.4rem, 4vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+        .hero-subtitle {
+            font-size: clamp(1.05rem, 2vw, 1.35rem);
+            color: var(--text-secondary);
+            max-width: 780px;
+        }
+        .section-block { margin-bottom: var(--spacing-2xl); }
+        .section-block > p { color: var(--text-secondary); margin-bottom: var(--spacing-lg); }
+        .feature-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+        .feature-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+        .feature-card h3 { font-size: var(--font-size-xl); margin: 0; }
+        .feature-card ul { margin: 0; padding-left: var(--spacing-lg); color: var(--text-secondary); }
+        .details-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+        details.service-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        details.service-card summary {
+            list-style: none;
+            cursor: pointer;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-primary);
+        }
+        details.service-card summary::after {
+            content: '⌄';
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: transform var(--transition-fast);
+        }
+        details.service-card[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .service-content {
+            padding: 0 var(--spacing-xl) var(--spacing-xl);
+            color: var(--text-secondary);
+        }
+        .service-content ul { padding-left: var(--spacing-lg); margin: 0; }
+        .callout {
+            background: rgba(34, 211, 238, 0.15);
+            border: 1px solid rgba(34, 211, 238, 0.35);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            color: var(--text-primary);
         }
         .chart-container {
             position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 500px;
-            }
-        }
-        .nav-link {
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-        .nav-link.active {
-            color: #06b6d4; /* Bright Cyan */
-            border-bottom: 2px solid #06b6d4;
-        }
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            height: 380px;
+            max-width: 820px;
+            margin: 0 auto;
         }
     </style>
 </head>
-<body class="text-slate-300">
-
-    <header class="bg-gray-800/80 backdrop-blur-sm shadow-lg sticky top-0 z-10">
-        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-cyan-400">AI 음성(TTS) 서비스 가이드</h1>
-            <nav class="hidden md:flex space-x-6 text-slate-300">
-                <a href="#compare" class="nav-link-main hover:text-cyan-400">한눈에 비교</a>
-                <a href="#deep-dive" class="nav-link-main hover:text-cyan-400">상세 분석</a>
-                <a href="#recommend" class="nav-link-main hover:text-cyan-400">나에게 맞는 서비스</a>
-                <a href="#chart" class="nav-link-main hover:text-cyan-400">성능 차트</a>
-            </nav>
-            <button id="mobile-menu-button" class="md:hidden text-slate-300">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
-            </button>
+<body>
+    <header class="global-header">
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 MBC AI 마스터클래스</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html">🔊 Audio</a>
+            <span class="breadcrumb-separator">›</span>
+            <span>🗣️ TTS 기능 가이드</span>
         </div>
-        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 py-2">
-            <a href="#compare" class="block px-4 py-2 text-sm text-slate-300 hover:bg-gray-700 nav-link-main">한눈에 비교</a>
-            <a href="#deep-dive" class="block px-4 py-2 text-sm text-slate-300 hover:bg-gray-700 nav-link-main">상세 분석</a>
-            <a href="#recommend" class="block px-4 py-2 text-sm text-slate-300 hover:bg-gray-700 nav-link-main">나에게 맞는 서비스</a>
-            <a href="#chart" class="block px-4 py-2 text-sm text-slate-300 hover:bg-gray-700 nav-link-main">성능 차트</a>
-        </div>
+        <a href="index.html" class="btn-home">오디오 홈</a>
     </header>
 
-    <main class="container mx-auto p-4 md:p-8">
+    <main class="main-container">
+        <div class="content-wrapper">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">AI TTS 기능 가이드</h1>
+                    <p class="hero-subtitle">Vrew, 클로바더빙, ElevenLabs 등 주요 TTS 서비스를 목적별로 비교하고, 추천 워크플로우와 성능 차트를 제공합니다.</p>
+                </div>
+            </section>
 
-        <section id="compare" class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-2 text-slate-100">어떤 서비스를 써야 할까?</h2>
-            <p class="text-center text-slate-400 mb-10">각 서비스의 핵심 특징을 한눈에 비교하고 나에게 맞는 도구를 찾아보세요.</p>
-            <div class="overflow-x-auto">
-                <table class="min-w-full bg-gray-800 shadow-lg rounded-lg border border-slate-700">
-                    <thead class="bg-slate-700">
-                        <tr>
-                            <th class="p-4 text-left font-semibold text-slate-200">구분</th>
-                            <th class="p-4 text-left font-semibold text-slate-200">Vrew (브루)</th>
-                            <th class="p-4 text-left font-semibold text-slate-200">네이버 클로바더빙</th>
-                            <th class="p-4 text-left font-semibold text-slate-200">ElevenLabs</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-700">
-                        <tr class="hover:bg-slate-700/50">
-                            <td class="p-4 font-semibold">핵심 콘셉트</td>
-                            <td class="p-4">📝 텍스트로 영상을 편집하는 AI 편집기</td>
-                            <td class="p-4">🎞️ 영상에 목소리를 입히는 AI 더빙 툴</td>
-                            <td class="p-4">🎙️ 최고 품질의 목소리를 만드는 AI 성우</td>
-                        </tr>
-                        <tr class="hover:bg-slate-700/50">
-                            <td class="p-4 font-semibold">추천 대상</td>
-                            <td class="p-4">빠른 컷편집과 자동 자막이 필요한 크리에이터</td>
-                            <td class="p-4">영상 타이밍에 맞춰 섬세한 더빙이 필요한 사용자</td>
-                            <td class="p-4">가장 자연스러운 목소리와 음성 복제가 필요한 전문가</td>
-                        </tr>
-                        <tr class="hover:bg-slate-700/50">
-                            <td class="p-4 font-semibold">가장 강력한 기능</td>
-                            <td class="p-4 font-bold text-cyan-400">AI 컷 편집</td>
-                            <td class="p-4 font-bold text-cyan-400">타임라인 기반 더빙</td>
-                            <td class="p-4 font-bold text-cyan-400">음성 품질 & 보이스 클로닝</td>
-                        </tr>
-                    </tbody>
-                </table>
+            <section class="section-block">
+                <h2>핵심 기능 한눈에 보기</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <h3>🎛️ 제작 효율</h3>
+                        <p>편집 툴과 결합되어 있는지, 텍스트만으로 빠르게 더빙을 생성할 수 있는지를 확인하세요.</p>
+                        <ul>
+                            <li>Vrew: 컷 편집 + 자막 + TTS 올인원</li>
+                            <li>ElevenLabs: 보이스 디자인으로 캐릭터 생성</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🌐 언어 & 음색</h3>
+                        <p>프로젝트의 언어와 톤에 맞는 음색을 확보하는 것이 중요합니다.</p>
+                        <ul>
+                            <li>클로바더빙: 자연스러운 한국어 억양</li>
+                            <li>ElevenLabs: 28개 언어 + 감정 조절</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🧾 라이선스</h3>
+                        <p>상업적 이용, API 활용 여부를 미리 확인하면 배포 시 리스크를 줄일 수 있습니다.</p>
+                        <ul>
+                            <li>Vrew/클로바: 국내 서비스, 문의가 빠름</li>
+                            <li>글로벌 서비스는 조항 확인 필수</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h2>서비스 상세 분석</h2>
+                <p>각 서비스의 요금, 장점, 추천 활용 분야를 확인해 보세요.</p>
+                <div class="details-grid">
+                    <details class="service-card" open>
+                        <summary>Vrew · 영상 편집형 TTS</summary>
+                        <div class="service-content">
+                            <ul>
+                                <li>요금: 무료 1,000자, Pro 9,900원/월, 비즈 23,000원/월</li>
+                                <li>강점: 컷 편집 + 자막 + 음성 더빙을 한 번에, 초보자 친화 UI</li>
+                                <li>추천: 유튜브 브이로그, 짧은 정보성 영상</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="service-card">
+                        <summary>클로바더빙 · 한국어 특화</summary>
+                        <div class="service-content">
+                            <ul>
+                                <li>요금: 월 20,000자 무료, 기업용 플랜 별도 문의</li>
+                                <li>강점: 자연스러운 억양, 남녀/연령별 다양한 음색</li>
+                                <li>추천: 교육, 안내, 고객센터 콘텐츠</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="service-card">
+                        <summary>ElevenLabs · 글로벌 보이스 디자인</summary>
+                        <div class="service-content">
+                            <ul>
+                                <li>요금: 무료 10,000자, Starter $5, Creator $22 / 월</li>
+                                <li>강점: 감정·발음 조정, 사용자 정의 음성 생성, API</li>
+                                <li>추천: 게임 캐릭터, 멀티 언어 내레이션</li>
+                            </ul>
+                        </div>
+                    </details>
+                    <details class="service-card">
+                        <summary>Typecast · 캐릭터형 목소리</summary>
+                        <div class="service-content">
+                            <ul>
+                                <li>요금: 무료 5분 다운로드, 베이직 13,200원/월</li>
+                                <li>강점: 개성있는 캐릭터 라이브러리, 감정 연기</li>
+                                <li>추천: 광고, 오디오북, 스토리텔링 영상</li>
+                            </ul>
+                        </div>
+                    </details>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h2>성능 비교 차트</h2>
+                <p>편집 속도, 자연스러움, 초보자 친화성 측면에서 세 가지 대표 서비스를 비교했습니다. (점수는 10점 만점 주관 평가)</p>
+                <div class="chart-container">
+                    <canvas id="serviceChart"></canvas>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h2>추천 워크플로우</h2>
+                <div class="callout">
+                    <strong>1)</strong> 대본 작성 → <strong>2)</strong> TTS 선택(Vrew/클로바/ElevenLabs) → <strong>3)</strong> 음성 다운로드 → <strong>4)</strong> 영상 편집 도구에서 BGM·효과음(Stable Audio)과 함께 배치 → <strong>5)</strong> 프로젝트별 라이선스 기록을 남겨둡니다.
+                </div>
+            </section>
+
+            <div class="nav-controls">
+                <a href="compare.html" class="nav-button" data-action="previous" data-manual="true">← 이전: 📊 서비스 비교</a>
+                <a href="tts-projects.html" class="nav-button" data-action="next" data-manual="true">다음: 🎬 TTS 실전 프로젝트 →</a>
             </div>
-        </section>
-
-        <section id="deep-dive" class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-10 text-slate-100">서비스 상세 분석</h2>
-            <div class="border-b border-slate-700 mb-8">
-                <nav class="-mb-px flex justify-center space-x-4 md:space-x-8" aria-label="Tabs">
-                    <a data-target="vrew" class="nav-link active font-medium px-1 py-4 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500">Vrew (브루)</a>
-                    <a data-target="clova" class="nav-link font-medium px-1 py-4 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500">클로바더빙</a>
-                    <a data-target="elevenlabs" class="nav-link font-medium px-1 py-4 border-b-2 border-transparent text-slate-400 hover:text-slate-200 hover:border-slate-500">ElevenLabs</a>
-                </nav>
-            </div>
-
-            <div id="vrew" class="content-section active fade-in"></div>
-            <div id="clova" class="content-section fade-in"></div>
-            <div id="elevenlabs" class="content-section fade-in"></div>
-        </section>
-
-        <section id="recommend" class="py-12 bg-gray-800 rounded-lg shadow-lg border border-slate-700">
-            <h2 class="text-3xl font-bold text-center mb-2 text-slate-100">내게 맞는 서비스 찾기</h2>
-            <p class="text-center text-slate-400 mb-10">어떤 종류의 영상을 만들고 싶으신가요? 프로젝트에 맞는 최적의 서비스를 추천해 드립니다.</p>
-            <div id="use-case-buttons" class="flex flex-wrap justify-center gap-4 mb-8">
-                <button class="bg-cyan-500 text-white font-semibold py-2 px-5 rounded-full hover:bg-cyan-600 transition">일상 VLOG</button>
-                <button class="bg-slate-600 text-slate-200 font-semibold py-2 px-5 rounded-full hover:bg-slate-500 transition">지식/정보 영상</button>
-                <button class="bg-slate-600 text-slate-200 font-semibold py-2 px-5 rounded-full hover:bg-slate-500 transition">캐릭터 애니메이션</button>
-            </div>
-            <div id="recommendation-result" class="mt-8 p-6 bg-gray-900 rounded-lg min-h-[150px] flex items-center justify-center border border-slate-700">
-                <p class="text-slate-400 text-lg text-center">프로젝트 종류를 선택하면 추천 서비스를 확인 할 수 있습니다.</p>
-            </div>
-        </section>
-
-        <section id="chart" class="py-12">
-            <h2 class="text-3xl font-bold text-center mb-2 text-slate-100">서비스 성능 비교 차트</h2>
-            <p class="text-center text-slate-400 mb-10">주요 성능 지표를 기준으로 각 서비스를 시각적으로 비교해 보세요.</p>
-            <div class="chart-container">
-                <canvas id="serviceChart"></canvas>
-            </div>
-        </section>
-
+        </div>
     </main>
 
-    <footer class="bg-gray-900 text-slate-400 text-center p-4 mt-12 border-t border-slate-800">
-        <p>&copy; 2025 AI 음성(TTS) 서비스 대화형 가이드. All rights reserved.</p>
-    </footer>
-
+    <script src="../js/common.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const serviceData = {
-                vrew: {
-                    title: 'Vrew (브루)',
-                    subtitle: '📝 텍스트로 영상을 편집하는 AI 편집기',
-                    description: 'Vrew는 단순한 TTS 서비스가 아니라, AI 음성 인식 기술을 기반으로 한 영상 편집 프로그램입니다. 영상 속 목소리를 텍스트 대본으로 변환하고, 워드 문서 편집하듯 텍스트를 지우면 해당 영상 구간이 자동으로 잘려나가는 혁신적인 기능을 제공합니다.',
-                    features: [
-                        { name: 'AI 컷 편집', detail: '가장 강력한 기능. "음...", "아..." 같은 불필요한 단어나 문장을 텍스트에서 지우면 해당 영상 구간이 자동으로 삭제됩니다.' },
-                        { name: 'AI 자동 자막', detail: '음성 인식으로 만들어진 대본을 기반으로 클릭 한 번에 영상 전체의 자막을 생성하고 자유롭게 디자인할 수 있습니다.' },
-                        { name: '무음 구간 줄이기', detail: '말이 없는 어색한 침묵 구간을 AI가 자동으로 찾아 한 번에 줄여주어 영상의 속도감을 높입니다.' }
-                    ],
-                    bestFor: '강의, 인터뷰, 리뷰 영상 등 <strong>말하는 영상</strong>의 편집 시간을 획기적으로 줄이고 싶은 크리에이터에게 최적입니다.'
-                },
-                clova: {
-                    title: '네이버 클로바더빙',
-                    subtitle: '🎞️ 영상에 목소리를 입히는 AI 더빙 툴',
-                    description: '클로바더빙은 영상이나 이미지에 손쉽게 AI 목소리를 입히는 더빙 전문 편집 툴입니다. 특히 자연스러운 한국어 표현력과 영상의 특정 장면에 정확히 목소리와 효과음을 추가할 수 있는 직관적인 타임라인 기능이 강점입니다.',
-                    features: [
-                        { name: '타임라인 기반 더빙', detail: '영상 편집 프로그램처럼 타임라인 위에서 원하는 시간대에 정확히 목소리를 추가할 수 있어 싱크를 맞추기 매우 편리합니다.' },
-                        { name: '자연스러운 한국어', detail: '한국어에 특화되어 실제 방송이나 내레이션처럼 자연스러운 톤을 구현하며, 다양한 스타일의 목소리를 제공합니다.' },
-                        { name: '효과음/배경음악', detail: '서비스 내에서 다양한 효과음과 BGM을 무료로 제공하여 콘텐츠의 완성도를 손쉽게 높일 수 있습니다.' }
-                    ],
-                    bestFor: 'VLOG, 교육 자료, 동화 구연 등 <strong>영상 분위기와 타이밍에 맞춰</strong> 섬세한 더빙 작업이 필요한 사용자에게 적합합니다.'
-                },
-                elevenlabs: {
-                    title: 'ElevenLabs',
-                    subtitle: '🎙️ 최고 품질의 목소리를 만드는 AI 성우',
-                    description: 'ElevenLabs는 현재 시장에서 가장 자연스럽고 표현력이 뛰어난 AI 음성을 생성하는 서비스입니다. 단순한 텍스트 읽기를 넘어, 사람의 미묘한 감정과 억양까지 표현해 내어 실제 사람과 구분하기 어려울 정도의 결과물을 제공합니다.',
-                    features: [
-                        { name: '압도적인 음성 품질', detail: '문맥을 파악해 미묘한 감정, 억양, 말의 속도를 조절하여 실제 사람과 거의 흡사한 목소리를 생성합니다. 한국어를 포함한 29개 언어를 지원합니다.' },
-                        { name: '보이스 클로닝', detail: '(유료) 단 몇 분의 음성 샘플만으로 특정인의 목소리를 복제하는 강력한 기능으로, 나만의 AI 목소리를 만들 수 있습니다.' },
-                        { name: 'Voice Library', detail: '전 세계 사용자들이 디자인한 수천 개의 독특한 목소리를 탐색하고 내 프로젝트에 바로 사용할 수 있는 AI 성우 마켓입니다.' }
-                    ],
-                    bestFor: '오디오북, 전문 내레이션, 캐릭터 연기 등 <strong>목소리 자체의 품질이 가장 중요</strong>한 전문가 수준의 콘텐츠 제작에 이상적입니다.'
-                }
-            };
-
-            const recommendationData = {
-                '일상 VLOG': {
-                    tool: '네이버 클로바더빙',
-                    reason: '촬영한 영상 클립을 보면서 각 장면에 맞는 목소리와 배경음악을 타임라인 위에서 손쉽게 추가할 수 있어 감성적인 VLOG 제작에 매우 편리합니다.'
-                },
-                '지식/정보 영상': {
-                    tool: 'Vrew 또는 ElevenLabs',
-                    reason: '빠른 편집과 자동 자막이 필요하다면 <strong>Vrew</strong>가, 신뢰감 있는 최고 품질의 내레이션이 필요하다면 <strong>ElevenLabs</strong>에서 음성을 제작한 후 영상에 입히는 방식을 추천합니다.'
-                },
-                '캐릭터 애니메이션': {
-                    tool: 'ElevenLabs + 클로바더빙',
-                    reason: '다양한 캐릭터 목소리를 만드는 데 강점이 있는 <strong>ElevenLabs</strong>와 자연스러운 한국어 연기가 가능한 <strong>클로바더빙</strong>을 함께 사용하면 각 캐릭터의 개성을 효과적으로 살릴 수 있습니다.'
-                }
-            };
-
-            function renderContent(service) {
-                const data = serviceData[service];
-                const container = document.getElementById(service);
-                let featuresHtml = data.features.map(f => `
-                    <div class="bg-slate-700/50 p-4 rounded-lg border border-slate-600">
-                        <h4 class="font-semibold text-cyan-400">${f.name}</h4>
-                        <p class="text-slate-300 text-sm mt-1">${f.detail}</p>
-                    </div>
-                `).join('');
-
-                container.innerHTML = `
-                    <div class="max-w-4xl mx-auto">
-                        <h3 class="text-2xl font-bold text-center text-slate-100">${data.title}</h3>
-                        <p class="text-center text-slate-400 mb-8">${data.subtitle}</p>
-                        <p class="text-lg leading-relaxed mb-8">${data.description}</p>
-                        <div class="grid md:grid-cols-3 gap-4 mb-8">
-                            ${featuresHtml}
-                        </div>
-                        <div class="bg-cyan-900/30 border-l-4 border-cyan-500 text-cyan-200 p-4 rounded-r-lg" role="alert">
-                            <p class="font-bold">Best For:</p>
-                            <p>${data.bestFor}</p>
-                        </div>
-                    </div>
-                `;
-            }
-
-            const tabs = document.querySelectorAll('.nav-link');
-            tabs.forEach(tab => {
-                tab.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const targetId = e.target.dataset.target;
-
-                    tabs.forEach(t => t.classList.remove('active'));
-                    e.target.classList.add('active');
-
-                    document.querySelectorAll('.content-section').forEach(section => {
-                        section.classList.remove('active');
-                    });
-                    
-                    const targetSection = document.getElementById(targetId);
-                    if (targetSection) {
-                        renderContent(targetId);
-                        targetSection.classList.add('active');
-                    }
-                });
-            });
-
-            renderContent('vrew');
-            
-            const useCaseButtons = document.querySelectorAll('#use-case-buttons button');
-            const recommendationResult = document.getElementById('recommendation-result');
-            useCaseButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    useCaseButtons.forEach(btn => {
-                        btn.classList.remove('bg-cyan-500', 'text-white');
-                        btn.classList.add('bg-slate-600', 'text-slate-200');
-                    });
-                    button.classList.add('bg-cyan-500', 'text-white');
-                    button.classList.remove('bg-slate-600', 'text-slate-200');
-
-                    const useCase = button.textContent;
-                    const result = recommendationData[useCase];
-                    recommendationResult.innerHTML = `
-                        <div class="text-center fade-in">
-                            <h4 class="font-bold text-xl text-cyan-400 mb-2">${result.tool}</h4>
-                            <p class="text-slate-300">${result.reason}</p>
-                        </div>
-                    `;
-                });
-            });
-
-            const chartColor = 'rgba(156, 163, 175, 0.6)';
-            const chartFontColor = 'rgba(203, 213, 225, 1)';
-
-            const ctx = document.getElementById('serviceChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Vrew', '클로바더빙', 'ElevenLabs'],
-                    datasets: [{
+        const ctx = document.getElementById('serviceChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Vrew', '클로바더빙', 'ElevenLabs'],
+                datasets: [
+                    {
                         label: '편집 속도',
                         data: [9, 6, 5],
-                        backgroundColor: 'rgba(94, 234, 212, 0.5)',
+                        backgroundColor: 'rgba(94, 234, 212, 0.6)',
                         borderColor: 'rgba(94, 234, 212, 1)',
                         borderWidth: 1
-                    }, {
+                    },
+                    {
                         label: '음성 자연스러움',
                         data: [6, 8, 10],
-                        backgroundColor: 'rgba(103, 232, 249, 0.5)',
-                        borderColor: 'rgba(103, 232, 249, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.6)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
                         borderWidth: 1
-                    }, {
+                    },
+                    {
                         label: '초보자 친화성',
                         data: [8, 9, 7],
-                        backgroundColor: 'rgba(115, 115, 115, 0.5)',
-                        borderColor: 'rgba(115, 115, 115, 1)',
+                        backgroundColor: 'rgba(156, 163, 175, 0.6)',
+                        borderColor: 'rgba(156, 163, 175, 1)',
                         borderWidth: 1
-                    }]
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 10,
+                        ticks: { stepSize: 2, color: '#CBD5F5' },
+                        grid: { color: 'rgba(148, 163, 184, 0.3)' }
+                    },
+                    x: {
+                        ticks: { color: '#CBD5F5' },
+                        grid: { color: 'rgba(148, 163, 184, 0.2)' }
+                    }
                 },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 10,
-                            ticks: {
-                                stepSize: 2,
-                                color: chartFontColor
-                            },
-                            grid: {
-                                color: chartColor
-                            }
-                        },
-                        x: {
-                           ticks: {
-                                color: chartFontColor
-                            },
-                            grid: {
-                                color: chartColor
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => {
+                                const label = ctx.dataset.label || '';
+                                return `${label}: ${ctx.parsed.y}점`;
                             }
                         }
                     },
-                    plugins: {
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += context.parsed.y + '점';
-                                    }
-                                    return label;
-                                }
-                            }
-                        },
-                        legend: {
-                            position: 'top',
-                            labels: {
-                                color: chartFontColor
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: '주관적 성능 지표 비교 (10점 만점)',
-                            color: chartFontColor,
-                            font: {
-                                size: 16
-                            }
-                        }
+                    legend: {
+                        position: 'top',
+                        labels: { color: '#E2E8F0' }
+                    },
+                    title: {
+                        display: false
                     }
                 }
-            });
-
-            const mainNavLinks = document.querySelectorAll('.nav-link-main');
-            mainNavLinks.forEach(link => {
-                link.addEventListener('click', e => {
-                    e.preventDefault();
-                    const targetId = link.getAttribute('href');
-                    document.querySelector(targetId).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                });
-            });
-
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+            }
         });
     </script>
 </body>
 </html>
+

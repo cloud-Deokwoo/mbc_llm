@@ -3,291 +3,509 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>After Effects 4대 핵심 기능 대화형 가이드</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Dark Neutral -->
-    <!-- Application Structure Plan: A dashboard layout with a fixed sidebar for primary navigation and a main content area. The sidebar allows users to select a core After Effects function (e.g., Motion Graphics, VFX, 3D, AI). The main area displays the selected function's details, with specific examples presented as interactive, expandable cards. This structure was chosen to break down complex information into manageable, user-selectable topics, promoting focused learning and preventing the overwhelming experience of a long, linear document. The card-based system for examples creates a clear hierarchy and encourages exploration. -->
-    <!-- Visualization & Content Choices: Report Info: After Effects features & examples. Goal: Organize/Inform. Viz/Presentation: A vertical sidebar navigation and expandable content cards. Interaction: Clicking a nav item updates the main content; clicking a card expands to show details. Justification: This component-based approach is highly intuitive for exploring structured educational content. Key terms are highlighted using HTML tags for emphasis. Library/Method: Vanilla JS for state management and DOM manipulation. Tailwind CSS for layout. No SVG/Mermaid used. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <meta name="description" content="After Effects 핵심 기능과 실전 예제를 정리한 가이드">
+    <title>After Effects 핵심 가이드 - MBC AI 마스터클래스</title>
+    <link rel="stylesheet" href="../css/common.css">
     <style>
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #111827; /* bg-gray-900 */
-        }
-        .sidebar {
-            background-color: #1F2937; /* bg-gray-800 */
-            border-right: 1px solid #374151; /* border-gray-700 */
-        }
-        .nav-item.active {
-            background-color: #374151; /* bg-gray-700 */
-            color: #F9FAFB; /* text-gray-50 */
-        }
-        .nav-item {
-            color: #9CA3AF; /* text-gray-400 */
-        }
-        .card {
-            background-color: #1F2937; /* bg-gray-800 */
-            border: 1px solid #374151; /* border-gray-700 */
-        }
-        .card-header {
-            background-color: #374151; /* bg-gray-700 */
-            border-bottom: 1px solid #4B5563; /* border-gray-600 */
-        }
-        .card-expand-content {
-            max-height: 0;
+        .hero-section {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.28) 0%, rgba(0, 122, 204, 0.25) 100%);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            position: relative;
             overflow: hidden;
-            transition: max-height 0.5s ease-in-out;
         }
-        .card.active .card-expand-content {
-            max-height: 1500px; /* Set a large enough value */
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 12% 20%, rgba(138, 43, 226, 0.25), transparent 60%),
+                        radial-gradient(circle at 85% 0%, rgba(0, 122, 204, 0.25), transparent 65%);
         }
-        .card.active .card-chevron {
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-title {
+            font-size: clamp(2.4rem, 4vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-xl);
+            max-width: 760px;
+        }
+
+        .hero-highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .hero-highlights li {
+            background: rgba(138, 43, 226, 0.18);
+            border: 1px solid rgba(138, 43, 226, 0.35);
+            border-radius: 999px;
+            padding: var(--spacing-xs) var(--spacing-md);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .section-block {
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .section-block > p {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .feature-grid {
+            display: grid;
+            gap: var(--spacing-xl);
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        }
+
+        .feature-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .feature-icon {
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: var(--font-size-xl);
+            margin: 0;
+        }
+
+        .feature-card ul {
+            margin: 0;
+            padding-left: var(--spacing-lg);
+            color: var(--text-secondary);
+        }
+
+        .example-groups {
+            display: grid;
+            gap: var(--spacing-2xl);
+        }
+
+        .example-group h3 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .group-intro {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        details.example-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            overflow: hidden;
+            transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+        }
+
+        details.example-card + details.example-card {
+            margin-top: var(--spacing-md);
+        }
+
+        details.example-card[open] {
+            border-color: rgba(138, 43, 226, 0.45);
+            box-shadow: var(--shadow-lg);
+        }
+
+        details.example-card summary {
+            list-style: none;
+            cursor: pointer;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            font-weight: 600;
+            font-size: var(--font-size-lg);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        details.example-card summary::marker {
+            display: none;
+        }
+
+        details.example-card summary::after {
+            content: '⌄';
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            transition: transform var(--transition-fast);
+        }
+
+        details.example-card[open] summary::after {
             transform: rotate(180deg);
+        }
+
+        .example-content {
+            padding: 0 var(--spacing-xl) var(--spacing-xl);
+        }
+
+        .example-goal {
+            color: var(--text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .example-content ol {
+            padding-left: var(--spacing-xl);
+            margin: 0;
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+
+        .example-content li {
+            color: var(--text-secondary);
+        }
+
+        .example-content kbd {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+            padding: 0 6px;
+            font-size: 0.85em;
+            font-family: inherit;
+        }
+
+        .workflow-grid {
+            display: grid;
+            gap: var(--spacing-lg);
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
+        .workflow-card {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+        }
+
+        .workflow-card h3 {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-sm);
+            color: var(--primary);
+        }
+
+        .workflow-card ul {
+            padding-left: var(--spacing-lg);
+            color: var(--text-secondary);
+        }
+
+        .tip-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: grid;
+            gap: var(--spacing-sm);
+        }
+
+        .tip-item {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+
+        .tip-item strong {
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            details.example-card summary {
+                padding: var(--spacing-md) var(--spacing-lg);
+            }
+
+            .example-content {
+                padding: 0 var(--spacing-lg) var(--spacing-lg);
+            }
         }
     </style>
 </head>
-<body class="text-gray-300">
-    <div id="app" class="flex h-screen">
-        <!-- Sidebar -->
-        <aside id="sidebar" class="sidebar w-64 flex-shrink-0 p-4 space-y-2 hidden md:flex md:flex-col">
-            <h1 class="text-xl font-bold text-white px-3 pb-4">After Effects 가이드</h1>
-            <nav id="main-nav" class="flex-1">
-                <!-- Navigation items will be injected here -->
-            </nav>
-        </aside>
+<body>
+    <header class="global-header">
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 MBC AI 마스터클래스</a>
+            <span class="breadcrumb-separator">›</span>
+            <span>🎞️ After Effects</span>
+        </div>
 
-        <!-- Main Content -->
-        <main class="flex-1 p-4 md:p-8 overflow-y-auto">
-            <button id="menu-button" class="md:hidden mb-4 p-2 rounded-md bg-gray-700 text-gray-300">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-            </button>
-            <div id="content-area">
-                <!-- Content will be injected here -->
+        <div class="progress-container">
+            <div class="progress">
+                <div class="progress-bar" style="width: 75%;"></div>
             </div>
-        </main>
-    </div>
+            <span class="progress-text">6/8</span>
+        </div>
 
-    <script>
-        const appData = {
-            motionGraphics: {
-                id: 'motionGraphics',
-                title: '✨ 모션 그래픽 및 애니메이션',
-                icon: '✨',
-                description: '애프터 이펙트의 가장 대표적인 기능으로, 정적인 디자인 요소에 생명을 불어넣습니다.',
-                examples: [
-                    {
-                        title: "실전 예제 1: 마스크를 이용한 텍스트 리빌(Reveal) 애니메이션",
-                        goal: "텍스트가 마치 선 뒤에서 스르륵 나타나는 것처럼 보이는 세련되고 전문적인 타이틀 애니메이션을 제작합니다. 이 예제를 통해 셰이프 레이어, 키프레임 애니메이션, 트랙 매트(Track Matte)의 기본 원리를 익힐 수 있습니다.",
-                        steps: [
-                            "<strong>[텍스트 생성]</strong> 새 컴포지션을 만들고, 문자 도구(T)를 사용하여 원하는 제목(예: 'MOTION GRAPHICS')을 입력합니다.",
-                            "<strong>[리빌 라인 생성]</strong> `레이어 > 새로 만들기 > 셰이프 레이어`를 선택합니다. 펜 도구(G)를 사용하여 텍스트 중앙을 가로지르는 직선을 하나 그립니다. 선의 색상과 두께를 조절합니다.",
-                            "<strong>[매트(Matte) 설정]</strong> 타임라인 패널 하단의 `전송 제어 확장 또는 축소` 버튼을 눌러 `트랙 매트(TrkMat)` 옵션을 표시합니다. 텍스트 레이어의 `트랙 매트` 드롭다운 메뉴를 클릭하고 <strong>`알파 매트 '셰이프 레이어 1'`</strong>을 선택합니다. (이제 텍스트가 선이 있는 부분에만 보이게 됩니다.)",
-                            "<strong>[애니메이션 적용]</strong> <strong>텍스트 레이어</strong>를 선택하고 `P` 키를 눌러 `위치(Position)` 속성을 엽니다. 0초에 위치 값의 키프레임을 생성하고, 2초로 이동한 후 텍스트가 선 아래에서 위로 완전히 드러나도록 Y축 위치 값을 조절합니다.",
-                            "<strong>[결과 확인]</strong> 재생해 보면 텍스트가 선 뒤에서 부드럽게 나타나는 세련된 리빌 애니메이션이 완성됩니다."
-                        ]
-                    },
-                    {
-                        title: "실전 예제 2: 셰이프 레이어로 로딩 아이콘 애니메이션 만들기",
-                        goal: "원형 셰이프와 `선 다듬기(Trim Paths)` 기능을 이용해 동적인 로딩 애니메이션을 제작합니다.",
-                        steps: [
-                            "<strong>[셰이프 레이어 생성]</strong> `레이어 > 새로 만들기 > 셰이프 레이어`를 선택합니다.",
-                            "<strong>[원 그리기]</strong> 도구 모음에서 `타원 도구(Ellipse Tool)`를 선택하고, Shift 키를 누른 채 드래그하여 정원을 그립니다. `칠(Fill)`은 없음으로, `선(Stroke)`은 원하는 색상과 두께로 설정합니다.",
-                            "<strong>[선 다듬기 추가]</strong> 타임라인의 셰이프 레이어 속성에서 `콘텐츠` 옆의 `추가(Add)` 버튼을 클릭하고 <strong>`선 다듬기(Trim Paths)`</strong>를 선택합니다.",
-                            "<strong>[애니메이션 적용]</strong> `선 다듬기 1` 속성을 펼칩니다. 0초에 `끝(End)` 값의 키프레임을 0%로, 1초에 100%로 설정합니다. 다시 1초에 `시작(Start)` 값의 키프레임을 0%로, 2초에 100%로 설정하면 선이 그려졌다가 지워지는 애니메이션이 완성됩니다.",
-                            "<strong>[무한 반복 설정]</strong> `시작`과 `끝` 속성의 마지막 키프레임에 `Alt` 키를 누른 채 스톱워치를 클릭하고, 표현식(Expression) 입력창에 `loopOut()`을 입력하면 애니메이션이 끊김 없이 반복됩니다."
-                        ]
-                    }
-                ]
-            },
-            vfx: {
-                id: 'vfx',
-                title: '👨‍🏫 시각 효과(VFX) 및 합성',
-                icon: '👨‍🏫',
-                description: '현실에 없는 것을 만들어내거나, 여러 개의 영상 소스를 하나의 화면처럼 자연스럽게 합치는 기능입니다.',
-                examples: [
-                    {
-                        title: "실전 예제 3: 영상 속 화면에 다른 영상 합성하기 (코너 핀 트래킹)",
-                        goal: "영상 속 스마트폰이나 TV 화면에 내가 원하는 다른 영상을 감쪽같이 합성합니다. 이 예제를 통해 코너 핀(Corner Pin) 모션 트래킹 기술을 마스터할 수 있습니다.",
-                        steps: [
-                            "<strong>[소스 준비]</strong> 배경 영상(스마트폰 화면이 포함된)과 합성용 영상을 준비하여 타임라인에 배치합니다.",
-                            "<strong>[모션 추적 실행]</strong> 배경 영상을 선택하고 `창(Window) > 추적기(Tracker)` 패널에서 `동작 추적(Track Motion)`을 클릭한 후, `추적 유형`을 <strong>`원근 코너 고정(Perspective Corner Pin)`</strong>으로 변경합니다.",
-                            "<strong>[추적점 설정]</strong> 화면에 나타난 4개의 추적점을 스마트폰 화면의 네 모서리에 정확히 위치시킵니다.",
-                            "<strong>[추적 분석]</strong> `추적기` 패널의 `앞으로 분석(Analyze forward)` 버튼을 눌러 영상의 움직임을 분석합니다.",
-                            "<strong>[데이터 적용]</strong> 분석이 끝나면, `추적기` 패널에서 `대상 편집(Edit Target)`을 눌러 <strong>합성용 영상</strong>을 선택하고, `적용(Apply)` 버튼을 클릭합니다.",
-                            "<strong>[결과 확인]</strong> 재생해 보면, 합성용 영상이 스마트폰 화면의 움직임과 원근을 완벽하게 따라가며 자연스럽게 합성된 것을 확인할 수 있습니다."
-                        ]
-                    },
-                    {
-                        title: "실전 예제 4: 그린 스크린 영상 합성하기 (크로마키)",
-                        goal: "그린 스크린 앞에서 촬영한 인물 영상의 배경을 제거하고, 다른 풍경 영상과 자연스럽게 합성합니다.",
-                        steps: [
-                            "<strong>[소스 배치]</strong> 타임라인의 아래쪽 트랙에 배경 영상을, 위쪽 트랙에 그린 스크린 인물 영상을 배치합니다.",
-                            "<strong>[Keylight 효과 적용]</strong> `효과 및 사전 설정` 패널에서 <strong>`Keylight (1.2)`</strong> 효과를 검색하여 그린 스크린 영상 클립에 적용합니다.",
-                            "<strong>[녹색 배경 제거]</strong> `효과 컨트롤` 패널의 Keylight 설정에서 `Screen Colour` 옆의 스포이드 아이콘을 클릭하고, 영상의 녹색 배경 부분을 클릭합니다.",
-                            "<strong>[가장자리 다듬기]</strong> 배경이 투명해지면, `Screen Matte` 속성을 펼칩니다. `Clip Black` 값을 살짝 올려 남아있는 녹색 픽셀을 제거하고, `Clip White` 값을 살짝 내려 인물의 가장자리를 선명하게 만듭니다.",
-                            "<strong>[결과 확인]</strong> 이제 인물이 새로운 배경 위에 자연스럽게 합성된 것을 확인할 수 있습니다."
-                        ]
-                    }
-                ]
-            },
-            threeD: {
-                id: 'threeD',
-                title: '🧊 3D 기능',
-                icon: '🧊',
-                description: '2D 그래픽을 3차원 공간에 배치하여 깊이감과 입체감을 만들어냅니다.',
-                examples: [
-                    {
-                        title: "실전 예제 5: 3D 공간에서 카드 플립 애니메이션 만들기",
-                        goal: "여러 장의 이미지가 3D 공간에서 카드가 뒤집히듯 전환되는 입체적인 애니메이션을 제작합니다. 3D 레이어, 카메라, 조명의 기본 개념을 익힐 수 있습니다.",
-                        steps: [
-                            "<strong>[3D 레이어로 전환]</strong> 준비한 이미지들을 타임라인에 배치하고, 모든 레이어의 <strong>정육면체 모양 아이콘(3D Layer)</strong> 스위치를 켜서 3D 레이어로 만듭니다.",
-                            "<strong>[카드 배치]</strong> 첫 번째 이미지를 제외한 나머지 이미지들의 `위치(Position)` Z축 값을 조절하여(예: 50, 100) 공간상에서 약간 뒤에 배치합니다.",
-                            "<strong>[플립 애니메이션]</strong> 모든 이미지 레이어를 선택하고 `R` 키를 눌러 `회전(Rotation)` 속성을 엽니다. 0초에 `Y 회전` 값의 키프레임을 생성하고, 1초 뒤 첫 번째 이미지의 `Y 회전` 값을 -180도로, 2초 뒤 두 번째 이미지의 `Y 회전` 값을 -180도로 변경하는 식으로 순차적으로 적용합니다.",
-                            "<strong>[카메라 추가]</strong> `레이어 > 새로 만들기 > 카메라(Camera)`를 추가합니다. `통합 카메라 도구(C)`를 사용하여 뷰를 조작하며 카드가 뒤집히는 모습을 더 역동적으로 연출합니다.",
-                            "<strong>[조명 추가]</strong> `레이어 > 새로 만들기 > 조명(Light)`을 추가하여 그림자를 만들고 입체감을 더해 완성도를 높입니다."
-                        ]
-                    },
-                    {
-                        title: "실전 예제 6: 3D 텍스트 만들고 카메라로 연출하기",
-                        goal: "텍스트를 3D로 만들고, 카메라를 이용해 텍스트 주위를 도는 듯한 역동적인 카메라 워크를 연출합니다.",
-                        steps: [
-                            "<strong>[렌더러 변경]</strong> `컴포지션 설정`에서 `3D 렌더러` 탭을 클릭하고, 렌더러를 <strong>`CINEMA 4D`</strong>로 변경합니다. 이 렌더러는 텍스트에 두께를 줄 수 있게 해줍니다.",
-                            "<strong>[텍스트 생성 및 3D 전환]</strong> 텍스트 레이어를 만들고 3D 레이어로 전환합니다.",
-                            "<strong>[두께(Extrusion) 추가]</strong> 텍스트 레이어의 속성에서 `도형 옵션(Geometry Options)`을 펼치고, <strong>`돌출 깊이(Extrusion Depth)`</strong> 값을 높여 텍스트에 두께를 부여합니다.",
-                            "<strong>[카메라 궤도(Orbit) 설정]</strong> `레이어 > 새로 만들기 > Null 개체`를 생성하고 3D 레이어로 전환합니다. `레이어 > 새로 만들기 > 카메라`를 생성합니다. 카메라 레이어의 '돼지꼬리' 아이콘을 Null 개체에 연결(Parenting)합니다.",
-                            "<strong>[애니메이션]</strong> Null 개체의 `Y 회전` 속성에 키프레임을 추가하여 0초에 0도, 5초에 360도로 설정하면, 카메라가 텍스트 주위를 한 바퀴 도는 애니메이션이 완성됩니다."
-                        ]
-                    }
-                ]
-            },
-            ai: {
-                id: 'ai',
-                title: '🤖 AI 기능',
-                icon: '🤖',
-                description: 'Adobe Sensei AI 기술을 사용하여 복잡하고 시간이 많이 걸리는 영상 정리 및 분리 작업을 자동화합니다.',
-                examples: [
-                    {
-                        title: "실전 예제 7: 영상 속 방해물 지우기 (내용 인식 채우기)",
-                        goal: "풍경 영상에 우연히 찍힌 방해물(지나가는 사람, 자동차 등)을 AI를 이용해 감쪽같이 제거합니다.",
-                        steps: [
-                            "<strong>[마스크 그리기]</strong> 영상에서 지우고 싶은 사물 주변으로 펜 도구(G)를 사용하여 마스크를 그립니다. 마스크가 사물의 전체 움직임을 따라가도록 `마스크 패스`에 키프레임을 추가하여 애니메이션을 줍니다.",
-                            "<strong>[마스크 설정]</strong> 마스크 속성을 <strong>`빼기(Subtract)`</strong>로 설정하여 해당 영역을 투명하게 만듭니다.",
-                            "<strong>[AI 채우기 실행]</strong> `창(Window) > 내용 인식 채우기(Content-Aware Fill)` 패널을 엽니다. `채우기 방법`을 '개체'로 두고 <strong>`채우기 레이어 생성(Generate Fill Layer)`</strong> 버튼을 클릭합니다.",
-                            "<strong>[결과 확인]</strong> AI가 분석을 마치면, 마스크로 가려진 영역이 주변 배경으로 감쪽같이 채워진 새로운 레이어가 생성됩니다."
-                        ]
-                    },
-                    {
-                        title: "실전 예제 8: 움직이는 인물 분리하기 (로토 브러시 2)",
-                        goal: "춤추는 사람 영상에서 인물만 정확하게 분리하여 배경을 다른 영상으로 합성합니다.",
-                        steps: [
-                            "<strong>[로토 브러시 실행]</strong> 분리하고 싶은 영상 클립을 타임라인에서 더블 클릭하여 `레이어` 패널에서 엽니다. 도구 모음에서 <strong>`로토 브러시 도구(Roto Brush Tool)`</strong>를 선택합니다.",
-                            "<strong>[영역 지정]</strong> 첫 프레임에서 분리하고 싶은 인물의 안쪽을 녹색 브러시로 대충 칠합니다. AI가 자동으로 인물의 외곽선을 인식합니다. (배경이 포함되었다면 Alt 키를 누른 채 드래그하여 빨간색으로 제외합니다.)",
-                            "<strong>[AI 전파]</strong> 스페이스바를 누르면, AI가 다음 프레임으로 이동하며 인물의 움직임을 따라 자동으로 외곽선을 잡아줍니다.",
-                            "<strong>[결과 확인]</strong> 작업이 끝나면 다시 `컴포지션` 패널로 돌아옵니다. 이제 인물만 남고 배경은 투명하게 분리된 것을 확인할 수 있습니다. 그 아래 새로운 배경 영상을 배치하여 합성합니다."
-                        ]
-                    }
-                ]
-            }
-        };
+        <a href="../index.html" class="btn-home">전체 목차</a>
+    </header>
 
-        let currentState = {
-            activeTopic: 'motionGraphics'
-        };
+    <main class="main-container">
+        <div class="content-wrapper">
+            <section class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">After Effects 핵심 기능 가이드</h1>
+                    <p class="hero-subtitle">모션 그래픽, VFX, 3D, AI 기반 자동화까지 After Effects의 주요 기능을 모듈별로 정리하고, 바로 활용할 수 있는 실전 예제를 제공합니다.</p>
+                    <ul class="hero-highlights">
+                        <li>모듈별 핵심 개념 요약</li>
+                        <li>현장형 단계별 실습 절차</li>
+                        <li>Sensei AI로 시간 단축</li>
+                    </ul>
+                </div>
+            </section>
 
-        const nav = document.getElementById('main-nav');
-        const contentArea = document.getElementById('content-area');
-        const sidebar = document.getElementById('sidebar');
-        const menuButton = document.getElementById('menu-button');
-
-        function renderNav() {
-            nav.innerHTML = '';
-            Object.values(appData).forEach(topic => {
-                const isActive = topic.id === currentState.activeTopic;
-                const item = document.createElement('a');
-                item.href = '#';
-                item.className = `nav-item flex items-center p-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 ${isActive ? 'active' : ''}`;
-                item.dataset.topic = topic.id;
-                item.innerHTML = `
-                    <span class="text-2xl mr-3">${topic.icon}</span>
-                    <span class="font-semibold">${topic.title.split(' ')[0]} ${topic.title.split(' ')[1]}</span>
-                `;
-                item.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    currentState.activeTopic = topic.id;
-                    render();
-                    if (window.innerWidth < 768) {
-                        sidebar.classList.add('hidden');
-                    }
-                });
-                nav.appendChild(item);
-            });
-        }
-
-        function renderContent() {
-            const topic = appData[currentState.activeTopic];
-            if (!topic) return;
-
-            let examplesHtml = topic.examples.map(example => {
-                let stepsHtml = example.steps.map(step => `<li class="mb-3">${step}</li>`).join('');
-                return `
-                <div class="card rounded-lg shadow-lg overflow-hidden mb-6">
-                    <button class="card-header w-full text-left p-5 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-semibold text-white">${example.title}</h3>
-                            <p class="text-sm text-gray-400 mt-1">🎯 목표: ${example.goal}</p>
-                        </div>
-                        <svg class="card-chevron w-5 h-5 text-gray-400 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="card-expand-content">
-                        <div class="p-5 bg-gray-800">
-                            <h4 class="font-semibold text-gray-200 mb-3">단계별 상세 가이드</h4>
-                            <ol class="list-decimal list-inside space-y-2 text-sm text-gray-400">
-                                ${stepsHtml}
-                            </ol>
-                        </div>
+            <section class="section-block">
+                <h2>모듈 개요</h2>
+                <div class="feature-grid">
+                    <div class="feature-card">
+                        <span class="feature-icon">✨</span>
+                        <h3>모션 그래픽 & 애니메이션</h3>
+                        <p>정적인 디자인 요소에 생동감을 더해 타이포그래피, 로고, UI 모션을 제작합니다.</p>
+                        <ul>
+                            <li>키프레임과 그래프 편집기로 부드러운 움직임 설계</li>
+                            <li>마스크·트랙 매트로 리빌 효과 구현</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🧪</span>
+                        <h3>시각 효과(VFX) & 합성</h3>
+                        <p>현실 영상에 새로운 요소를 합치거나 배경을 치환해 영화 같은 장면을 만들어냅니다.</p>
+                        <ul>
+                            <li>트래킹·코너 핀으로 기기 화면 합성</li>
+                            <li>Keylight 크로마키로 자연스러운 배경제거</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🧊</span>
+                        <h3>3D 공간 연출</h3>
+                        <p>2D 레이어를 3차원 공간에 배치하고 카메라·조명을 활용해 깊이감을 표현합니다.</p>
+                        <ul>
+                            <li>3D 레이어와 카메라 애니메이션 기초</li>
+                            <li>CINEMA 4D 렌더러로 텍스트에 두께 부여</li>
+                        </ul>
+                    </div>
+                    <div class="feature-card">
+                        <span class="feature-icon">🤖</span>
+                        <h3>AI 자동화 (Adobe Sensei)</h3>
+                        <p>내용 인식 채우기, 로토 브러시 등 AI 기능으로 반복 작업을 자동화합니다.</p>
+                        <ul>
+                            <li>몇 번의 클릭으로 방해물 제거</li>
+                            <li>움직이는 인물 분리를 자동화</li>
+                        </ul>
                     </div>
                 </div>
-            `}).join('');
+            </section>
 
-            contentArea.innerHTML = `
-                <header class="mb-8 pb-4 border-b border-gray-700">
-                    <h2 class="text-3xl font-bold text-white">${topic.title}</h2>
-                    <p class="mt-2 text-gray-400">${topic.description}</p>
-                </header>
-                <div>
-                    ${examplesHtml}
+            <section class="section-block">
+                <h2>실전 예제 모음</h2>
+                <div class="example-groups">
+                    <div class="example-group">
+                        <h3>✨ 모션 그래픽 & 애니메이션</h3>
+                        <p class="group-intro">텍스트 리빌과 로딩 애니메이션을 통해 키프레임·마스크·트랙 매트의 기초를 익힙니다.</p>
+                        <details class="example-card" open>
+                            <summary>실전 예제 1: 마스크를 이용한 텍스트 리빌 애니메이션</summary>
+                            <div class="example-content">
+                                <p class="example-goal">텍스트가 선 뒤에서 자연스럽게 나타나는 타이틀 애니메이션을 제작하며 셰이프 레이어와 트랙 매트를 익힙니다.</p>
+                                <ol>
+                                    <li><strong>[텍스트 생성]</strong> 새 컴포지션을 만든 뒤 문자 도구(T)를 사용해 제목(예: MOTION GRAPHICS)을 입력합니다.</li>
+                                    <li><strong>[리빌 라인 생성]</strong> <code>레이어 &gt; 새로 만들기 &gt; 셰이프 레이어</code>를 선택하고 펜 도구(G)로 텍스트 중앙에 직선을 그립니다.</li>
+                                    <li><strong>[트랙 매트 설정]</strong> 타임라인에서 <em>트랙 매트(TrkMat)</em> 옵션을 표시하고 텍스트 레이어의 트랙 매트를 <strong>알파 매트 '셰이프 레이어 1'</strong>로 지정합니다.</li>
+                                    <li><strong>[애니메이션 적용]</strong> 텍스트 레이어를 선택한 뒤 <kbd>P</kbd>로 위치 속성을 열어 0초와 2초에 키프레임을 추가해 선 아래에서 위로 이동하도록 조정합니다.</li>
+                                    <li><strong>[결과 확인]</strong> 재생해 보면 텍스트가 선 뒤에서 부드럽게 등장하는 리빌 애니메이션이 완성됩니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                        <details class="example-card">
+                            <summary>실전 예제 2: 셰이프 레이어로 로딩 아이콘 만들기</summary>
+                            <div class="example-content">
+                                <p class="example-goal">Trim Paths 기능을 이용해 선이 그려졌다가 사라지는 반복 애니메이션을 구성합니다.</p>
+                                <ol>
+                                    <li><strong>[셰이프 레이어 생성]</strong> <code>레이어 &gt; 새로 만들기 &gt; 셰이프 레이어</code>를 추가합니다.</li>
+                                    <li><strong>[원 그리기]</strong> 타원 도구로 원을 드래그하되 <em>Fill</em>은 없음, <em>Stroke</em>는 원하는 색과 두께로 설정합니다.</li>
+                                    <li><strong>[선 다듬기 추가]</strong> 셰이프 레이어의 <em>추가(Add)</em> 버튼에서 <strong>선 다듬기(Trim Paths)</strong>를 선택합니다.</li>
+                                    <li><strong>[애니메이션]</strong> <em>선 다듬기 1</em>에서 끝(End) 값을 0%→100%, 이어서 시작(Start) 값을 0%→100%로 키프레임을 배치해 선이 그려졌다가 지워지도록 만듭니다.</li>
+                                    <li><strong>[무한 반복]</strong> 마지막 키프레임의 스톱워치를 <kbd>Alt</kbd> 키로 클릭해 <code>loopOut()</code> 표현식을 입력하면 끊김 없이 반복됩니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="example-group">
+                        <h3>🧪 시각 효과(VFX) & 합성</h3>
+                        <p class="group-intro">트래킹과 크로마키 기법으로 다른 화면을 입히거나 그린 스크린 배경을 치환합니다.</p>
+                        <details class="example-card">
+                            <summary>실전 예제 3: 코너 핀 트래킹으로 화면 합성</summary>
+                            <div class="example-content">
+                                <p class="example-goal">스마트폰 화면에 다른 영상을 자연스럽게 합성하며 원근 트래킹을 연습합니다.</p>
+                                <ol>
+                                    <li><strong>[소스 준비]</strong> 배경 영상과 합성용 영상을 타임라인에 배치합니다.</li>
+                                    <li><strong>[모션 추적]</strong> 배경 영상을 선택해 <em>창 &gt; 추적기</em> 패널에서 <strong>동작 추적(Track Motion)</strong>을 클릭하고 추적 유형을 <em>원근 코너 고정</em>으로 변경합니다.</li>
+                                    <li><strong>[추적점 배치]</strong> 나타난 네 개의 추적점을 스마트폰 화면 모서리에 정확히 위치시킵니다.</li>
+                                    <li><strong>[분석]</strong> 추적기 패널에서 <em>앞으로 분석(Analyze Forward)</em>을 눌러 움직임을 분석합니다.</li>
+                                    <li><strong>[데이터 적용]</strong> <em>대상 편집(Edit Target)</em>으로 합성용 레이어를 지정하고 <em>적용(Apply)</em>을 누르면 영상이 화면을 따라가며 합성됩니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                        <details class="example-card">
+                            <summary>실전 예제 4: Keylight로 그린 스크린 제거</summary>
+                            <div class="example-content">
+                                <p class="example-goal">그린 스크린 배경을 제거하고 다른 장면과 합성하는 기본 크로마키 워크플로우입니다.</p>
+                                <ol>
+                                    <li><strong>[소스 배치]</strong> 타임라인 아래쪽에 배경 영상을, 위쪽에 그린 스크린 인물 영상을 배치합니다.</li>
+                                    <li><strong>[Keylight 적용]</strong> <em>효과 및 사전 설정</em>에서 <strong>Keylight (1.2)</strong>를 검색해 인물 클립에 적용합니다.</li>
+                                    <li><strong>[스크린 컬러 선택]</strong> 효과 컨트롤에서 <em>Screen Colour</em> 스포이드를 사용해 녹색 배경을 클릭합니다.</li>
+                                    <li><strong>[가장자리 다듬기]</strong> <em>Screen Matte</em>를 열어 <em>Clip Black</em>과 <em>Clip White</em> 값을 조정해 가장자리를 정리합니다.</li>
+                                    <li><strong>[결과 확인]</strong> 재생해 자연스럽게 배경이 치환되었는지 확인합니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="example-group">
+                        <h3>🧊 3D 공간 연출</h3>
+                        <p class="group-intro">3D 레이어와 카메라를 이용해 입체감 있는 전환과 텍스트 연출을 구현합니다.</p>
+                        <details class="example-card">
+                            <summary>실전 예제 5: 카드 플립 전환 만들기</summary>
+                            <div class="example-content">
+                                <p class="example-goal">여러 이미지를 3D 공간에 배치하고 순차적으로 뒤집히는 애니메이션을 만듭니다.</p>
+                                <ol>
+                                    <li><strong>[3D 레이어 전환]</strong> 이미지 레이어의 3D 스위치를 활성화합니다.</li>
+                                    <li><strong>[공간 배치]</strong> 각 레이어의 위치(Position) Z 값을 조정해 앞뒤로 배치합니다.</li>
+                                    <li><strong>[플립 애니메이션]</strong> <kbd>R</kbd>로 회전 속성을 열고 Y 회전에 키프레임을 추가해 순차적으로 -180° 회전시키며 카드가 뒤집히는 효과를 만듭니다.</li>
+                                    <li><strong>[카메라 추가]</strong> <code>레이어 &gt; 새로 만들기 &gt; 카메라</code>를 추가해 통합 카메라 도구(C)로 시점을 조정합니다.</li>
+                                    <li><strong>[조명 연출]</strong> <code>레이어 &gt; 새로 만들기 &gt; 조명</code>을 추가해 그림자와 입체감을 더합니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                        <details class="example-card">
+                            <summary>실전 예제 6: 3D 텍스트와 카메라 워크</summary>
+                            <div class="example-content">
+                                <p class="example-goal">CINEMA 4D 렌더러를 활용해 텍스트에 두께를 주고 카메라가 주변을 도는 연출을 만듭니다.</p>
+                                <ol>
+                                    <li><strong>[렌더러 변경]</strong> 컴포지션 설정에서 3D 렌더러를 <strong>CINEMA 4D</strong>로 변경합니다.</li>
+                                    <li><strong>[3D 텍스트 준비]</strong> 텍스트 레이어를 만들고 3D 스위치를 켠 뒤 <em>도형 옵션</em>의 <em>돌출 깊이</em> 값을 높여 두께를 줍니다.</li>
+                                    <li><strong>[카메라 컨트롤러 설정]</strong> 3D Null 개체와 카메라를 생성하고 카메라를 Null에 패런팅합니다.</li>
+                                    <li><strong>[애니메이션]</strong> Null 개체의 Y 회전에 0초 0°, 5초 360° 키프레임을 주면 카메라가 텍스트 주위를 한 바퀴 돕니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                    </div>
+
+                    <div class="example-group">
+                        <h3>🤖 AI 자동화</h3>
+                        <p class="group-intro">Adobe Sensei 기반 기능으로 배경 제거와 방해물 삭제 작업을 자동화합니다.</p>
+                        <details class="example-card">
+                            <summary>실전 예제 7: 내용 인식 채우기로 방해물 제거</summary>
+                            <div class="example-content">
+                                <p class="example-goal">풍경 영상에서 지나가는 사람·차량 등을 AI로 지워 매끄러운 장면을 얻습니다.</p>
+                                <ol>
+                                    <li><strong>[마스크 설정]</strong> 펜 도구로 제거할 물체를 감싼 뒤 마스크 패스에 키프레임을 추가해 움직임을 따라갑니다.</li>
+                                    <li><strong>[마스크 모드 변경]</strong> 마스크를 <strong>빼기(Subtract)</strong>로 바꿔 해당 영역을 투명하게 만듭니다.</li>
+                                    <li><strong>[AI 채우기 실행]</strong> <em>창 &gt; 내용 인식 채우기</em> 패널에서 채우기 방법을 <em>개체</em>로 두고 <strong>채우기 레이어 생성</strong>을 클릭합니다.</li>
+                                    <li><strong>[결과 확인]</strong> 생성된 채우기 레이어로 물체가 자연스럽게 제거되었는지 확인합니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                        <details class="example-card">
+                            <summary>실전 예제 8: 로토 브러시 2로 인물 분리</summary>
+                            <div class="example-content">
+                                <p class="example-goal">움직이는 인물만 추출해 다른 배경과 합성하는 자동 로토스코핑 워크플로우입니다.</p>
+                                <ol>
+                                    <li><strong>[로토 브러시 실행]</strong> 분리할 영상을 더블 클릭해 레이어 패널에서 연 다음 <strong>로토 브러시 도구</strong>를 선택합니다.</li>
+                                    <li><strong>[영역 지정]</strong> 첫 프레임에서 인물 안쪽을 녹색으로 칠하고, 포함된 배경은 <kbd>Alt</kbd>를 누른 채 붉은색으로 제외합니다.</li>
+                                    <li><strong>[AI 전파]</strong> 스페이스바를 눌러 프레임을 진행하면 AI가 자동으로 외곽선을 따라갑니다.</li>
+                                    <li><strong>[결과 확인]</strong> 컴포지션 뷰로 돌아와 인물만 분리된 것을 확인하고, 아래에 새 배경을 배치합니다.</li>
+                                </ol>
+                            </div>
+                        </details>
+                    </div>
                 </div>
-            `;
+            </section>
 
-            document.querySelectorAll('.card-header').forEach(header => {
-                header.addEventListener('click', () => {
-                    const card = header.closest('.card');
-                    card.classList.toggle('active');
+            <section class="section-block">
+                <h2>제작 효율을 높이는 루틴</h2>
+                <div class="workflow-grid">
+                    <div class="workflow-card">
+                        <h3>01. 컴포지션 설계</h3>
+                        <ul>
+                            <li>프로젝트 패널에서 폴더를 모듈별(소스, 프리컴프, 프리셋)로 나눠 정리합니다.</li>
+                            <li>작업 전 프레임 레이트와 해상도를 확정하고, 미리보기 해상도를 1/2로 낮춰 퍼포먼스를 확보합니다.</li>
+                        </ul>
+                    </div>
+                    <div class="workflow-card">
+                        <h3>02. 모듈별 제작</h3>
+                        <ul>
+                            <li>모션 그래픽 요소는 각기 프리컴포지션으로 관리해 재사용성을 높입니다.</li>
+                            <li>VFX·AI 작업은 독립된 프리컴프에서 먼저 완성한 뒤 메인 컴포지션으로 가져옵니다.</li>
+                        </ul>
+                    </div>
+                    <div class="workflow-card">
+                        <h3>03. 검수 & 렌더</h3>
+                        <ul>
+                            <li>기본 그래프 편집기로 속도 곡선을 정리하고, 모션 블러를 켠 상태로 최종 미리보기를 확인합니다.</li>
+                            <li>Adobe Media Encoder 대기열을 활용해 여러 버전을 한 번에 렌더링합니다.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section-block">
+                <h2>마지막 체크 포인트</h2>
+                <ul class="tip-list">
+                    <li class="tip-item"><strong>표준 색 공간 유지:</strong> 프로젝트 설정에서 작업 색 공간을 통일하고, 필요 시 LUT를 프리컴프 단계에서 적용합니다.</li>
+                    <li class="tip-item"><strong>캐시 관리:</strong> <em>편집 &gt; 환경 설정 &gt; 미디어 &amp; 디스크 캐시</em>에서 캐시 저장 위치를 SSD로 지정해 미리보기 속도를 높입니다.</li>
+                    <li class="tip-item"><strong>버전 관리:</strong> 중간 저장 시 컴포지션 이름 뒤에 v1, v2 등 버전을 붙여 변경 사항을 명확히 추적합니다.</li>
+                </ul>
+            </section>
+
+            <div class="nav-controls">
+                <a href="../premiere/index.html" class="nav-button" data-action="previous">← 이전: 🎬 Premiere Pro</a>
+                <a href="../audio/index.html" class="nav-button" data-action="next">다음: 🔊 Audio →</a>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/common.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('details.example-card');
+            cards.forEach(card => {
+                card.addEventListener('toggle', () => {
+                    if (card.open) {
+                        cards.forEach(other => {
+                            if (other !== card) {
+                                other.removeAttribute('open');
+                            }
+                        });
+                    }
                 });
             });
-        }
-
-        function render() {
-            renderNav();
-            renderContent();
-        }
-        
-        menuButton.addEventListener('click', () => {
-            sidebar.classList.toggle('hidden');
         });
-        
-        if (window.innerWidth < 768) {
-            sidebar.classList.add('hidden');
-        }
-
-        render();
     </script>
 </body>
 </html>

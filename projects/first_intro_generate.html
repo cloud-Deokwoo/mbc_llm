@@ -1,337 +1,388 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>종합 실습 프로젝트: 나만의 10초 영상 인트로 만들기</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Stylish Dark Mode -->
-    <!-- Application Structure Plan: A task-oriented, tabbed single-page application. The top section introduces the project's goal and a visual process map. A sticky horizontal navigation bar represents the 5 main project stages plus a final summary. Clicking a tab displays only the content for that stage, keeping the UI clean and focused. This structure transforms the linear guide into an interactive learning tool, breaking the complex workflow into manageable steps and allowing users to easily navigate between stages without losing their place. -->
-    <!-- Visualization & Content Choices: Project Flow -> Goal: Organize -> Presentation: HTML/Tailwind Process Diagram -> Interaction: Click to navigate -> Justification: Provides a high-level visual map of the entire project, improving user orientation. Step Navigation -> Goal: Organize -> Presentation: Tabbed Interface -> Interaction: JS show/hide content -> Justification: Breaks the complex process into focused, manageable chunks. Key Techniques -> Goal: Highlight -> Presentation: Styled <span> -> Justification: Draws attention to critical tools for better learning retention. No charts are needed as the source is a procedural guide, not data-driven. -->
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>프로젝트 1 | 10초 브랜드 인트로</title>
+    <link rel="stylesheet" href="../css/common.css">
     <style>
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: #1A202C;
-            color: #E2E8F0;
+            background: var(--bg-primary);
+            color: var(--text-primary);
         }
-        .tab-active {
-            background-color: #4299E1;
-            color: #1A202C;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 14px 0 rgba(0, 118, 255, 0.39);
+        .hero-section {
+            background: linear-gradient(135deg, rgba(0, 122, 204, 0.22) 0%, rgba(40, 167, 69, 0.18) 100%);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            position: relative;
+            overflow: hidden;
         }
-        .tab-inactive {
-            background-color: #2D3748;
-            color: #A0AEC0;
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 18% 24%, rgba(0, 122, 204, 0.25), transparent 60%),
+                        radial-gradient(circle at 78% 0%, rgba(138, 43, 226, 0.25), transparent 65%);
         }
-        .tab-inactive:hover {
-            background-color: #4A5568;
-            color: #E2E8F0;
+        .hero-content { position: relative; z-index: 1; }
+        .hero-title {
+            font-size: clamp(2.4rem, 4vw, 3.2rem);
+            font-weight: 700;
+            margin-bottom: var(--spacing-md);
         }
-        .content-section {
-            display: none;
+        .hero-subtitle {
+            color: var(--text-secondary);
+            font-size: clamp(1.05rem, 2vw, 1.3rem);
+            max-width: 760px;
+            margin-bottom: var(--spacing-xl);
         }
-        .content-active {
-            display: block;
+        .highlight-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
-        .step-card {
-            border-left: 4px solid #4A5568;
-            transition: all 0.3s ease;
-            background-color: #2D3748;
+        .highlight-list li {
+            background: rgba(0, 122, 204, 0.18);
+            border: 1px solid rgba(0, 122, 204, 0.35);
+            color: var(--text-primary);
+            padding: var(--spacing-xs) var(--spacing-md);
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: var(--font-size-sm);
         }
-        .step-card:hover {
-            border-left-color: #4299E1;
-            transform: translateX(4px);
+        .panel-section {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--spacing-2xl);
         }
-        .highlight {
-            background-color: #2A4365;
-            color: #90CDF4;
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 500;
+        .panel-section h2 {
+            font-size: var(--font-size-2xl);
+            margin-bottom: var(--spacing-md);
+            color: var(--primary);
         }
-        .process-step {
-            transition: all 0.3s ease;
+        .panel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+        }
+        .info-card {
+            background: var(--bg-tertiary);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xl);
+            border: 1px solid var(--border-color);
+        }
+        .info-card h3 {
+            font-size: var(--font-size-xl);
+            margin-bottom: var(--spacing-sm);
+        }
+        .info-card ul {
+            margin: 0;
+            padding-left: 1.1rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        .flow-list {
+            display: grid;
+            gap: var(--spacing-md);
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .flow-item {
+            background: rgba(0, 122, 204, 0.16);
+            border: 1px solid rgba(0, 122, 204, 0.35);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-lg);
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+        }
+        .flow-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 122, 204, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        .step-details details {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-lg);
+        }
+        .step-details summary {
+            font-weight: 600;
+            font-size: var(--font-size-lg);
             cursor: pointer;
+            color: var(--text-primary);
         }
-        .process-step:hover {
-            transform: scale(1.05);
-            background-color: #4A5568;
+        .step-details summary::marker { color: var(--primary); }
+        .step-content {
+            margin-top: var(--spacing-md);
+            color: var(--text-secondary);
+        }
+        .step-content ul,
+        .step-content ol {
+            margin: 0;
+            padding-left: 1.2rem;
+            line-height: 1.7;
+        }
+        .callout {
+            background: rgba(40, 167, 69, 0.18);
+            border: 1px solid rgba(40, 167, 69, 0.35);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-md);
+            color: var(--text-primary);
+        }
+        .evaluation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            text-align: center;
+        }
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-2xl);
+        }
+        .nav-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(0, 0, 0, 0.25);
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: background var(--transition-fast), border-color var(--transition-fast);
+        }
+        .nav-links a:hover {
+            background: rgba(0, 122, 204, 0.25);
+            border-color: rgba(0, 122, 204, 0.45);
+        }
+        @media (min-width: 768px) {
+            .nav-links {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
     </style>
 </head>
-<body class="antialiased">
+<body>
+    <header class="global-header">
+        <div class="breadcrumb">
+            <a href="../index.html">🏠 MBC AI 마스터클래스</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html">🚀 Projects 허브</a>
+            <span class="breadcrumb-separator">›</span>
+            <span>🎬 프로젝트 1</span>
+        </div>
+        <div class="header-tag">실전 과제</div>
+        <a href="../index.html" class="btn-home">코스 홈</a>
+    </header>
 
-    <div class="container mx-auto px-4 py-8 md:py-12">
+    <main class="main-container">
+        <div class="content-wrapper">
+            <section class="hero-section mb-xl">
+                <div class="hero-content">
+                    <h1 class="hero-title">프로젝트 1. 10초 브랜드 인트로</h1>
+                    <p class="hero-subtitle">모션 그래픽과 3D 도구, AI 오디오를 결합해 신제품 런칭을 위한 10초 길이의 인트로 영상을 제작합니다. 브랜드 아이덴티티와 시네마틱 무드를 균형 있게 담아내는 것이 목표입니다.</p>
+                    <ul class="highlight-list">
+                        <li>After Effects 기반 워크플로우</li>
+                        <li>카메라/라이트 연동 3D 연출</li>
+                        <li>AI 음악 & 보이스 활용</li>
+                        <li>최종 렌더 및 제출 가이드 포함</li>
+                    </ul>
+                </div>
+            </section>
 
-        <header class="text-center mb-10">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-100 mb-2">종합 실습 프로젝트</h1>
-            <p class="text-lg md:text-xl text-gray-400">나만의 10초 영상 인트로 만들기</p>
-        </header>
-
-        <main>
-            <section id="overview" class="mb-12 bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                <h2 class="text-2xl font-bold mb-4 border-b border-gray-700 pb-2 text-gray-200">프로젝트 개요</h2>
-                <p class="text-gray-400 mb-6">
-                    이 가이드는 애프터 이펙트의 핵심 기능인 모션 그래픽, 3D, VFX, AI를 종합적으로 활용하여 가상의 스마트폰 제품을 소개하는 10초 길이의 세련된 영상 인트로를 제작하는 과정을 안내합니다. 각 단계를 따라가며 실전 감각을 익혀보세요.
-                </p>
-
-                <div class="grid md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-300">📋 준비물</h3>
-                        <ul class="space-y-3 text-gray-400">
-                            <li class="flex items-start">
-                                <span class="text-green-400 mr-3 mt-1">✓</span>
-                                <div>
-                                    <strong class="font-medium text-gray-300">제품 이미지 (.png)</strong>
-                                    <p class="text-sm">배경이 투명한 정면 스마트폰 이미지. (예: Freepik, Pngtree)</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-400 mr-3 mt-1">✓</span>
-                                <div>
-                                    <strong class="font-medium text-gray-300">화면 속 영상</strong>
-                                    <p class="text-sm">화면에 합성할 5-10초 길이의 영상 클립. (예: Pexels, Pixabay)</p>
-                                </div>
-                            </li>
-                            <li class="flex items-start">
-                                <span class="text-green-400 mr-3 mt-1">✓</span>
-                                <div>
-                                    <strong class="font-medium text-gray-300">배경음악 (BGM)</strong>
-                                    <p class="text-sm">영상 분위기에 맞는 세련된 배경음악.</p>
-                                </div>
-                            </li>
+            <section class="panel-section">
+                <h2>프로젝트 개요</h2>
+                <div class="panel-grid">
+                    <div class="info-card">
+                        <h3>📋 준비물</h3>
+                        <ul>
+                            <li>배경 투명 스마트폰 PNG 이미지</li>
+                            <li>제품 컬러 팔레트 & 브랜드 키워드</li>
+                            <li>30초 내외 인스트루멘탈 배경음악</li>
+                            <li>After Effects, Premiere Pro 환경</li>
                         </ul>
                     </div>
-                    <div>
-                        <h3 class="text-xl font-semibold mb-3 text-gray-300">⚙️ 제작 과정 한눈에 보기</h3>
-                        <div class="flex flex-wrap gap-2">
-                            <div class="process-step flex-1 min-w-[120px] text-center p-3 bg-gray-700 rounded-lg" data-step="1">
-                                <div class="text-2xl mb-1">✨</div>
-                                <div class="text-sm font-medium text-gray-300">1. 배경 제작</div>
-                            </div>
-                            <div class="process-step flex-1 min-w-[120px] text-center p-3 bg-gray-700 rounded-lg" data-step="2">
-                                <div class="text-2xl mb-1">🧊</div>
-                                <div class="text-sm font-medium text-gray-300">2. 3D 배치</div>
-                            </div>
-                            <div class="process-step flex-1 min-w-[120px] text-center p-3 bg-gray-700 rounded-lg" data-step="3">
-                                <div class="text-2xl mb-1">👨‍🏫</div>
-                                <div class="text-sm font-medium text-gray-300">3. 화면 합성</div>
-                            </div>
-                            <div class="process-step flex-1 min-w-[120px] text-center p-3 bg-gray-700 rounded-lg" data-step="4">
-                                <div class="text-2xl mb-1">✍️</div>
-                                <div class="text-sm font-medium text-gray-300">4. 타이틀</div>
-                            </div>
-                            <div class="process-step flex-1 min-w-[120px] text-center p-3 bg-gray-700 rounded-lg" data-step="5">
-                                <div class="text-2xl mb-1">🤖</div>
-                                <div class="text-sm font-medium text-gray-300">5. AI 보너스</div>
-                            </div>
-                        </div>
+                    <div class="info-card">
+                        <h3>🎯 완성 목표</h3>
+                        <ul>
+                            <li>오프닝 → 제품 소개 → 콜 투 액션 흐름 확립</li>
+                            <li>3D 카메라 워크와 라이트로 깊이감 구현</li>
+                            <li>AI 도구로 생성한 음원·나레이션을 자연스럽게 믹스</li>
+                            <li>여러 플랫폼에 맞춘 출력 파일 준비</li>
+                        </ul>
                     </div>
                 </div>
             </section>
 
-            <nav id="step-navigation" class="sticky top-0 z-10 bg-opacity-80 bg-gray-900 backdrop-blur-sm py-4 mb-8 flex justify-center flex-wrap gap-2 md:gap-3">
-                <button class="tab-button py-2 px-4 rounded-full text-sm md:text-base font-medium transition-all duration-300" data-step="1">1단계: 배경</button>
-                <button class="tab-button py-2 px-4 rounded-full text-sm md:text-base font-medium transition-all duration-300" data-step="2">2단계: 3D</button>
-                <button class="tab-button py-2 px-4 rounded-full text-sm md:text-base font-medium transition-all duration-300" data-step="3">3단계: 합성</button>
-                <button class="tab-button py-2 px-4 rounded-full text-sm md:text-base font-medium transition-all duration-300" data-step="4">4단계: 타이틀</button>
-                <button class="tab-button py-2 px-4 rounded-full text-sm md:text-base font-medium transition-all duration-300" data-step="5">5단계: AI</button>
-                <button class="tab-button py-2 px-4 rounded-full text-sm md:text-base font-medium transition-all duration-300" data-step="6">최종 마무리</button>
-            </nav>
+            <section class="panel-section">
+                <h2>진행 흐름</h2>
+                <ul class="flow-list">
+                    <li class="flow-item">
+                        <div class="flow-number">01</div>
+                        <div>
+                            <strong>아이데이션 & 스타일 프레임</strong>
+                            <p class="body-text">브랜드 키워드 정리, 컬러·폰트·무드보드 구성, 5초 분량의 시퀀스 스케치.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <div class="flow-number">02</div>
+                        <div>
+                            <strong>배경 모션 구성</strong>
+                            <p class="body-text">셰이프 레이어, 선 다듬기, 블러를 활용해 리듬감 있는 베이스 애니메이션 제작.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <div class="flow-number">03</div>
+                        <div>
+                            <strong>제품 3D 합성</strong>
+                            <p class="body-text">Extrude, 카메라, 라이트, 섀도우/반사로 제품 존재감 강화.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <div class="flow-number">04</div>
+                        <div>
+                            <strong>타이포 & 콜아웃 디자인</strong>
+                            <p class="body-text">세일즈 포인트를 강조하는 텍스트·아이콘 모션 및 글로우 효과 구현.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <div class="flow-number">05</div>
+                        <div>
+                            <strong>AI 오디오 & 보정</strong>
+                            <p class="body-text">Suno/Udio로 음악 생성, ElevenLabs(TTS) 큐레이션, EQ·컴프레서로 믹싱.</p>
+                        </div>
+                    </li>
+                    <li class="flow-item">
+                        <div class="flow-number">06</div>
+                        <div>
+                            <strong>렌더 & 제출</strong>
+                            <p class="body-text">4K/HD/모바일 버전 출력, 품질 체크 후 제출 드라이브 업로드.</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
 
-            <div id="content-container">
-                <div id="step-1" class="content-section bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-200">1단계: 배경 모션 그래픽 만들기 (Shape Layer)</h2>
-                    <p class="text-gray-400 mb-6">
-                        영상의 기초가 되는 배경을 만듭니다. 셰이프 레이어와 '선 다듬기' 기능을 활용하여 동적인 라인 애니메이션을 제작해 깊이감을 더합니다.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">1. 컴포지션 생성</h3>
-                            <p class="text-gray-400">`1920x1080` 해상도, 길이 `10초`의 새 컴포지션을 만듭니다.</p>
+            <section class="panel-section step-details">
+                <h2>세부 단계 가이드</h2>
+                <details open>
+                    <summary>1단계 · 배경 모션 그래픽 만들기</summary>
+                    <div class="step-content">
+                        <ul>
+                            <li>새 컴포지션(1920x1080, 30fps)을 생성하고 브랜드 컬러 기반 그라디언트 배경을 설정합니다.</li>
+                            <li>Shape Layer의 선(Stroke)과 "선 다듬기(Trim Paths)" 애니메이션으로 라인 모션을 구성해 리듬감을 만듭니다.</li>
+                            <li>파티클(CC Particle World 등)·Glow·Camera Blur를 활용해 깊이를 추가합니다.</li>
+                            <li>Loop 표현을 위해 200~240프레임 이후 첫 장면과 자연스럽게 이어지도록 키프레임을 조정합니다.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details>
+                    <summary>2단계 · 3D 제품 스테이지 구축</summary>
+                    <div class="step-content">
+                        <ul>
+                            <li>제품 PNG를 불러와 Extrude & Bevel을 적용하고 카메라 레이어를 추가합니다.</li>
+                            <li>Point Light와 Ambient Light를 이용해 전·후면 하이라이트와 Rim Light를 세팅합니다.</li>
+                            <li>그라운드 Plane을 만들고 Drop Shadow/Reflection을 얹어 실제 공간처럼 보정합니다.</li>
+                            <li>카메라 키프레임(Ease In/Out)으로 인트로 → 제품 클로즈업 → 콜 투 액션까지 이동을 설계합니다.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details>
+                    <summary>3단계 · 제품 하이라이트 & 합성</summary>
+                    <div class="step-content">
+                        <ul>
+                            <li>제품 레이어에 Luma/Alpha Matte를 적용해 배경과 자연스럽게 합성하고, 에지 부분에 Light Wrap을 더합니다.</li>
+                            <li>신제품 UI, 립 모션 등 필요한 보조 소스를 프리컴포짓(pre-comp)으로 정리합니다.</li>
+                            <li>타임라인을 구간별(인트로/중앙/아웃트로)로 나눠 키프레임을 그룹화하면 수정이 쉬워집니다.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details>
+                    <summary>4단계 · 타이포그래피 & 콜아웃</summary>
+                    <div class="step-content">
+                        <ul>
+                            <li>제품 USP 3가지를 뽑아 슬라이드/카운터/라인 애니메이션으로 강조합니다.</li>
+                            <li>Essential Graphics 또는 Motion Bro 템플릿을 활용해 일관된 레이아웃을 유지합니다.</li>
+                            <li>색상은 브랜드 기준 + 보조 컬러 1가지를 사용하고, 허용 여백(8px/16px) 규칙을 유지합니다.</li>
+                            <li>오디오 비트에 맞춰 Text Pop, Callout Reveal 타이밍을 맞춰 전달력을 높입니다.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details>
+                    <summary>5단계 · AI 오디오 & 보이스 적용</summary>
+                    <div class="step-content">
+                        <ul>
+                            <li>Suno / Udio에 "instrumental, cinematic, 120 BPM" 등 키워드를 활용해 3개의 후보 트랙을 생성합니다.</li>
+                            <li>ElevenLabs/TTS에서 브랜드 톤에 맞는 음색을 선택해 핵심 문구(예: "Experience the new Nova X")를 제작합니다.</li>
+                            <li>Premiere Pro 또는 DAW에서 EQ, Compressor, Limiter를 적용하고 -1 dBFS 수준으로 피크를 정리합니다.</li>
+                            <li>Fade in/out, Hit Sound 등의 FX를 배치해 영상과 자연스럽게 싱크를 맞춥니다.</li>
+                        </ul>
+                    </div>
+                </details>
+                <details>
+                    <summary>6단계 · 렌더링 & 제출</summary>
+                    <div class="step-content">
+                        <ul>
+                            <li>Media Encoder로 4K(3840x2160) ProRes 또는 H.264 고화질 버전과 1080p 웹용 버전을 각각 출력합니다.</li>
+                            <li>인스타그램(1080x1080), 릴스/쇼츠(1080x1920) 등 플랫폼별 버전을 추가로 만든 뒤 자막·콜 투 액션을 조정합니다.</li>
+                            <li>최종 검수 시 플리커, 색띠, 오디오 노이즈를 확인하고 필요 시 재렌더합니다.</li>
+                            <li>완성 파일명을 "이름_브랜드인트로.mp4" 형식으로 저장하고 아래 제출 링크로 업로드합니다.</li>
+                        </ul>
+                        <div class="callout" style="margin-top: var(--spacing-md);">
+                            제출 링크: <a href="https://drive.google.com/drive/folders/1IAKK93SruOF_p2lucARcq4UaHKrbeMdz?usp=drive_link" target="_blank" rel="noopener" style="color: var(--primary);">Google Drive (새 창)</a>
                         </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">2. 배경 생성</h3>
-                            <p class="text-gray-400">`레이어 > 새로 만들기 > 단색(Solid)`을 선택하여 어두운 색상의 배경 레이어를 추가합니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">3. 라인 애니메이션</h3>
-                            <p class="text-gray-400">새로운 <span class="highlight">셰이프 레이어</span>를 만들고 펜 도구(G)로 여러 개의 선을 그립니다. 속성에서 <span class="highlight">선 다듬기(Trim Paths)</span>를 추가하여 선들이 동적으로 나타났다 사라지는 애니메이션을 만듭니다.</p>
-                        </div>
+                    </div>
+                </details>
+            </section>
+
+            <section class="panel-section">
+                <h2>평가 기준</h2>
+                <div class="evaluation-grid">
+                    <div>
+                        <h3 style="font-size: var(--font-size-3xl); color: var(--primary);">25%</h3>
+                        <p>콘셉트·스토리텔링의 창의성</p>
+                    </div>
+                    <div>
+                        <h3 style="font-size: var(--font-size-3xl); color: var(--primary);">25%</h3>
+                        <p>모션 그래픽 & 3D 연출 완성도</p>
+                    </div>
+                    <div>
+                        <h3 style="font-size: var(--font-size-3xl); color: var(--primary);">25%</h3>
+                        <p>사운드 디자인·믹싱 품질</p>
+                    </div>
+                    <div>
+                        <h3 style="font-size: var(--font-size-3xl); color: var(--primary);">25%</h3>
+                        <p>브랜드 톤과 메시지 일관성</p>
                     </div>
                 </div>
+            </section>
 
-                <div id="step-2" class="content-section bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-200">2단계: 3D 공간에 제품 배치 및 애니메이션</h2>
-                    <p class="text-gray-400 mb-6">
-                        주인공인 스마트폰을 3D 공간에 배치하고 카메라를 이용해 입체적인 움직임을 만듭니다. 이를 통해 시청자의 시선을 자연스럽게 제품으로 유도합니다.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">1. 제품 배치 및 3D 변환</h3>
-                            <p class="text-gray-400">스마트폰 이미지를 타임라인에 올리고 <span class="highlight">3D 레이어 스위치</span>(정육면체 아이콘)를 켭니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">2. 카메라 생성</h3>
-                            <p class="text-gray-400">`레이어 > 새로 만들기 > 카메라(Camera)`를 추가하여 3D 공간을 제어할 준비를 합니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">3. 제품 애니메이션</h3>
-                            <p class="text-gray-400">스마트폰 레이어의 `변형(Transform)` 속성에서 키프레임을 조절합니다. 0초에는 멀리 있다가 3초에 화면 중앙으로 회전하며 다가오도록 `위치(Position)` 값을 설정합니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-3" class="content-section bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-200">3단계: 화면 합성하기 (VFX - Motion Tracking)</h2>
-                     <p class="text-gray-400 mb-6">
-                        움직이는 스마트폰 화면(애니메이션 스마트폰-앞단계에서 영상으로 빼야함)에 다른 영상을 자연스럽게 합성합니다. 모션 트래킹의 '원근 코너 고정' 기능을 사용하여 마치 원래부터 하나의 영상이었던 것처럼 만듭니다.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">1. 화면 영상 준비</h3>
-                            <p class="text-gray-400">합성할 영상을 별도의 컴포지션('Screen_Comp')으로 미리 만듭니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">2. 모션 트래킹</h3>
-                            <p class="text-gray-400">메인 컴포지션의 스마트폰 레이어를 선택하고 `창 > 추적기` 패널에서 `동작 추적`을 실행합니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">3. 코너 핀 적용 및 분석</h3>
-                            <p class="text-gray-400">추적 유형을 <span class="highlight">원근 코너 고정(Perspective Corner Pin)</span>으로 설정하고, 4개의 추적점을 스마트폰 화면 모서리에 맞춘 후 움직임을 분석합니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">4. 데이터 적용</h3>
-                            <p class="text-gray-400">분석 완료 후, `대상 편집`에서 'Screen_Comp'를 선택하고 `적용`을 누릅니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-4" class="content-section bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-200">4단계: 타이틀 애니메이션 추가</h2>
-                    <p class="text-gray-400 mb-6">
-                        제품의 이름과 슬로건에 생동감을 불어넣습니다. 텍스트 애니메이션 기능을 활용하여 메시지를 효과적으로 전달하는 동적인 타이틀을 제작합니다.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">1. 텍스트 생성</h3>
-                            <p class="text-gray-400">제품 이름(예: "GALAXY AI")과 슬로건(예: "새로운 시대를 열다")을 각각 별도의 텍스트 레이어로 만듭니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">2. 애니메이션 적용</h3>
-                            <p class="text-gray-400">제품 이름에는 <span class="highlight">'타이핑 효과'</span> 프리셋을 적용하고, 슬로건은 `애니메이트 > 위치`를 추가하여 아래에서 위로 부드럽게 떠오르는 애니메이션을 만듭니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-5" class="content-section bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-200">5단계 (보너스): AI 기능으로 완성도 높이기</h2>
-                    <p class="text-gray-400 mb-6">
-                        애프터 이펙트의 강력한 AI 기능을 활용하여 영상의 완성도를 한 차원 높여봅니다. 단순 반복 작업을 자동화하고, 복잡한 합성을 손쉽게 처리할 수 있습니다.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">1. 배경 정리</h3>
-                            <p class="text-gray-400">배경 영상에 불필요한 요소가 있다면, <span class="highlight">내용 인식 채우기(Content-Aware Fill)</span>를 사용하여 감쪽같이 제거합니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">2. 인물 합성</h3>
-                            <p class="text-gray-400"><span class="highlight">로토 브러시 2</span>를 사용하여 스마트폰을 터치하는 손 영상의 배경을 분리하고, 제품과 상호작용하는 것처럼 자연스럽게 합성하여 깊이를 더합니다.</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="step-6" class="content-section bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-200">최종 마무리 및 렌더링</h2>
-                    <p class="text-gray-400 mb-6">
-                        모든 시각 요소가 완성되었습니다. 이제 사운드를 추가하고 전체적인 타이밍을 조절하여 프로젝트를 최종적으로 완성할 차례입니다.
-                    </p>
-                    <div class="space-y-4">
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">1. 배경음악 추가</h3>
-                            <p class="text-gray-400">준비한 배경음악(BGM) 파일을 프로젝트에 가져와 타임라인에 배치합니다.</p>
-                        </div>
-                        <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">2. 타이밍 조절</h3>
-                            <p class="text-gray-400">음악의 비트와 영상의 애니메이션이 잘 맞도록 각 레이어의 키프레임 타이밍을 미세하게 조절합니다.</p>
-                        </div>
-                         <div class="step-card p-4">
-                            <h3 class="font-semibold text-lg text-gray-200">3. 렌더링</h3>
-                            <p class="text-gray-400">모든 작업이 끝나면 `파일 > 내보내기 > Adobe Media Encoder 대기열에 추가`를 통해 최종 영상 파일로 출력합니다.</p>
-                        </div>
-                    </div>
-                     <div class="mt-8 text-center p-4 bg-green-900 bg-opacity-50 border-l-4 border-green-500 text-green-200 rounded-r-lg">
-                        <p class="font-bold">🎉 축하합니다! 🎉</p>
-                        <p>이제 당신만의 멋진 10초 인트로 영상이 완성되었습니다. 이 프로젝트를 통해 애프터 이펙트의 핵심 기능들을 종합적으로 활용하는 능력을 키우셨습니다.</p>
-                        <p> 만드신 작품은 다음 링크에 접속해서 올려주세요. 제출시 "이름_부제.mp4" 형식으로 제출해주세요.</p>
-                        <a href="https://drive.google.com/drive/folders/1IAKK93SruOF_p2lucARcq4UaHKrbeMdz?usp=drive_link" class="inline-block mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
-                            제출 드라이브로 이동
-                        </a>
-                    </div>
-                </div>
-
+            <div class="nav-links">
+                <a href="index.html">← 프로젝트 허브로 돌아가기</a>
+                <a href="second-info.html">다음 프로젝트: 📊 인터랙티브 인포그래픽 →</a>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const tabButtons = document.querySelectorAll('.tab-button');
-            const contentSections = document.querySelectorAll('.content-section');
-            const processSteps = document.querySelectorAll('.process-step');
-
-            function showStep(stepNumber) {
-                const stepIndex = parseInt(stepNumber, 10) - 1;
-
-                tabButtons.forEach((button, index) => {
-                    if (index === stepIndex) {
-                        button.classList.add('tab-active');
-                        button.classList.remove('tab-inactive');
-                    } else {
-                        button.classList.remove('tab-active');
-                        button.classList.add('tab-inactive');
-                    }
-                });
-
-                contentSections.forEach((section, index) => {
-                    if (index === stepIndex) {
-                        section.classList.add('content-active');
-                    } else {
-                        section.classList.remove('content-active');
-                    }
-                });
-            }
-
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const step = button.getAttribute('data-step');
-                    showStep(step);
-                    const targetSection = document.getElementById('step-' + step);
-                    if(targetSection) {
-                        targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
-
-            processSteps.forEach(stepElement => {
-                stepElement.addEventListener('click', () => {
-                    const step = stepElement.getAttribute('data-step');
-                    showStep(step);
-                    const targetSection = document.getElementById('step-' + step);
-                    if(targetSection) {
-                         document.getElementById('content-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                });
-            });
-
-            showStep(1);
-        });
-    </script>
-
+    <script src="../js/common.js"></script>
 </body>
 </html>
+

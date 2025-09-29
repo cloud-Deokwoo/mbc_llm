@@ -6,38 +6,20 @@
     <!-- 검색 엔진 크롤링 방지 태그 -->
     <meta name="robots" content="noindex, nofollow">
     <title>MBC 종로 - [미디어 프론티어] 생성형 AI 마스터 클래스 과정</title>
+    <link rel="stylesheet" href="css/common.css">
     <style>
-        :root {
-            --bg-color: #121212;
-            --sidebar-bg: #1e1e1e;
-            --main-bg: #121212;
-            --text-color: #e0e0e0;
-            --text-secondary: #b3b3b3;
-            /* --- 색상 변경 --- */
-            --accent-color: #007acc;
-            --accent-hover: #0056b3;
-            /* --- 여기까지 변경 --- */
-            --border-color: #2c2c2c;
-            --header-height: 120px; /* 헤더 높이 조정 */
-        }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            margin: 0;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-        }
-
+        /* 메인 페이지 전용 스타일 */
         #page-header {
-            height: var(--header-height);
-            background: #1a1a1a;
+            height: 120px;
+            background: var(--bg-secondary);
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 1em 2em;
             box-sizing: border-box;
-            border-bottom: 1px solid #333;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: var(--shadow-lg);
         }
 
         #page-header .header-container {
@@ -46,22 +28,14 @@
             justify-content: flex-start;
             gap: 25px;
             width: 100%;
-            max-width: 1200px;
+            max-width: var(--container-max-width);
         }
 
-        /* --- 로고 플레이스홀더 스타일 추가 --- */
         #page-header .logo-placeholder {
-            font-size: 1.5em;
+            font-size: var(--font-size-2xl);
             font-weight: 700;
-            color: #fff;
+            color: var(--text-primary);
             padding-right: 25px;
-        }
-        /* --- 여기까지 추가 --- */
-
-        #page-header .logo-img {
-            height: 55px;
-            width: auto;
-            flex-shrink: 0;
         }
 
         #page-header .title-container {
@@ -72,27 +46,27 @@
         }
 
         #page-header .main-title {
-            font-size: 1.6em;
+            font-size: var(--font-size-3xl);
             font-weight: 600;
-            color: #fff;
+            color: var(--text-primary);
             letter-spacing: 1px;
         }
 
         #page-header .sub-title {
-            font-size: 1.1em;
+            font-size: var(--font-size-lg);
             font-weight: 300;
             color: var(--text-secondary);
         }
 
         .page-container {
             display: flex;
-            height: calc(100vh - var(--header-height));
+            min-height: calc(100vh - 120px);
         }
 
         #sidebar {
-            width: 260px;
-            background-color: var(--sidebar-bg);
-            padding: 1.5em;
+            width: var(--sidebar-width);
+            background-color: var(--bg-secondary);
+            padding: var(--spacing-xl);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -100,10 +74,10 @@
         }
         
         #sidebar .sidebar-title {
-            color: var(--accent-color);
-            font-size: 1.3em;
+            color: var(--primary);
+            font-size: var(--font-size-2xl);
             font-weight: 600;
-            margin: 0 0 1.5em 0;
+            margin: 0 0 var(--spacing-xl) 0;
             text-align: center;
         }
 
@@ -115,29 +89,34 @@
 
         #sidebar nav li a {
             display: block;
-            color: var(--text-color);
+            color: var(--text-primary);
             text-decoration: none;
-            padding: 0.8em 1em;
-            border-radius: 5px;
-            margin-bottom: 0.5em;
-            transition: background-color 0.2s, color 0.2s;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border-radius: var(--border-radius-sm);
+            margin-bottom: var(--spacing-sm);
+            transition: all var(--transition-fast);
             cursor: pointer;
+            border: 1px solid transparent;
         }
 
         #sidebar nav li a:hover {
-            background-color: var(--accent-hover);
-            color: #fff;
+            background-color: var(--primary-hover);
+            color: white;
+            transform: translateX(5px);
+            border-color: var(--primary-hover);
         }
+        
         #sidebar nav li a.active {
-             background-color: var(--accent-color);
-             color: #fff; /* 활성 텍스트 색상 변경 */
+            background-color: var(--primary);
+            color: white;
+            font-weight: 600;
         }
 
         #main-content {
             flex-grow: 1;
-            padding: 2.5em;
+            padding: var(--spacing-2xl);
             overflow-y: auto;
-            background-color: var(--main-bg);
+            background-color: var(--bg-primary);
         }
 
         .content-section { display: none; }
@@ -171,9 +150,31 @@
             margin-top: auto;
             text-align: center;
             color: var(--text-secondary);
-            font-size: 0.8em;
-            padding-top: 1em;
+            font-size: var(--font-size-sm);
+            padding-top: var(--spacing-lg);
             border-top: 1px solid var(--border-color);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            #page-header {
+                height: auto;
+                padding: var(--spacing-lg);
+            }
+            
+            .page-container {
+                flex-direction: column;
+            }
+            
+            #sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            
+            #main-content {
+                padding: var(--spacing-lg);
+            }
         }
     </style>
 </head>
@@ -282,6 +283,7 @@
         </main>
     </div>
 
+    <script src="js/common.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const navLinks = document.querySelectorAll('.nav-link');
@@ -297,6 +299,11 @@
                     document.getElementById(targetId).classList.add('active');
                 });
             });
+
+            // 메인 페이지에서는 TOC를 비활성화
+            if (window.tocManager) {
+                window.tocManager = null;
+            }
         });
     </script>
 
